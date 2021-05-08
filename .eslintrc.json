@@ -21,6 +21,22 @@
     ],
     "rules": {
         "prettier/prettier":"error",
-        "react/react-in-jsx-scope":"off"
+        "react/react-in-jsx-scope":"off",
+        "import/order":["error",{
+            "groups":[
+                "external",
+                "index",
+                "builtin",
+                "sibling",
+                "parent",
+                "internal",
+                "unknown"
+            ],
+            "newlines-between":"always",
+            "alphabetize": {
+                "order": "asc", 
+                "caseInsensitive": true
+              }
+        }]
     }
 }
