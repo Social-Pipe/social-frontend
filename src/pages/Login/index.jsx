@@ -12,24 +12,26 @@ const Login = () => (
 			<div className="container_register">
 				<a href="#a">Página de Cadastro</a>
 			</div>
-			<div className="container_form">
-				<form>
+			<div className="content">
+				<div className="container_form">
 					<h1>Faça o login na sua conta</h1>
-					<fieldset>
-						<label htmlFor="email">Email</label>
-						<input type="text" id="email" />
-					</fieldset>
-					<fieldset>
-						<label htmlFor="password">Senha</label>
-						<input type="text" id="password" />
-					</fieldset>
-					<div className="container_buttons">
-						<Button className="button">Fazer login</Button>
-						<div className="container_forget">
-							<a href="#a">Esqueci minha senha</a>
+					<form>
+						<fieldset>
+							<label htmlFor="email">Email</label>
+							<input type="text" id="email" />
+						</fieldset>
+						<fieldset>
+							<label htmlFor="password">Senha</label>
+							<input type="text" id="password" />
+						</fieldset>
+						<div className="container_buttons">
+							<Button className="button">Fazer login</Button>
+							<div className="container_forget">
+								<a href="#a">Esqueci minha senha</a>
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 				<span>Aprovando postagens desde 2021</span>
 			</div>
 		</div>
