@@ -26,7 +26,7 @@ const ForgetPassword = () => (
 							<div className="container_forget">
 								<a href="#a">Voltar para a tela de login</a>
 							</div>
-							<Button className="button">Fazer login</Button>
+							<Button className="button">Recuperar senha</Button>
 						</div>
 					</form>
 				</div>
