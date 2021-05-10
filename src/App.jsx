@@ -1,5 +1,15 @@
+import Login from './pages/Login';
+import GlobalStyles from './theme/globalStyles';
+
 function App() {
-  return <div className="App">Hello world</div>;
+	return (
+		<>
+			<GlobalStyles />
+			<div className="App">
+				<Login />
+			</div>
+		</>
+	);
 }
 
 export default App;
