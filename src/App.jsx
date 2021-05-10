@@ -1,4 +1,4 @@
-import Login from './pages/Login';
+import Routes from './routes';
 import GlobalStyles from './theme/globalStyles';
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
 		<>
 			<GlobalStyles />
 			<div className="App">
-				<Login />
+				<Routes />
 			</div>
 		</>
 	);
