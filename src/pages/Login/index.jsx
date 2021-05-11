@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Container from './styles';
 
 import logo from '../../assets/images/logo.png';
@@ -10,7 +12,7 @@ const Login = () => (
 		</div>
 		<div>
 			<div className="container_register">
-				<a href="#a">Página de Cadastro</a>
+				<Link to="/register">Página de Cadastro</Link>
 			</div>
 			<div className="content">
 				<div className="container_form">
@@ -27,7 +29,7 @@ const Login = () => (
 						<div className="container_buttons">
 							<Button className="button">Fazer login</Button>
 							<div className="container_forget">
-								<a href="#a">Esqueci minha senha</a>
+								<Link to="/forgetPassword">Esqueci minha senha</Link>
 							</div>
 						</div>
 					</form>
