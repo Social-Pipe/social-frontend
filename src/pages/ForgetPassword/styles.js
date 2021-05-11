@@ -37,7 +37,6 @@ export default styled.div`
 					font-weight: 500;
 				}
 			}
-
 			.content {
 				flex: 3;
 				display: flex;

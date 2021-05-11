@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Container from './styles';
 
 const Sucess = () => (
@@ -9,7 +11,7 @@ const Sucess = () => (
 		</p>
 		<div className="container_buttons">
 			<div className="container_forget">
-				<a href="#a">Voltar para a tela de login</a>
+				<Link to="/">Voltar para a tela de login</Link>
 			</div>
 			<div className="container_forget" />
 		</div>

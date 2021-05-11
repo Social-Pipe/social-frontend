@@ -1,8 +1,10 @@
+import { Link } from 'react-router-dom';
+
 import Container from './styles';
 
 import Button from '../../../components/Button';
 
-const ForgetPassword = () => (
+const ForgetPassword = ({ onPressButtonAfter }) => (
 	<Container>
 		<h1>Esqueci minha senha</h1>
 		<p>
@@ -16,9 +18,11 @@ const ForgetPassword = () => (
 			</fieldset>
 			<div className="container_buttons">
 				<div className="container_forget">
-					<a href="#a">Voltar para a tela de login</a>
+					<Link to="/">Voltar para a tela de login</Link>
 				</div>
-				<Button className="button">Recuperar senha</Button>
+				<Button type="button" onClick={onPressButtonAfter} className="button">
+					Recuperar senha
+				</Button>
 			</div>
 		</form>
 	</Container>
