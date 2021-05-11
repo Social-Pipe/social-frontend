@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Container from './styles';
 
 import Button from '../../../components/Button';
@@ -12,7 +14,9 @@ const success = () => (
 			aproveite!
 		</p>
 		<ContainerButtons className="container_buttons">
-			<Button className="button">Fazer Login</Button>
+			<Link to="/" className="button">
+				<Button>Fazer Login</Button>
+			</Link>
 			<div className="container_forget" />
 		</ContainerButtons>
 	</Container>

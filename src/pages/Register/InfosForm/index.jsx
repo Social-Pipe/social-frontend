@@ -3,7 +3,7 @@ import Container from './styles';
 import Button from '../../../components/Button';
 import { ContainerButtons, FormContainer } from '../styles';
 
-const InfosForm = () => (
+const InfosForm = ({ onPressButton }) => (
 	<Container>
 		<h1>Esqueci minha senha</h1>
 		<p>
@@ -28,7 +28,9 @@ const InfosForm = () => (
 				<input type="text" id="password" />
 			</fieldset>
 			<ContainerButtons className="container_buttons">
-				<Button className="button">Continuar cadastro</Button>
+				<Button type="button" onClick={onPressButton} className="button">
+					Continuar cadastro
+				</Button>
 				<div className="container_forget" />
 			</ContainerButtons>
 		</FormContainer>
