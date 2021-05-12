@@ -155,6 +155,9 @@ export default styled.div`
 			font-size: 1.25rem;
 		}
 	}
+	@media (max-width: 800px) {
+		padding: 1rem 2.34rem;
+	}
 `;
 
 export const FormContainer = styled.div`
@@ -209,6 +212,12 @@ export const ContainerButtons = styled.div`
 			color: #2b8ee6;
 			font-size: 0.8rem;
 			text-decoration: none;
+		}
+	}
+
+	@media (max-width: 500px) {
+		.container_forget {
+			display: none;
 		}
 	}
 `;

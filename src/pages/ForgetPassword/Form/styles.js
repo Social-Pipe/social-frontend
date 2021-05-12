@@ -104,4 +104,18 @@ export default styled.div`
 			font-size: 0.75rem;
 		}
 	}
+
+	@media (max-width: 500px) {
+		.container_buttons {
+			flex-direction: column;
+
+			.button {
+				min-height: 3rem;
+			}
+
+			.container_forget {
+				min-height: 3rem;
+			}
+		}
+	}
 `;

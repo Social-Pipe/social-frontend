@@ -114,30 +114,31 @@ export default styled.div`
 		.content .container_form {
 			h1 {
 				font-size: 1.87rem;
-				margin-bottom: 2.55rem;
 			}
-			form fieldset {
-				:not(:first-child) {
-					margin-top: 1.9rem;
-				}
+		}
 
-				label {
-					font-size: 0.75rem;
-				}
-
-				input {
-					margin-top: 1rem;
-					height: 3rem;
-					padding-left: 1.5rem;
-					font-size: 1rem;
-				}
+		.container_buttons {
+			margin-top: 1.9rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.button {
+				flex: 1;
 			}
 
-			.container_buttons {
-				margin-top: 1.9rem;
+			.container_forget {
+				flex: 1;
+				display: flex;
+				align-items: center;
+				align-self: center;
+				justify-content: center;
 
-				.container_forget a {
+				a {
+					font-weight: 500;
+					color: #2b8ee6;
 					font-size: 0.8rem;
+					text-align: center;
+					text-decoration: none;
 				}
 			}
 		}
@@ -148,5 +149,16 @@ export default styled.div`
 	}
 	@media (max-width: 800px) {
 		padding: 0.56rem 2.34rem;
+
+		.container_buttons {
+			flex-direction: column;
+			.button {
+				min-height: 3rem;
+			}
+
+			.container_forget {
+				min-height: 3rem;
+			}
+		}
 	}
 `;

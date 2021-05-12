@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import Container from './styles';
 
-import logo from '../../assets/images/logo.png';
 import Button from '../../components/Button';
 import loginSchema from '../../validations/loginSchema';
 

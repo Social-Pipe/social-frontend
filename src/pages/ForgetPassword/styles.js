@@ -40,4 +40,8 @@ export default styled.div`
 			font-size: 1.25rem;
 		}
 	}
+
+	@media (max-width: 800px) {
+		padding: 0.56rem 2.34rem;
+	}
 `;
