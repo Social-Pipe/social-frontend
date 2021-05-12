@@ -1,43 +1,73 @@
+import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 
 import Container from './styles';
 
 import logo from '../../assets/images/logo.png';
 import Button from '../../components/Button';
+import loginSchema from '../../validations/loginSchema';
 
-const Login = () => (
-	<Container>
-		<div>
-			<img src={logo} alt="logo" />
-		</div>
-		<div>
-			<div className="container_register">
-				<Link to="/register">PÁGINA DE CADASTRO</Link>
+const initialValues = {
+	email: '',
+	password: '',
+};
+
+const Login = () => {
+	const formik = useFormik({
+		initialValues,
+		validationSchema: loginSchema,
+		onSubmit: values => {
+			console.log(values);
+		},
+	});
+	return (
+		<Container>
+			<div>
+				<img src={logo} alt="logo" />
 			</div>
-			<div className="content">
-				<div className="container_form">
-					<h1>Faça o login na sua conta</h1>
-					<form>
-						<fieldset>
-							<label htmlFor="email">Email</label>
-							<input type="text" id="email" />
-						</fieldset>
-						<fieldset>
-							<label htmlFor="password">Senha</label>
-							<input type="text" id="password" />
-						</fieldset>
-						<div className="container_buttons">
-							<Button className="button">Fazer login</Button>
-							<div className="container_forget">
-								<Link to="/forgetPassword">Esqueci minha senha</Link>
-							</div>
-						</div>
-					</form>
+			<div>
+				<div className="container_register">
+					<Link to="/register">PÁGINA DE CADASTRO</Link>
 				</div>
-				<span>Aprovando postagens desde 2021</span>
+				<div className="content">
+					<div className="container_form">
+						<h1>Faça o login na sua conta</h1>
+						<form onSubmit={formik.handleSubmit}>
+							<fieldset>
+								<label htmlFor="email">Email</label>
+								<input
+									type="email"
+									id="email"
+									name="email"
+									onChange={formik.handleChange}
+									value={formik.values.email}
+								/>
+							</fieldset>
+							<fieldset>
+								<label htmlFor="password">Senha</label>
+								<input
+									type="password"
+									id="password"
+									name="password"
+									onChange={formik.handleChange}
+									value={formik.values.password}
+								/>
+							</fieldset>
+							<div className="container_buttons">
+								<Button type="submit" className="button">
+									Fazer login
+								</Button>
+								<div className="container_forget">
+									<Link to="/forgetPassword">Esqueci minha senha</Link>
+								</div>
+							</div>
+						</form>
+					</div>
+					<span>Aprovando postagens desde 2021</span>
+				</div>
 			</div>
-		</div>
-	</Container>
-);
+		</Container>
+	);
+};
 
 export default Login;
