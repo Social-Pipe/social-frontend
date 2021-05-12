@@ -6,7 +6,6 @@ import PaymentForm from './PaymentForm';
 import Container from './styles';
 import Success from './Success';
 
-import logo from '../../assets/images/logo.png';
 import registerSchema from '../../validations/registerSchema';
 
 const initialValues = {
@@ -29,40 +28,35 @@ const Register = () => {
 
 	return (
 		<Container>
-			<div>
-				<img src={logo} alt="logo" />
-			</div>
-			<div>
-				<div className="container_register" />
-				<div className="content">
-					{page < 2 && (
-						<div className="progress_bar">
-							<div className="active">
-								<p>Informações</p>
-								<span />
-							</div>
-							<div className={page === 1 ? 'active' : ''}>
-								<p>Pagamento</p>
-								<span />
-							</div>
+			<div className="container_register" />
+			<div className="content">
+				{page < 2 && (
+					<div className="progress_bar">
+						<div className="active">
+							<p>Informações</p>
+							<span />
 						</div>
+						<div className={page === 1 ? 'active' : ''}>
+							<p>Pagamento</p>
+							<span />
+						</div>
+					</div>
+				)}
+				<form onSubmit={formik.handleSubmit}>
+					{page === 0 && (
+						<InfosForm formik={formik} onPressButton={() => setPage(1)} />
 					)}
-					<form onSubmit={formik.handleSubmit}>
-						{page === 0 && (
-							<InfosForm formik={formik} onPressButton={() => setPage(1)} />
-						)}
-						{page === 1 && (
-							<PaymentForm
-								onPressButtonFinished={() => {
-									formik.handleSubmit();
-								}}
-							/>
-						)}
-					</form>
+					{page === 1 && (
+						<PaymentForm
+							onPressButtonFinished={() => {
+								formik.handleSubmit();
+							}}
+						/>
+					)}
+				</form>
 
-					{page === 2 && <Success />}
-					<span>Aprovando postagens desde 2021</span>
-				</div>
+				{page === 2 && <Success />}
+				<span>Aprovando postagens desde 2021</span>
 			</div>
 		</Container>
 	);

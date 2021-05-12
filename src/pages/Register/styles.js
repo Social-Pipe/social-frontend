@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 
 export default styled.div`
-	display: flex;
-	height: 100%;
-	width: 100%;
-
 	h1 {
 		color: #3c3f4f;
 		font-size: 2.5rem;
@@ -15,124 +11,107 @@ export default styled.div`
 		color: #5d5d5d;
 	}
 
-	> div {
-		:first-child {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: #ee4266;
-			flex: 1;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	flex: 2;
+	padding: 3rem 3.5rem 6.75rem 12.5rem;
 
-			img {
-				width: 13.19rem;
-				object-fit: contain;
-			}
+	.container_register {
+		flex: 1;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-end;
+		a {
+			font-size: 2rem;
+			text-decoration: none;
+			color: #f31515;
+			font-weight: 500;
 		}
+	}
+	.content {
+		flex: 6.5;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
-		:last-child {
-			overflow: auto;
+		.progress_bar {
 			display: flex;
-			flex-direction: column;
-			flex: 2;
-			padding: 3rem 3.5rem 6.75rem 12.5rem;
+			max-width: 18.75rem;
+			margin-bottom: 3.62rem;
 
-			.container_register {
-				flex: 1;
-				display: flex;
-				align-items: flex-start;
-				justify-content: flex-end;
-				a {
-					font-size: 2rem;
-					text-decoration: none;
-					color: #f31515;
-					font-weight: 500;
-				}
-			}
-			.content {
-				flex: 6.5;
+			> div {
 				display: flex;
 				flex-direction: column;
-				justify-content: space-between;
+				flex: 1;
+				align-items: center;
+				justify-content: center;
 
-				.progress_bar {
-					display: flex;
-					max-width: 18.75rem;
-					margin-bottom: 3.62rem;
+				p {
+					color: #e1e1e1;
+					font-weight: 500;
+					font-size: 0.56rem;
+					margin-bottom: 0.87rem;
+				}
 
-					> div {
-						display: flex;
-						flex-direction: column;
-						flex: 1;
-						align-items: center;
-						justify-content: center;
+				span {
+					display: inline-block;
+					align-self: stretch;
+					border: 1px solid #e1e1e1;
+					position: relative;
 
-						p {
-							color: #e1e1e1;
-							font-weight: 500;
-							font-size: 0.56rem;
-							margin-bottom: 0.87rem;
-						}
+					::before,
+					::after {
+						content: '';
+						position: absolute;
+						min-width: 0.56rem;
+						min-height: 0.56rem;
+						border-radius: 100px;
+						background-color: #e1e1e1;
+						top: 0;
+						z-index: 3;
+						transform: translate(-50%, -50%);
+					}
 
-						span {
-							display: inline-block;
-							align-self: stretch;
-							border: 1px solid #e1e1e1;
-							position: relative;
+					::before {
+						left: 0.19rem;
+					}
 
-							::before,
-							::after {
-								content: '';
-								position: absolute;
-								min-width: 0.56rem;
-								min-height: 0.56rem;
-								border-radius: 100px;
-								background-color: #e1e1e1;
-								top: 0;
-								z-index: 3;
-								transform: translate(-50%, -50%);
-							}
+					::after {
+						right: -0.625rem;
+					}
+				}
 
-							::before {
-								left: 0.19rem;
-							}
+				&.active {
+					p {
+						color: #ee4266;
+					}
 
-							::after {
-								right: -0.625rem;
-							}
-						}
+					span {
+						border: 1px solid #585858;
 
-						&.active {
-							p {
-								color: #ee4266;
-							}
-
-							span {
-								border: 1px solid #585858;
-
-								::before,
-								::after {
-									background-color: #585858;
-								}
-							}
-						}
-
-						:first-child {
-							span::after {
-								display: none;
-							}
+						::before,
+						::after {
+							background-color: #585858;
 						}
 					}
 				}
 
-				> span {
-					margin-top: 2rem;
-					display: block;
-					font-size: 1.25rem;
-					color: #707070;
-					opacity: 0.3;
-					font-weight: 500;
+				:first-child {
+					span::after {
+						display: none;
+					}
 				}
 			}
+		}
+
+		> span {
+			margin-top: 2rem;
+			display: block;
+			font-size: 1.25rem;
+			color: #707070;
+			opacity: 0.3;
+			font-weight: 500;
 		}
 	}
 
@@ -143,39 +122,37 @@ export default styled.div`
 		p {
 			font-size: 0.75rem;
 		}
-		> div:last-child {
-			padding: 2.25rem 2.62rem 5rem 9.37rem;
+		padding: 2.25rem 2.62rem 5rem 9.37rem;
 
-			.content .container_form {
-				form fieldset {
-					:not(:first-child) {
-						margin-top: 1.9rem;
-					}
-
-					label {
-						font-size: 0.75rem;
-					}
-
-					input {
-						margin-top: 1rem;
-						height: 3rem;
-						padding-left: 1.5rem;
-						font-size: 1rem;
-					}
-				}
-
-				.container_buttons {
+		.content .container_form {
+			form fieldset {
+				:not(:first-child) {
 					margin-top: 1.9rem;
+				}
 
-					.container_forget a {
-						font-size: 0.8rem;
-					}
+				label {
+					font-size: 0.75rem;
+				}
+
+				input {
+					margin-top: 1rem;
+					height: 3rem;
+					padding-left: 1.5rem;
+					font-size: 1rem;
 				}
 			}
 
-			span {
-				font-size: 1.25rem;
+			.container_buttons {
+				margin-top: 1.9rem;
+
+				.container_forget a {
+					font-size: 0.8rem;
+				}
 			}
+		}
+
+		span {
+			font-size: 1.25rem;
 		}
 	}
 `;
