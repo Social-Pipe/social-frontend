@@ -24,4 +24,10 @@ export default styled.div`
 			}
 		}
 	}
+
+	@media (max-width: 1400px) {
+		form .info_payment_container p {
+			font-size: 1.82rem;
+		}
+	}
 `;

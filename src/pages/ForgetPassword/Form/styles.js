@@ -94,4 +94,13 @@ export default styled.div`
 			}
 		}
 	}
+
+	@media (max-width: 1400px) {
+		h1 {
+			font-size: 1.87rem;
+		}
+		p {
+			margin: 1rem 0;
+			font-size: 0.75rem;
+		}
 `;

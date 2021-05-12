@@ -30,6 +30,7 @@ export default styled.div`
 		}
 
 		:last-child {
+			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			flex: 2;
@@ -123,13 +124,57 @@ export default styled.div`
 					}
 				}
 
-				span {
+				> span {
+					margin-top: 2rem;
 					display: block;
 					font-size: 1.25rem;
 					color: #707070;
 					opacity: 0.3;
 					font-weight: 500;
 				}
+			}
+		}
+	}
+
+	@media (max-width: 1400px) {
+		h1 {
+			font-size: 1.87rem;
+		}
+		p {
+			font-size: 0.75rem;
+		}
+		> div:last-child {
+			padding: 2.25rem 2.62rem 5rem 9.37rem;
+
+			.content .container_form {
+				form fieldset {
+					:not(:first-child) {
+						margin-top: 1.9rem;
+					}
+
+					label {
+						font-size: 0.75rem;
+					}
+
+					input {
+						margin-top: 1rem;
+						height: 3rem;
+						padding-left: 1.5rem;
+						font-size: 1rem;
+					}
+				}
+
+				.container_buttons {
+					margin-top: 1.9rem;
+
+					.container_forget a {
+						font-size: 0.8rem;
+					}
+				}
+			}
+
+			span {
+				font-size: 1.25rem;
 			}
 		}
 	}

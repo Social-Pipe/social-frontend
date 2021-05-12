@@ -120,4 +120,49 @@ export default styled.div`
 			}
 		}
 	}
+
+	@media (max-width: 1400px) {
+		> div:last-child {
+			padding: 2.25rem 2.62rem 5rem 9.37rem;
+
+			.container_register a {
+				font-size: 1.5rem;
+			}
+
+			.content .container_form {
+				h1 {
+					font-size: 1.87rem;
+					margin-bottom: 2.55rem;
+				}
+				form fieldset {
+					:not(:first-child) {
+						margin-top: 1.9rem;
+					}
+
+					label {
+						font-size: 0.75rem;
+					}
+
+					input {
+						margin-top: 1rem;
+						height: 3rem;
+						padding-left: 1.5rem;
+						font-size: 1rem;
+					}
+				}
+
+				.container_buttons {
+					margin-top: 1.9rem;
+
+					.container_forget a {
+						font-size: 0.8rem;
+					}
+				}
+			}
+
+			span {
+				font-size: 1.25rem;
+			}
+		}
+	}
 `;

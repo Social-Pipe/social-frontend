@@ -53,4 +53,14 @@ export default styled.div`
 			}
 		}
 	}
+
+	@media (max-width: 1400px) {
+		> div:last-child {
+			padding: 2.25rem 2.62rem 5rem 9.37rem;
+
+			span {
+				font-size: 1.25rem;
+			}
+		}
+	}
 `;

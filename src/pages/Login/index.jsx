@@ -12,7 +12,7 @@ const Login = () => (
 		</div>
 		<div>
 			<div className="container_register">
-				<Link to="/register">Página de Cadastro</Link>
+				<Link to="/register">PÁGINA DE CADASTRO</Link>
 			</div>
 			<div className="content">
 				<div className="container_form">
