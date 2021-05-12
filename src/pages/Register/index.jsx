@@ -17,16 +17,18 @@ const Register = () => {
 			<div>
 				<div className="container_register" />
 				<div className="content">
-					<div className="progress_bar">
-						<div className="active">
-							<p>Informações</p>
-							<span />
+					{page < 2 && (
+						<div className="progress_bar">
+							<div className="active">
+								<p>Informações</p>
+								<span />
+							</div>
+							<div className={page === 1 ? 'active' : ''}>
+								<p>Pagamento</p>
+								<span />
+							</div>
 						</div>
-						<div className={page === 1 ? 'active' : ''}>
-							<p>Pagamento</p>
-							<span />
-						</div>
-					</div>
+					)}
 					{page === 0 && <InfosForm onPressButton={() => setPage(1)} />}
 					{page === 1 && (
 						<PaymentForm onPressButtonFinished={() => setPage(2)} />
