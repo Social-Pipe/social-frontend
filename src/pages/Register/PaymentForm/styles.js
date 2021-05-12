@@ -5,7 +5,7 @@ export default styled.div`
 		max-width: 23.3rem;
 		margin: 1rem 0;
 	}
-	form {
+	> div {
 		max-width: 32.37rem;
 
 		.info_payment_container {

@@ -6,7 +6,7 @@ export default styled.div`
 		margin: 1rem 0;
 	}
 
-	form {
+	> div {
 		max-width: 28.5rem;
 	}
 

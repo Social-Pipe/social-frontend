@@ -47,16 +47,19 @@ const Register = () => {
 							</div>
 						</div>
 					)}
-					{page === 0 && (
-						<InfosForm formik={formik} onPressButton={() => setPage(1)} />
-					)}
-					{page === 1 && (
-						<PaymentForm
-							onPressButtonFinished={() => {
-								formik.handleSubmit();
-							}}
-						/>
-					)}
+					<form onSubmit={formik.handleSubmit}>
+						{page === 0 && (
+							<InfosForm formik={formik} onPressButton={() => setPage(1)} />
+						)}
+						{page === 1 && (
+							<PaymentForm
+								onPressButtonFinished={() => {
+									formik.handleSubmit();
+								}}
+							/>
+						)}
+					</form>
+
 					{page === 2 && <Success />}
 					<span>Aprovando postagens desde 2021</span>
 				</div>

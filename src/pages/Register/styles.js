@@ -180,7 +180,7 @@ export default styled.div`
 	}
 `;
 
-export const FormContainer = styled.form`
+export const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 
