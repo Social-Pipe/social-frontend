@@ -3,7 +3,7 @@ import Container from './styles';
 import Button from '../../../components/Button';
 import { ContainerButtons, FormContainer } from '../styles';
 
-const InfosForm = ({ onPressButton }) => (
+const InfosForm = ({ onPressButton, formik }) => (
 	<Container>
 		<h1>Esqueci minha senha</h1>
 		<p>
@@ -13,19 +13,43 @@ const InfosForm = ({ onPressButton }) => (
 		<FormContainer>
 			<fieldset>
 				<label htmlFor="name">Nome</label>
-				<input type="text" id="name" />
+				<input
+					type="text"
+					id="name"
+					name="name"
+					value={formik.values.name}
+					onChange={formik.handleChange}
+				/>
 			</fieldset>
 			<fieldset>
 				<label htmlFor="email">Email</label>
-				<input type="text" id="email" />
+				<input
+					type="email"
+					id="email"
+					name="email"
+					value={formik.values.email}
+					onChange={formik.handleChange}
+				/>
 			</fieldset>
 			<fieldset>
 				<label htmlFor="phone">Celular</label>
-				<input type="text" id="phone" />
+				<input
+					type="tel"
+					id="phone"
+					name="phone"
+					value={formik.values.phone}
+					onChange={formik.handleChange}
+				/>
 			</fieldset>
 			<fieldset>
 				<label htmlFor="password">Senha</label>
-				<input type="text" id="password" />
+				<input
+					type="password"
+					id="password"
+					name="password"
+					value={formik.values.password}
+					onChange={formik.handleChange}
+				/>
 			</fieldset>
 			<ContainerButtons className="container_buttons">
 				<Button type="button" onClick={onPressButton} className="button">

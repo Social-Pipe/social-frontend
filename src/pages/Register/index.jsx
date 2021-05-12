@@ -1,3 +1,4 @@
+import { useFormik } from 'formik';
 import { useState } from 'react';
 
 import InfosForm from './InfosForm';
@@ -6,9 +7,26 @@ import Container from './styles';
 import Success from './Success';
 
 import logo from '../../assets/images/logo.png';
+import registerSchema from '../../validations/registerSchema';
+
+const initialValues = {
+	name: '',
+	email: '',
+	phone: '',
+	password: '',
+};
 
 const Register = () => {
 	const [page, setPage] = useState(0);
+	const formik = useFormik({
+		initialValues,
+		validationSchema: registerSchema,
+		onSubmit: values => {
+			setPage(2);
+			console.log(values);
+		},
+	});
+
 	return (
 		<Container>
 			<div>
@@ -29,9 +47,15 @@ const Register = () => {
 							</div>
 						</div>
 					)}
-					{page === 0 && <InfosForm onPressButton={() => setPage(1)} />}
+					{page === 0 && (
+						<InfosForm formik={formik} onPressButton={() => setPage(1)} />
+					)}
 					{page === 1 && (
-						<PaymentForm onPressButtonFinished={() => setPage(2)} />
+						<PaymentForm
+							onPressButtonFinished={() => {
+								formik.handleSubmit();
+							}}
+						/>
 					)}
 					{page === 2 && <Success />}
 					<span>Aprovando postagens desde 2021</span>
