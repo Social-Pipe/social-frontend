@@ -12,4 +12,9 @@ export default styled.button`
 	font-weight: 500;
 	box-shadow: 0px 10px 15px rgba(148, 252, 123, 0.38);
 	cursor: pointer;
+	transition: filter linear 0.2s;
+
+	:hover {
+		filter: brightness(0.95);
+	}
 `;
