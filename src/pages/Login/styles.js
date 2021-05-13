@@ -50,6 +50,7 @@ export default styled.div`
 					}
 
 					input {
+						width: 100%;
 						margin-top: 1rem;
 						border: 1px solid #e4e4e4;
 						height: 3rem;
@@ -159,6 +160,12 @@ export default styled.div`
 			.container_forget {
 				min-height: 3rem;
 			}
+		}
+	}
+
+	@media (max-width: 500px) {
+		span {
+			margin-top: 2rem;
 		}
 	}
 `;

@@ -13,18 +13,39 @@ const initialValues = {
 	email: '',
 	phone: '',
 	password: '',
+	checkbox: false,
 };
 
 const Register = () => {
 	const [page, setPage] = useState(0);
+
 	const formik = useFormik({
 		initialValues,
 		validationSchema: registerSchema,
 		onSubmit: values => {
-			setPage(2);
 			console.log(values);
+			setPage(2);
 		},
 	});
+
+	async function verifyValues() {
+		const fields = ['name', 'email', 'phone', 'password'];
+		let notTouched = false;
+
+		if (!formik.values.checkbox) {
+			return;
+		}
+
+		fields.forEach(field => {
+			if (!formik.touched[field] || formik.errors[field]) {
+				notTouched = true;
+			}
+		});
+
+		if (!notTouched) {
+			setPage(1);
+		}
+	}
 
 	return (
 		<Container>
@@ -44,7 +65,7 @@ const Register = () => {
 				)}
 				<form onSubmit={formik.handleSubmit}>
 					{page === 0 && (
-						<InfosForm formik={formik} onPressButton={() => setPage(1)} />
+						<InfosForm formik={formik} onPressButton={verifyValues} />
 					)}
 					{page === 1 && (
 						<PaymentForm

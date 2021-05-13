@@ -33,6 +33,7 @@ export default styled.div`
 			}
 
 			input {
+				width: 100%;
 				margin-top: 1rem;
 				border: 1px solid #e4e4e4;
 				height: 3rem;

@@ -3,7 +3,7 @@ import Container from './styles';
 import Button from '../../../components/Button';
 import { ContainerButtons } from '../styles';
 
-const PaymentForm = ({ onPressButtonFinished }) => (
+const PaymentForm = () => (
 	<Container>
 		<h1>Finalize adicionando suas informações de assinatura!</h1>
 		<div>
