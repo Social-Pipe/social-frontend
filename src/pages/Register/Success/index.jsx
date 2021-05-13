@@ -14,7 +14,7 @@ const success = () => (
 			aproveite!
 		</p>
 		<ContainerButtons className="container_buttons">
-			<Link to="/login" className="button">
+			<Link to="/" className="button">
 				<Button>Fazer Login</Button>
 			</Link>
 			<div className="container_forget" />

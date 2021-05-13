@@ -22,7 +22,7 @@ const Login = () => {
 	return (
 		<Container>
 			<div className="container_register">
-				<Link to="/login/register">PÁGINA DE CADASTRO</Link>
+				<Link to="/register">PÁGINA DE CADASTRO</Link>
 			</div>
 			<div className="content">
 				<div className="container_form">
@@ -53,7 +53,7 @@ const Login = () => {
 								Fazer login
 							</Button>
 							<div className="container_forget">
-								<Link to="/login/forgetPassword">Esqueci minha senha</Link>
+								<Link to="/forgetPassword">Esqueci minha senha</Link>
 							</div>
 						</div>
 					</form>
