@@ -33,6 +33,10 @@ export default styled.aside`
 				:hover {
 					filter: brightness(0.95);
 				}
+
+				p {
+					margin-left: 0.5rem;
+				}
 			}
 
 			h2 {

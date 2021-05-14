@@ -1,3 +1,4 @@
+import { AiOutlinePlus } from 'react-icons/ai';
 import { RiArrowRightSLine } from 'react-icons/ri';
 
 import Container from './styles';
@@ -5,7 +6,10 @@ import Container from './styles';
 const Aside = () => (
 	<Container>
 		<div>
-			<button type="button">Novo Cliente</button>
+			<button type="button">
+				<AiOutlinePlus color="#fff" size={16} />
+				<p>Novo Cliente</p>
+			</button>
 			<h2>Meus Clientes</h2>
 			<p>Coca Cola</p>
 		</div>
