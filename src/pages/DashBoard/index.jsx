@@ -1,9 +1,20 @@
+import Container from './styles';
+
 import Aside from '../../components/Aside';
+import Card from '../../components/Card';
 
 const DashBoard = () => (
-	<div>
+	<Container>
 		<Aside />
-	</div>
+		<main>
+			<Card />
+			<Card text="Coca Cola" />
+			<Card text="Coca Cola" />
+			<Card text="Coca Cola" />
+			<Card text="Coca Cola" />
+			<Card text="Coca Cola" />
+		</main>
+	</Container>
 );
 
 export default DashBoard;
