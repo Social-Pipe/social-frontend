@@ -4,7 +4,7 @@ export default styled.aside`
 	display: flex;
 	flex-direction: column;
 	background-color: #f9f9f9;
-	width: 21.5rem;
+	min-width: 21.5rem;
 	height: 100%;
 
 	> div {
