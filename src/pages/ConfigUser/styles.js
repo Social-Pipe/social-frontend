@@ -174,6 +174,15 @@ export default styled.main`
 			}
 		}
 	}
+	span {
+		display: block;
+		font-size: 1.25rem;
+		color: #707070;
+		opacity: 0.3;
+		font-weight: 500;
+		align-self: center;
+		padding-bottom: 3rem;
+	}
 
 	@media (max-width: 1400px) {
 		.container {

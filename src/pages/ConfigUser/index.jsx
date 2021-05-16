@@ -98,6 +98,8 @@ const ConfigUser = () => (
 					</div>
 				</div>
 			</div>
+
+			<span>Aprovando postagens desde 2021</span>
 		</div>
 	</Container>
 );
