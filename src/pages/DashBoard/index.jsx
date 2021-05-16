@@ -19,6 +19,7 @@ const DashBoard = () => (
 				<Card text="Coca Cola" />
 				<Card text="Coca Cola" />
 			</div>
+			<span>Aprovando postagens desde 2021</span>
 		</main>
 	</Container>
 );

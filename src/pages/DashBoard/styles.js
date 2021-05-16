@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export default styled.div`
 	display: flex;
 	overflow: auto;
-
+	flex: 1;
 	main {
 		display: flex;
 		flex-direction: column;
@@ -30,7 +30,16 @@ export default styled.div`
 		.content {
 			display: flex;
 			flex-wrap: wrap;
-			flex: 1;
+		}
+
+		span {
+			display: block;
+			font-size: 1.25rem;
+			color: #707070;
+			opacity: 0.3;
+			font-weight: 500;
+			align-self: center;
+			margin-top: auto;
 		}
 	}
 `;
