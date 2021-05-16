@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default styled.button`
 	height: 3rem;
@@ -17,4 +17,11 @@ export default styled.button`
 	:hover {
 		filter: brightness(0.95);
 	}
+
+	${({ secondary }) =>
+		secondary &&
+		css`
+			background-color: #facd53;
+			box-shadow: 0 10px 15px rgba(252, 123, 136, 0.4);
+		`}
 `;
