@@ -3,6 +3,7 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import ContainerLogin from './styles';
 
 import logo from '../../assets/images/logo.png';
+import DesactiveSucess from '../../pages/DesactiveSucess';
 import ForgetPassword from '../../pages/ForgetPassword';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
@@ -22,6 +23,11 @@ const LoginRoutes = () => {
 					component={ForgetPassword}
 				/>
 				<Route exact path={`${route.path}register`} component={Register} />
+				<Route
+					exact
+					path={`${route.path}desactiveSucess`}
+					component={DesactiveSucess}
+				/>
 			</Switch>
 		</ContainerLogin>
 	);
