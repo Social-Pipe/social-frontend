@@ -5,11 +5,10 @@ export default styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	min-width: 17.5rem;
-	min-height: 9.25rem;
+	width: 17.5rem;
+	height: 9.25rem;
 	box-shadow: 0 3px 50px rgba(0, 0, 0, 0.07);
 	border-radius: 8px;
-	flex: 1;
 
 	img {
 		width: 4rem;
