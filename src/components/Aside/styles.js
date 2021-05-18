@@ -95,4 +95,8 @@ export default styled.aside`
 			}
 		}
 	}
+
+	@media (max-width: 1400px) {
+		min-width: 18rem;
+	}
 `;
