@@ -36,76 +36,6 @@ export default styled.div`
 		flex-direction: column;
 		justify-content: space-between;
 
-		.progress_bar {
-			display: flex;
-			max-width: 18.75rem;
-			margin-bottom: 3.62rem;
-
-			> div {
-				display: flex;
-				flex-direction: column;
-				flex: 1;
-				align-items: center;
-				justify-content: center;
-
-				p {
-					color: #e1e1e1;
-					font-weight: 500;
-					font-size: 0.56rem;
-					margin-bottom: 0.87rem;
-				}
-
-				span {
-					display: inline-block;
-					align-self: stretch;
-					border: 1px solid #e1e1e1;
-					position: relative;
-
-					::before,
-					::after {
-						content: '';
-						position: absolute;
-						min-width: 0.56rem;
-						min-height: 0.56rem;
-						border-radius: 100px;
-						background-color: #e1e1e1;
-						top: 0;
-						z-index: 3;
-						transform: translate(-50%, -50%);
-					}
-
-					::before {
-						left: 0.19rem;
-					}
-
-					::after {
-						right: -0.625rem;
-					}
-				}
-
-				&.active {
-					p {
-						color: #ee4266;
-					}
-
-					span {
-						border: 1px solid #585858;
-
-						::before,
-						::after {
-							background-color: #585858;
-						}
-					}
-				}
-
-				:first-child {
-					span::after {
-						display: none;
-					}
-				}
-			}
-		}
-
 		> span {
 			margin-top: 2rem;
 			display: block;
@@ -161,6 +91,102 @@ export default styled.div`
 	}
 `;
 
+export const ProgressBar = styled.div`
+	display: flex;
+	max-width: 28.12rem;
+	margin-bottom: 3.62rem;
+
+	> button {
+		cursor: pointer;
+		background: none;
+		border: none;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+
+		p {
+			color: #e1e1e1;
+			font-weight: 500;
+			font-size: 0.56rem;
+			margin-bottom: 0.87rem;
+		}
+
+		span {
+			display: inline-block;
+			align-self: stretch;
+			border: 1px solid #e1e1e1;
+			position: relative;
+
+			::before,
+			::after {
+				content: '';
+				position: absolute;
+				min-width: 0.56rem;
+				min-height: 0.56rem;
+				border-radius: 100px;
+				background-color: #e1e1e1;
+				top: 0;
+				z-index: 3;
+				transform: translate(-50%, -50%);
+			}
+
+			::before {
+				left: 0.19rem;
+			}
+
+			::after {
+				display: none;
+				right: -0.625rem;
+			}
+		}
+
+		&.pass {
+			p {
+				color: #3c3f4f;
+			}
+
+			span {
+				border: 1px solid #585858;
+
+				::before,
+				::after {
+					background-color: #585858;
+				}
+			}
+		}
+		&.active {
+			p {
+				color: #ee4266;
+			}
+
+			span {
+				border: 1px solid #ee4266;
+
+				::before,
+				::after {
+					background-color: #ee4266;
+				}
+			}
+
+			+ button {
+				span {
+					::before {
+						background-color: #ee4266;
+					}
+				}
+			}
+		}
+
+		:last-child {
+			span::after {
+				display: block;
+			}
+		}
+	}
+`;
+
 export const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -177,7 +203,8 @@ export const FormContainer = styled.div`
 
 		label {
 			color: #5d5d5d;
-			font-size: 0.75rem;
+			font-size: 1rem;
+			font-weight: 600;
 		}
 
 		input {
