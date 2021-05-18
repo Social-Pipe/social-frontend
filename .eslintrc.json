@@ -21,6 +21,7 @@
 		"jsx-a11y/label-has-associated-control": "off",
 		"no-unused-vars": 1,
 		"consistent-return": "off",
+		"react/jsx-props-no-spreading": "off",
 		"import/order": [
 			"error",
 			{
