@@ -8,6 +8,7 @@ import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
 import DesactiveAccount from '../../pages/DesactiveAccount';
 import Product from '../../pages/Product';
+import ProductDetail from '../../pages/ProductDetail';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
@@ -22,6 +23,12 @@ const DashBoardRoutes = () => {
 					path={`${route.path}/desactiveAccount`}
 					component={DesactiveAccount}
 				/>
+				<Route
+					exact
+					path={`${route.path}/:id/detail`}
+					component={ProductDetail}
+				/>
+
 				<Route path={`${route.path}`}>
 					<ContainerProduct>
 						<Aside />
