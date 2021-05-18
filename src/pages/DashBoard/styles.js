@@ -43,6 +43,11 @@ export default styled.div`
 		}
 	}
 
+	@media (max-width: 1700px) {
+		main {
+			padding: 3rem 5.01rem;
+		}
+	}
 	@media (max-width: 1400px) {
 		main {
 			padding: 2rem 4.01rem;

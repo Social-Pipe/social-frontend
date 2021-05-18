@@ -8,4 +8,7 @@ export default Yup.object().shape({
 		.required(),
 	password: Yup.string().required(),
 	checkbox: Yup.bool().required(),
+	passwordAccess: Yup.string().required(),
+	companyName: Yup.string().required(),
+	cardNumber: Yup.string().matches(/\d{4}\s\d{4}\s\d{4}\s\d{4}/g),
 });
