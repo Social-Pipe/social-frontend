@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 import Container from './styles';
 
-import Button from '../../components/Button';
-
 const ConfigUser = () => (
 	<Container>
 		<div className="container">
