@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
 import DesactiveAccount from '../../pages/DesactiveAccount';
+import Product from '../../pages/Product';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
@@ -14,6 +15,7 @@ const DashBoardRoutes = () => {
 			<Header />
 			<Switch>
 				<Route exact path={`${route.path}`} component={DashBoard} />
+				<Route exact path={`${route.path}/product`} component={Product} />
 				<Route exact path={`${route.path}/config`} component={ConfigUser} />
 				<Route
 					exact
