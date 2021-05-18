@@ -42,4 +42,10 @@ export default styled.div`
 			margin-top: auto;
 		}
 	}
+
+	@media (max-width: 1400px) {
+		main {
+			padding: 2rem 4.01rem;
+		}
+	}
 `;

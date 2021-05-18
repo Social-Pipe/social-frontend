@@ -37,4 +37,8 @@ export default styled.div`
 				color: #fff;
 			}
 		`}
+
+	@media(max-width:1400px) {
+		width: 15.5rem;
+	}
 `;
