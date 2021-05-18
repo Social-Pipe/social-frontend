@@ -33,7 +33,8 @@ export default styled.main`
 				margin-right: 3rem;
 			}
 
-			span {
+			button {
+				border: none;
 				margin: 0;
 				opacity: 1;
 				display: flex;
@@ -45,11 +46,12 @@ export default styled.main`
 				background-color: #dfdfdf;
 				border: none;
 				cursor: pointer;
+				transition: background-color 0.2s linear;
 
 				&.active {
 					&.facebook,
 					&.linkedin {
-						background: #3b5998;
+						background-color: #3b5998;
 					}
 
 					&.instagram {

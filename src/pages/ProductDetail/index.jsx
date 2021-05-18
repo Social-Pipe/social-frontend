@@ -9,6 +9,7 @@ import Row from '../../components/Row';
 
 const ProductDetail = () => {
 	const [page, setPage] = useState(0);
+	const [filter, setFilter] = useState('facebook');
 	return (
 		<Container>
 			<div className="header">
@@ -18,15 +19,27 @@ const ProductDetail = () => {
 				</div>
 				<div className="social_redes">
 					<p>Selecione a rede social ao lado</p>
-					<span className="facebook active">
+					<button
+						type="button"
+						onClick={() => setFilter('facebook')}
+						className={`facebook ${filter === 'facebook' ? 'active' : ''}`}
+					>
 						<FaFacebookF size={24} color="#fff" />
-					</span>
-					<span className="instagram">
+					</button>
+					<button
+						type="button"
+						onClick={() => setFilter('instagram')}
+						className={`instagram ${filter === 'instagram' ? 'active' : ''}`}
+					>
 						<FaInstagram size={24} color="#fff" />
-					</span>
-					<span className="linkedin">
+					</button>
+					<button
+						type="button"
+						onClick={() => setFilter('linkedin')}
+						className={`linkedin ${filter === 'linkedin' ? 'active' : ''}`}
+					>
 						<FaLinkedinIn size={24} color="#fff" />
-					</span>
+					</button>
 				</div>
 			</div>
 			<div className="content">
