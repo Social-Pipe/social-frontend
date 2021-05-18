@@ -38,3 +38,9 @@ export default styled.div`
 		}
 	}
 `;
+
+export const ContainerProduct = styled.div`
+	display: flex;
+	overflow: auto;
+	flex: 1;
+`;
