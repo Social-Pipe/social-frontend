@@ -6,7 +6,7 @@ import Container from './styles';
 import likeIcon from '../../assets/icons/likeIcon.svg';
 import productTest from '../../assets/images/productTest.png';
 
-const Row = ({ buttons = true }) => (
+const Row = ({ buttons = true, deleteItem, editItem }) => (
 	<Container>
 		<div>
 			<img src={productTest} alt="produto" />
@@ -16,10 +16,10 @@ const Row = ({ buttons = true }) => (
 			<span>Aprovado pelo cliente</span>
 			{buttons && (
 				<>
-					<button className="cancel" type="button">
+					<button onClick={deleteItem} className="cancel" type="button">
 						<BsX color="#fff" size={24} />
 					</button>
-					<button className="edit" type="button">
+					<button className="edit" type="button" onClick={editItem}>
 						<TiPencil color="#fff" size={24} />
 					</button>
 					<button className="like" type="button">
