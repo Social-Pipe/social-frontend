@@ -63,6 +63,11 @@ export default styled.div`
 			justify-content: space-between;
 			.social_redes {
 				display: flex;
+				flex-direction: column;
+
+				> div {
+					display: flex;
+				}
 				button {
 					display: flex;
 					align-items: center;

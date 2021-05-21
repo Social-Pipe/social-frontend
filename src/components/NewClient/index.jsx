@@ -6,9 +6,9 @@ import Container from './styles';
 import Button from '../Button';
 import PhotoContainer from '../PhotoContainer';
 
-const NewClient = ({ saveClient, editClient = false }) => (
+const NewClient = ({ saveClient, editClient = false, handleClose }) => (
 	<Container>
-		<button type="button" className="close_button" onClick={saveClient}>
+		<button type="button" className="close_button" onClick={handleClose}>
 			<IoMdClose size={24} color="#fff" />
 		</button>
 		<div className="header_container">

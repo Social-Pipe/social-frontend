@@ -5,9 +5,8 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import Container from './styles';
 
 import Button from '../Button';
-import PhotoContainer from '../PhotoContainer';
 
-const NewPost = ({ saveClient, editClient = false }) => (
+const NewPost = ({ saveClient }) => (
 	<Container>
 		<button type="button" className="close_button" onClick={saveClient}>
 			<IoMdClose size={24} color="#fff" />
@@ -18,38 +17,43 @@ const NewPost = ({ saveClient, editClient = false }) => (
 		<form>
 			<div className="photo_container">
 				<div className="social_redes">
-					<button
-						type="button"
-						className={`facebook ${'formik.values.facebook' ? 'active' : ''}`}
-						onClick={
-							() => {}
-							// formik.setFieldValue('facebook', !formik.values.facebook)
-						}
-					>
-						<FaFacebookF size={24} color="#fff" />
-					</button>
-					<button
-						type="button"
-						className={`instagram ${
-							'formik.values.instagram ' ? 'active' : ''
-						}`}
-						onClick={
-							() => {}
-							// formik.setFieldValue('instagram', !formik.values.instagram)
-						}
-					>
-						<FaInstagram size={24} color="#fff" />
-					</button>
-					<button
-						type="button"
-						className={`linkedin ${'formik.values.linkedin ' ? 'active' : ''}`}
-						onClick={
-							() => {}
-							// formik.setFieldValue('linkedin', !formik.values.linkedin)
-						}
-					>
-						<FaLinkedinIn size={24} color="#fff" />
-					</button>
+					<p>Redes Sociais</p>
+					<div>
+						<button
+							type="button"
+							className={`facebook ${'formik.values.facebook' ? 'active' : ''}`}
+							onClick={
+								() => {}
+								// formik.setFieldValue('facebook', !formik.values.facebook)
+							}
+						>
+							<FaFacebookF size={24} color="#fff" />
+						</button>
+						<button
+							type="button"
+							className={`instagram ${
+								'formik.values.instagram ' ? 'active' : ''
+							}`}
+							onClick={
+								() => {}
+								// formik.setFieldValue('instagram', !formik.values.instagram)
+							}
+						>
+							<FaInstagram size={24} color="#fff" />
+						</button>
+						<button
+							type="button"
+							className={`linkedin ${
+								'formik.values.linkedin ' ? 'active' : ''
+							}`}
+							onClick={
+								() => {}
+								// formik.setFieldValue('linkedin', !formik.values.linkedin)
+							}
+						>
+							<FaLinkedinIn size={24} color="#fff" />
+						</button>
+					</div>
 				</div>
 
 				<Button onClick={saveClient} type="button">
