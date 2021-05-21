@@ -5,13 +5,19 @@ import Container from './styles';
 
 import logoTest from '../../assets/images/Coca.png';
 import logoTproductTestest from '../../assets/images/productTest.png';
+import Authenticate from '../../components/Authenticate';
 import Row from '../../components/Row';
+import Modal from '../../Container/Modal';
 
 const ProductDetail = () => {
+	const [showModal, setShowModal] = useState(true);
 	const [page, setPage] = useState(0);
 	const [filter, setFilter] = useState('facebook');
 	return (
 		<Container>
+			<Modal showModal={showModal} handleOutClick={() => setShowModal(false)}>
+				<Authenticate handleButton={() => setShowModal(false)} />
+			</Modal>
 			<div className="header">
 				<div className="logo">
 					<img src={logoTest} alt="logo" />
