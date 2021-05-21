@@ -5,9 +5,19 @@ export default styled.div`
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
+	position: relative;
 
 	max-width: 54.3rem;
 	max-height: 34.75rem;
+
+	.close_button {
+		position: absolute;
+		top: -2rem;
+		right: 1rem;
+		background: none;
+		border: none;
+		z-index: 2;
+	}
 
 	.header_container {
 		margin-top: 2rem;

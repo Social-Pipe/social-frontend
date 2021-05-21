@@ -1,4 +1,5 @@
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 
 import Container from './styles';
 
@@ -7,8 +8,11 @@ import PhotoContainer from '../PhotoContainer';
 
 const NewClient = ({ saveClient, editClient = false }) => (
 	<Container>
+		<button type="button" className="close_button" onClick={saveClient}>
+			<IoMdClose size={24} color="#fff" />
+		</button>
 		<div className="header_container">
-			<h3>Novo cliente</h3>
+			{editClient ? <h3>Editar cliente</h3> : <h3>Novo cliente</h3>}
 			{editClient && (
 				<Button onClick={saveClient} type="button">
 					Salvar alterações
