@@ -5,26 +5,45 @@ import Container from './styles';
 
 import Button from '../../components/Button';
 import DeleteItem from '../../components/DeleteItem';
-import NewClient from '../../components/NewClient';
+import EditPost from '../../components/EditPost';
+import NewPost from '../../components/NewPost';
 import Row from '../../components/Row';
 import Modal from '../../Container/Modal';
 
 const Product = () => {
-	const [showModal, setShowModal] = useState(true);
-	const [showModalEdit, setShowModalEdit] = useState(true);
+	const [showModalDeleteItem, setShowModalDeleteItem] = useState(true);
+	const [showModalEdit, setShowModalEdit] = useState(false);
+	const [showModalNewPost, setShowModalNewPost] = useState(true);
 	return (
 		<Container>
-			<Modal showModal={showModal} handleOutClick={() => setShowModal(false)}>
+			<Modal
+				showModal={showModalDeleteItem}
+				handleOutClick={() => setShowModalDeleteItem(false)}
+			>
 				<DeleteItem
-					handleDeleteItem={() => setShowModal(false)}
-					handleNotDeleteItem={() => setShowModal(false)}
+					handleDeleteItem={() => setShowModalDeleteItem(false)}
+					handleNotDeleteItem={() => setShowModalDeleteItem(false)}
 				/>
 			</Modal>
 			<Modal
 				showModal={showModalEdit}
 				handleOutClick={() => setShowModalEdit(false)}
 			>
-				<NewClient saveClient={() => setShowModalEdit(false)} editClient />
+				<EditPost
+					saveClient={() => setShowModalEdit(false)}
+					editClient
+					handleClose={() => setShowModalEdit(false)}
+				/>
+			</Modal>
+			<Modal
+				showModal={showModalNewPost}
+				handleOutClick={() => setShowModalNewPost(false)}
+			>
+				<NewPost
+					saveClient={() => setShowModalNewPost(false)}
+					editClient
+					handleClose={() => setShowModalNewPost(false)}
+				/>
 			</Modal>
 			<div className="header">
 				<div>
@@ -46,20 +65,22 @@ const Product = () => {
 			</div>
 			<div className="content">
 				<div className="container_buttons">
-					<Button>Novo post</Button>
+					<Button type="button" onClick={() => setShowModalNewPost(true)}>
+						Novo post
+					</Button>
 					<button className="secondary" type="button">
 						Mostrar arquivados
 					</button>
 				</div>
 				<div className="products">
 					<Row
-						deleteItem={() => setShowModal(true)}
+						deleteItem={() => setShowModalDeleteItem(true)}
 						editItem={() => setShowModalEdit(true)}
 					/>
-					<Row deleteItem={() => setShowModal(true)} />
-					<Row deleteItem={() => setShowModal(true)} />
-					<Row deleteItem={() => setShowModal(true)} />
-					<Row deleteItem={() => setShowModal(true)} />
+					<Row deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row deleteItem={() => setShowModalDeleteItem(true)} />
 				</div>
 			</div>
 			<span>Aprovando postagens desde 2021</span>
