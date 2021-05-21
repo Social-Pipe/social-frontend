@@ -13,7 +13,10 @@ const Aside = () => {
 	return (
 		<>
 			<Modal showModal={showModal} handleOutClick={() => setShowModal(false)}>
-				<NewClient saveClient={() => setShowModal(false)} />
+				<NewClient
+					saveClient={() => setShowModal(false)}
+					handleClose={() => setShowModal(false)}
+				/>
 			</Modal>
 			<Container>
 				<div>
