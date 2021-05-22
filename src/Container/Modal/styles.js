@@ -5,14 +5,15 @@ export default styled.div`
 	top: 0;
 	left: 0;
 	width: 100vw;
-	height: 100vh;
+	height: 100%;
+	max-width: 100vw;
 	display: ${({ show }) => (show ? 'flex' : 'none')};
 	align-items: center;
 	justify-content: center;
 	z-index: 4;
-
-	span {
-		position: absolute;
+	overflow: auto;
+	> span {
+		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100vw;
@@ -21,7 +22,7 @@ export default styled.div`
 	}
 
 	> div {
-		background-color: #fff;
+		background: ${({ background }) => (background ? '#fff' : 'none')};
 		z-index: 2;
 		border-radius: 8px;
 	}
