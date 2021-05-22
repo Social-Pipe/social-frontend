@@ -8,8 +8,20 @@ export default styled.header`
 	height: 3.75rem;
 	background: #ee4266;
 
-	img {
-		width: 8.62rem;
-		object-fit: contain;
+	> div {
+		display: flex;
+		align-items: center;
+
+		button {
+			cursor: pointer;
+			background: none;
+			border: none;
+		}
+
+		img {
+			width: 8.62rem;
+			object-fit: contain;
+			margin-left: 1rem;
+		}
 	}
 `;

@@ -43,4 +43,5 @@ export const ContainerProduct = styled.div`
 	display: flex;
 	overflow: auto;
 	flex: 1;
+	position: relative;
 `;

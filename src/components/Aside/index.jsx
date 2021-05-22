@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { RiArrowRightSLine } from 'react-icons/ri';
 
 import Container from './styles';
 
 import Modal from '../../Container/Modal';
+import { Context } from '../../services/context';
 import NewClient from '../NewClient';
 
 const Aside = () => {
 	const [showModal, setShowModal] = useState(false);
+	const { menuOpen } = useContext(Context);
 
 	return (
 		<>
@@ -18,7 +20,7 @@ const Aside = () => {
 					handleClose={() => setShowModal(false)}
 				/>
 			</Modal>
-			<Container>
+			<Container openMenu={menuOpen}>
 				<div>
 					<button type="button" onClick={() => setShowModal(true)}>
 						<AiOutlinePlus color="#fff" size={16} />

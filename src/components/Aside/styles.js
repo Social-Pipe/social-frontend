@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default styled.aside`
 	display: flex;
@@ -6,6 +6,9 @@ export default styled.aside`
 	background-color: #f9f9f9;
 	min-width: 21.5rem;
 	height: 100%;
+	overflow: auto;
+	transition: transform 0.2s ease-in;
+	z-index: 2;
 
 	> div {
 		padding: 3rem;
@@ -98,5 +101,18 @@ export default styled.aside`
 
 	@media (max-width: 1400px) {
 		min-width: 18rem;
+	}
+
+	@media (max-width: 800px) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: translateX(-100%);
+
+		${({ openMenu }) =>
+			openMenu &&
+			css`
+				transform: translateX(0%);
+			`}
 	}
 `;
