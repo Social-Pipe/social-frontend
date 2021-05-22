@@ -7,13 +7,15 @@ import Button from '../../components/Button';
 import DeleteItem from '../../components/DeleteItem';
 import EditPost from '../../components/EditPost';
 import NewPost from '../../components/NewPost';
+import RatingPost from '../../components/RatingPost';
 import Row from '../../components/Row';
 import Modal from '../../Container/Modal';
 
 const Product = () => {
-	const [showModalDeleteItem, setShowModalDeleteItem] = useState(true);
+	const [showModalDeleteItem, setShowModalDeleteItem] = useState(false);
 	const [showModalEdit, setShowModalEdit] = useState(false);
-	const [showModalNewPost, setShowModalNewPost] = useState(true);
+	const [showModalRating, setShowModalRating] = useState(false);
+	const [showModalNewPost, setShowModalNewPost] = useState(false);
 	return (
 		<Container>
 			<Modal
@@ -24,6 +26,13 @@ const Product = () => {
 					handleDeleteItem={() => setShowModalDeleteItem(false)}
 					handleNotDeleteItem={() => setShowModalDeleteItem(false)}
 				/>
+			</Modal>
+			<Modal
+				background={false}
+				showModal={showModalRating}
+				handleOutClick={() => setShowModalRating(false)}
+			>
+				<RatingPost />
 			</Modal>
 			<Modal
 				showModal={showModalEdit}
@@ -76,8 +85,9 @@ const Product = () => {
 					<Row
 						deleteItem={() => setShowModalDeleteItem(true)}
 						editItem={() => setShowModalEdit(true)}
+						ratingItem={() => setShowModalRating(true)}
 					/>
-					<Row deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row deleteItem={() => setShowModalDeleteItem(true)} ratingItem />
 					<Row deleteItem={() => setShowModalDeleteItem(true)} />
 					<Row deleteItem={() => setShowModalDeleteItem(true)} />
 					<Row deleteItem={() => setShowModalDeleteItem(true)} />

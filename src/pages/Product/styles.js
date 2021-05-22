@@ -108,7 +108,7 @@ export default styled.main`
 		}
 	}
 
-	span {
+	> span {
 		display: block;
 		font-size: 1.25rem;
 		color: #707070;
