@@ -6,7 +6,7 @@ import Container from './styles';
 import likeIcon from '../../assets/icons/likeIcon.svg';
 import productTest from '../../assets/images/productTest.png';
 
-const Row = ({ buttons = true, deleteItem, editItem }) => (
+const Row = ({ buttons = true, deleteItem, editItem, ratingItem }) => (
 	<Container>
 		<div>
 			<img src={productTest} alt="produto" />
@@ -22,7 +22,7 @@ const Row = ({ buttons = true, deleteItem, editItem }) => (
 					<button className="edit" type="button" onClick={editItem}>
 						<TiPencil color="#fff" size={24} />
 					</button>
-					<button className="like" type="button">
+					<button onClick={ratingItem} className="like" type="button">
 						<img src={likeIcon} alt="botao like" />
 					</button>
 				</>
