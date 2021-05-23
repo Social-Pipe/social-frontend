@@ -82,17 +82,20 @@ export const Form = styled.form`
 	button {
 		align-self: center;
 	}
+
 	> div {
-		display: flex;
-		justify-content: space-between;
-		.column {
-			flex: 1;
-			h2 {
-				font-size: 1.25rem;
-				color: #3c3f4f;
-				font-weight: 700;
-				margin-bottom: 2.75rem;
-			}
+		display: grid;
+		grid-template:
+			'col1 col2' auto
+			'col1 phone' auto;
+		column-gap: 10rem;
+
+		.contact {
+			grid-area: phone;
+			display: flex;
+			flex-direction: column;
+			margin-top: 2.56rem;
+			display: flex;
 
 			h3 {
 				font-size: 1.25rem;
@@ -100,31 +103,45 @@ export const Form = styled.form`
 				font-weight: bold;
 				margin-bottom: 1.75rem;
 			}
-			.contact {
-				display: flex;
-				flex-direction: column;
-				margin-top: 2.56rem;
-				display: flex;
-				fieldset:first-child {
-					max-width: 4.25rem;
+			fieldset:first-child {
+				max-width: 4.25rem;
+			}
+
+			.row {
+				flex-direction: row;
+				align-items: center;
+			}
+		}
+
+		.row {
+			display: flex;
+			fieldset {
+				min-width: 0;
+				flex: 1;
+
+				:first-child {
+					margin-right: 1rem;
 				}
 			}
+		}
+
+		.column {
 			:first-child {
-				margin-right: 10rem;
+				grid-area: col1;
 				fieldset {
 					margin-bottom: 1.9rem;
 				}
 			}
 
-			.row {
-				display: flex;
-				fieldset {
-					flex: 1;
+			:last-child {
+				grid-area: col2;
+			}
 
-					:first-child {
-						margin-right: 1rem;
-					}
-				}
+			h2 {
+				font-size: 1.25rem;
+				color: #3c3f4f;
+				font-weight: 700;
+				margin-bottom: 2.75rem;
 			}
 		}
 	}
@@ -134,9 +151,50 @@ export const Form = styled.form`
 		margin-top: 2rem;
 	}
 
+	@media (max-width: 1200px) {
+		> div {
+			column-gap: 5rem;
+		}
+	}
+
 	@media (max-width: 800px) {
+		> div {
+			grid-template:
+				'col1 col2' auto
+				'phone phone' auto;
+		}
 		margin-right: 0;
 		margin-bottom: 3rem;
+	}
+
+	@media (max-width: 600px) {
+		> div {
+			grid-template:
+				'col1 ' auto
+				'col2' auto
+				'phone' auto;
+			.column {
+				:first-child {
+					margin-right: 2rem;
+				}
+				.row {
+					flex-direction: column;
+					fieldset {
+						margin-right: 0;
+					}
+				}
+			}
+		}
+	}
+	@media (max-width: 500px) {
+		margin-right: 0;
+		margin-bottom: 3rem;
+		> div {
+			flex-direction: column;
+			.column:first-child {
+				margin-right: 0;
+			}
+		}
 	}
 `;
 
@@ -144,7 +202,7 @@ export const FieldSet = styled.fieldset`
 	display: flex;
 	flex-direction: column;
 	border: none;
-
+	min-width: 28.56rem;
 	margin-bottom: 0.87rem;
 
 	label {
@@ -170,6 +228,10 @@ export const FieldSet = styled.fieldset`
 			background: none;
 			color: #5d5d5d;
 		}
+	}
+
+	@media (max-width: 1200px) {
+		min-width: 0;
 	}
 `;
 

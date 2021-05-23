@@ -132,28 +132,28 @@ const ConfigUser = () => (
 									/>
 								</FieldSet>
 							</div>
-							<div className="contact">
-								<h3>Informações de contato</h3>
-								<div className="row">
-									<FieldSet>
-										<label htmlFor="DDD">DDD</label>
-										<input
-											id="DDD"
-											name="DDD"
-											// onChange={formik.handleChange}
-											// value={formik.values.password}
-										/>
-									</FieldSet>
-									<FieldSet>
-										<label htmlFor="phone2">Número de celular</label>
-										<input
-											id="phone2"
-											name="phone2"
-											// onChange={formik.handleChange}
-											// value={formik.values.password}
-										/>
-									</FieldSet>
-								</div>
+						</div>
+						<div className="contact">
+							<h3>Informações de contato</h3>
+							<div className="row ">
+								<FieldSet>
+									<label htmlFor="DDD">DDD</label>
+									<input
+										id="DDD"
+										name="DDD"
+										// onChange={formik.handleChange}
+										// value={formik.values.password}
+									/>
+								</FieldSet>
+								<FieldSet>
+									<label htmlFor="phone2">Número de celular</label>
+									<input
+										id="phone2"
+										name="phone2"
+										// onChange={formik.handleChange}
+										// value={formik.values.password}
+									/>
+								</FieldSet>
 							</div>
 						</div>
 					</div>
