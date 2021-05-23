@@ -43,71 +43,6 @@ export default styled.main`
 			flex-direction: column;
 			padding-bottom: 4rem;
 		}
-
-		form {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-			align-self: stretch;
-			margin-bottom: 10.3rem;
-
-			button {
-				align-self: center;
-			}
-			> div {
-				display: flex;
-				justify-content: space-between;
-				.column {
-					flex: 1;
-					h2 {
-						font-size: 1.25rem;
-						color: #3c3f4f;
-						font-weight: 700;
-						margin-bottom: 2.75rem;
-					}
-
-					h3 {
-						font-size: 1.25rem;
-						color: #3c3f4f;
-						font-weight: bold;
-						margin-bottom: 1.75rem;
-					}
-					.contact {
-						display: flex;
-						flex-direction: column;
-						margin-top: 2.56rem;
-						> div {
-							display: flex;
-							fieldset:first-child {
-								max-width: 4.25rem;
-							}
-						}
-					}
-					:first-child {
-						margin-right: 10rem;
-						fieldset {
-							margin-bottom: 1.9rem;
-						}
-					}
-
-					> div {
-						display: flex;
-						fieldset {
-							flex: 1;
-
-							:first-child {
-								margin-right: 1rem;
-							}
-						}
-					}
-				}
-			}
-
-			button {
-				max-width: 15.5rem;
-				margin-top: 2rem;
-			}
-		}
 	}
 
 	span {
@@ -128,10 +63,6 @@ export default styled.main`
 
 	@media (max-width: 800px) {
 		.container .content {
-			form {
-				margin-right: 0;
-				margin-bottom: 3rem;
-			}
 			flex-direction: column;
 		}
 	}
@@ -141,7 +72,73 @@ export default styled.main`
 	}
 `;
 
-export const Form = styled.form``;
+export const Form = styled.form`
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	align-self: stretch;
+	margin-bottom: 10.3rem;
+
+	button {
+		align-self: center;
+	}
+	> div {
+		display: flex;
+		justify-content: space-between;
+		.column {
+			flex: 1;
+			h2 {
+				font-size: 1.25rem;
+				color: #3c3f4f;
+				font-weight: 700;
+				margin-bottom: 2.75rem;
+			}
+
+			h3 {
+				font-size: 1.25rem;
+				color: #3c3f4f;
+				font-weight: bold;
+				margin-bottom: 1.75rem;
+			}
+			.contact {
+				display: flex;
+				flex-direction: column;
+				margin-top: 2.56rem;
+				display: flex;
+				fieldset:first-child {
+					max-width: 4.25rem;
+				}
+			}
+			:first-child {
+				margin-right: 10rem;
+				fieldset {
+					margin-bottom: 1.9rem;
+				}
+			}
+
+			.row {
+				display: flex;
+				fieldset {
+					flex: 1;
+
+					:first-child {
+						margin-right: 1rem;
+					}
+				}
+			}
+		}
+	}
+
+	button {
+		max-width: 15.5rem;
+		margin-top: 2rem;
+	}
+
+	@media (max-width: 800px) {
+		margin-right: 0;
+		margin-bottom: 3rem;
+	}
+`;
 
 export const FieldSet = styled.fieldset`
 	display: flex;

@@ -1,7 +1,7 @@
 import { RiArrowLeftSLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
-import Container, { FieldSet, Info } from './styles';
+import Container, { FieldSet, Info, Form } from './styles';
 
 import Button from '../../components/Button';
 
@@ -16,7 +16,7 @@ const ConfigUser = () => (
 				<h2>Meu painel</h2>
 			</div>
 			<div className="content">
-				<form>
+				<Form>
 					<div>
 						<div className="column">
 							<h2>Informações de cadastro</h2>
@@ -92,7 +92,7 @@ const ConfigUser = () => (
 									// value={formik.values.password}
 								/>
 							</FieldSet>
-							<div>
+							<div className="row">
 								<FieldSet>
 									<label htmlFor="Num">Numero</label>
 									<input
@@ -112,7 +112,7 @@ const ConfigUser = () => (
 									/>
 								</FieldSet>
 							</div>
-							<div>
+							<div className="row">
 								<FieldSet>
 									<label htmlFor="city">Cidade</label>
 									<input
@@ -134,7 +134,7 @@ const ConfigUser = () => (
 							</div>
 							<div className="contact">
 								<h3>Informações de contato</h3>
-								<div>
+								<div className="row">
 									<FieldSet>
 										<label htmlFor="DDD">DDD</label>
 										<input
@@ -158,7 +158,7 @@ const ConfigUser = () => (
 						</div>
 					</div>
 					<Button secondary>Alterar informações</Button>
-				</form>
+				</Form>
 				<Info>
 					<h3>Valor atual de assinatura</h3>
 					<p className="price">R$ 9,90</p>
