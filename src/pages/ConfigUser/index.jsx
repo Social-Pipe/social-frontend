@@ -1,10 +1,16 @@
 import { useFormik } from 'formik';
+import { useEffect } from 'react';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 import { RiArrowLeftSLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
 import Container, { FieldSet, Info, Form } from './styles';
 
 import Button from '../../components/Button';
+import maskCep from '../../utils/maskCep';
+import maskCpf from '../../utils/maskCpf';
+import maskPhone from '../../utils/maskPhone';
+import configUserSchema from '../../validations/configUserSchema';
 
 const initialValues = {
 	name: '',
@@ -19,7 +25,7 @@ const initialValues = {
 	state: '',
 	bairro: '',
 	ddd: '',
-	phoneContct: '',
+	phoneContact: '',
 };
 
 const ConfigUser = () => {
@@ -28,7 +34,20 @@ const ConfigUser = () => {
 		onSubmit(values) {
 			console.log(values);
 		},
+		validationSchema: configUserSchema,
 	});
+
+	function handleDDD(e) {
+		const valueNumber = e.target.value.match(/\d+/g)?.join('');
+		if (valueNumber?.length > 2) {
+			return;
+		}
+		formik.setFieldValue('ddd', valueNumber || '');
+	}
+
+	useEffect(() => {
+		formik.setFieldValue('state', 'rio de janeiro');
+	}, []);
 
 	return (
 		<Container>
@@ -51,6 +70,7 @@ const ConfigUser = () => {
 										type="text"
 										id="Name"
 										name="name"
+										autoComplete="name"
 										onChange={formik.handleChange}
 										value={formik.values.name}
 									/>
@@ -61,6 +81,7 @@ const ConfigUser = () => {
 										type="email"
 										id="email"
 										name="email"
+										autoComplete="email"
 										onChange={formik.handleChange}
 										value={formik.values.email}
 									/>
@@ -69,11 +90,16 @@ const ConfigUser = () => {
 								<FieldSet>
 									<label htmlFor="phone">Celular</label>
 									<input
+										autoComplete="tel-national"
 										type="tel"
 										id="phone"
 										name="phone"
 										value={formik.values.phone}
-										// onBlur={formik.handleBlur}
+										onChange={e =>
+											maskPhone(e.target.value, newValue =>
+												formik.setFieldValue('phone', newValue)
+											)
+										}
 									/>
 								</FieldSet>
 								<FieldSet>
@@ -81,7 +107,11 @@ const ConfigUser = () => {
 									<input
 										id="cpf"
 										name="cpf"
-										onChange={formik.handleChange}
+										onChange={e =>
+											maskCpf(e.target.value, newValue =>
+												formik.setFieldValue('cpf', newValue)
+											)
+										}
 										value={formik.values.cpf}
 									/>
 								</FieldSet>
@@ -91,6 +121,7 @@ const ConfigUser = () => {
 										type="password"
 										id="password"
 										name="password"
+										autoComplete="current-password"
 										onChange={formik.handleChange}
 										value={formik.values.password}
 									/>
@@ -103,7 +134,12 @@ const ConfigUser = () => {
 									<input
 										id="Cep"
 										name="cep"
-										onChange={formik.handleChange}
+										onChange={e =>
+											maskCep(e.target.value, newValue =>
+												formik.setFieldValue('cep', newValue)
+											)
+										}
+										autoComplete="postal-code"
 										value={formik.values.cep}
 									/>
 								</FieldSet>
@@ -126,15 +162,24 @@ const ConfigUser = () => {
 											value={formik.values.number}
 										/>
 									</FieldSet>
-									<FieldSet>
-										<label htmlFor="state">Estado</label>
-										<input
-											id="state"
-											name="state"
-											onChange={formik.handleChange}
-											value={formik.values.state}
-										/>
-									</FieldSet>
+
+									<div className="select">
+										<label>Estado</label>
+										<div>
+											<div className="mask">
+												<p>{formik.values.state}</p>
+												<MdKeyboardArrowDown size={32} color="#717171" />
+											</div>
+											<select
+												onChange={e =>
+													formik.setFieldValue('state', e.target.value)
+												}
+											>
+												<option value="rio de janeiro">Rio de Janeiro</option>
+												<option>Sao paulo</option>
+											</select>
+										</div>
+									</div>
 								</div>
 								<div className="row">
 									<FieldSet>
@@ -165,7 +210,9 @@ const ConfigUser = () => {
 										<input
 											id="DDD"
 											name="ddd"
-											onChange={formik.handleChange}
+											maxLength={2}
+											autoComplete="tel-country-code"
+											onChange={handleDDD}
 											value={formik.values.ddd}
 										/>
 									</FieldSet>
@@ -173,15 +220,22 @@ const ConfigUser = () => {
 										<label htmlFor="phone2">Número de celular</label>
 										<input
 											id="phone2"
-											name="phoneContct"
-											onChange={formik.handleChange}
-											value={formik.values.phoneContct}
+											autoComplete="tel-national"
+											name="phoneContact"
+											onChange={e =>
+												maskPhone(e.target.value, newValue =>
+													formik.setFieldValue('phoneContact', newValue)
+												)
+											}
+											value={formik.values.phoneContact}
 										/>
 									</FieldSet>
 								</div>
 							</div>
 						</div>
-						<Button secondary>Alterar informações</Button>
+						<Button type="submit" secondary>
+							Alterar informações
+						</Button>
 					</Form>
 					<Info>
 						<h3>Valor atual de assinatura</h3>

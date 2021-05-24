@@ -126,6 +126,50 @@ export const Form = styled.form`
 		}
 
 		.column {
+			.select {
+				flex: 1;
+				margin-bottom: 0.75rem;
+				label {
+					color: #5d5d5d;
+					font-size: 0.75rem;
+					margin-bottom: 1rem;
+					display: block;
+				}
+				> div {
+					position: relative;
+
+					.mask {
+						align-items: center;
+						display: flex;
+						height: 3rem;
+						border-radius: 8px;
+						border: 1px solid #e4e4e4;
+						box-shadow: 0 15px 40px rgba(183, 183, 183, 0.11);
+						padding-left: 1rem;
+						align-self: stretch;
+						position: relative;
+						justify-content: space-between;
+						padding: 0 1rem;
+						z-index: 2;
+						pointer-events: none;
+						background: #fff;
+						p {
+							margin: 0;
+						}
+					}
+					select {
+						cursor: pointer;
+						position: absolute;
+						outline: none;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						border-radius: 8px;
+						border: none;
+					}
+				}
+			}
 			:first-child {
 				grid-area: col1;
 				fieldset {
@@ -151,7 +195,7 @@ export const Form = styled.form`
 		margin-top: 2rem;
 	}
 
-	@media (max-width: 1200px) {
+	@media (max-width: 1400px) {
 		> div {
 			column-gap: 5rem;
 		}
@@ -162,6 +206,14 @@ export const Form = styled.form`
 			grid-template:
 				'col1 col2' auto
 				'phone phone' auto;
+			.column {
+				.row {
+					flex-direction: column;
+					fieldset {
+						margin-right: 0;
+					}
+				}
+			}
 		}
 		margin-right: 0;
 		margin-bottom: 3rem;
