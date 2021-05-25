@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export default styled.div`
 	width: 8.94rem;
 	height: 8.94rem;
+	cursor: pointer;
 
 	img {
 		width: 100%;
