@@ -17,10 +17,22 @@ const initialValues = {
 	companyName: '',
 	passwordAccess: '',
 	checkbox: false,
-	cardNumber: '',
 	instagram: false,
 	facebook: false,
 	linkedin: false,
+	cardNumber: '',
+	cardCode: '',
+	cpf: '',
+	cep: '',
+	ddd: '',
+	adress: '',
+	number: '',
+	state: '',
+	city: '',
+	district: '',
+	phoneContact: '',
+	cardName: '',
+	vality: '',
 };
 
 const Register = () => {
@@ -43,7 +55,7 @@ const Register = () => {
 		}
 
 		ArrayFieldsNames.forEach(field => {
-			if (!formik.touched[field] || formik.errors[field]) {
+			if (!formik.touched[field] && formik.errors[field]) {
 				notTouched = true;
 			}
 		});

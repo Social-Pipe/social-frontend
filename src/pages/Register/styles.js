@@ -207,7 +207,8 @@ export const FormContainer = styled.div`
 			font-weight: 600;
 		}
 
-		input {
+		> input,
+		.card {
 			width: 100%;
 			margin-top: 1rem;
 			border: 1px solid #e4e4e4;
@@ -219,6 +220,22 @@ export const FormContainer = styled.div`
 			color: #5d5d5d;
 			font-weight: 500;
 			box-shadow: 0px 15px 40px rgba(183, 183, 183, 0.1);
+		}
+
+		.card {
+			display: flex;
+			align-items: center;
+			padding-left: 0;
+			padding-right: 1.5rem;
+			overflow: hidden;
+
+			input {
+				padding-left: 1.5rem;
+				width: 100%;
+				height: 100%;
+				border: none;
+				outline: none;
+			}
 		}
 
 		&.checkbox {
