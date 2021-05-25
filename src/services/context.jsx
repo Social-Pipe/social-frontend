@@ -31,7 +31,7 @@ const ContextProvider = ({ children }) => {
 	}, []);
 
 	function toggleOpenMenu() {
-		setMenuOpen(!menuOpen);
+		setMenuOpen(props => !props);
 	}
 
 	return (
