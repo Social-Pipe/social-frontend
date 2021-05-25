@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 
-import Container from './styles';
+import Container, { Header } from './styles';
 
 import Button from '../../components/Button';
 import DeleteItem from '../../components/DeleteItem';
@@ -54,24 +54,22 @@ const Product = () => {
 					handleClose={() => setShowModalNewPost(false)}
 				/>
 			</Modal>
-			<div className="header">
-				<div>
+			<Header>
+				<div className="title">
 					<p>Dashboard</p>
 					<h2>Coca Cola</h2>
 				</div>
 				<div className="share">
-					<div>
-						<p>Link de compartilhamento com o cliente</p>
-						<div className="input_container">
-							<input />
-							<button type="button">copiar link</button>
-						</div>
+					<p>Link de compartilhamento com o cliente</p>
+					<div className="input_container">
+						<input />
+						<button type="button">copiar link</button>
 					</div>
-					<button type="button">
-						<BsFillGearFill size={24} color="#fff" />
-					</button>
 				</div>
-			</div>
+				<button type="button">
+					<BsFillGearFill size={24} color="#fff" />
+				</button>
+			</Header>
 			<div className="content">
 				<div className="container_buttons">
 					<Button type="button" onClick={() => setShowModalNewPost(true)}>
@@ -83,14 +81,19 @@ const Product = () => {
 				</div>
 				<div className="products">
 					<Row
+						hdResponsive
 						deleteItem={() => setShowModalDeleteItem(true)}
 						editItem={() => setShowModalEdit(true)}
 						ratingItem={() => setShowModalRating(true)}
 					/>
-					<Row deleteItem={() => setShowModalDeleteItem(true)} ratingItem />
-					<Row deleteItem={() => setShowModalDeleteItem(true)} />
-					<Row deleteItem={() => setShowModalDeleteItem(true)} />
-					<Row deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row
+						hdResponsive
+						deleteItem={() => setShowModalDeleteItem(true)}
+						ratingItem
+					/>
+					<Row hdResponsive deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row hdResponsive deleteItem={() => setShowModalDeleteItem(true)} />
+					<Row hdResponsive deleteItem={() => setShowModalDeleteItem(true)} />
 				</div>
 			</div>
 			<span>Aprovando postagens desde 2021</span>

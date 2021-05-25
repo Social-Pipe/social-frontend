@@ -7,78 +7,6 @@ export default styled.main`
 	overflow: auto;
 	flex: 1;
 
-	.header {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 3.12rem;
-
-		.share {
-			display: flex;
-			align-items: center;
-
-			p {
-				font-size: 0.81rem;
-				margin-bottom: 0.5rem;
-			}
-			.input_container {
-				margin-bottom: 1.5rem;
-				height: 3rem;
-				width: 28.25rem;
-				border: 1px solid #bebebe;
-				border-radius: 8px;
-				display: flex;
-				align-items: center;
-				padding-right: 1.75rem;
-				overflow: hidden;
-
-				button {
-					border: none;
-					background: none;
-					font-size: 1rem;
-					font-weight: bold;
-					color: #5d5d5d;
-					cursor: pointer;
-					transition: opacity 0.2s linear;
-
-					:hover {
-						opacity: 0.9;
-					}
-				}
-
-				input {
-					padding-left: 1.75rem;
-					flex: 1;
-					align-self: stretch;
-					border: none;
-					outline: none;
-					font-size: 1rem;
-					color: #5d5d5d;
-					font-weight: 500;
-				}
-			}
-			> button {
-				width: 4rem;
-				height: 4rem;
-				margin-left: 2rem;
-				border-radius: 100%;
-				background: #fcda7b;
-				border: none;
-				box-shadow: 0 10px 15px rgba(252, 218, 123, 0.38);
-			}
-		}
-
-		p {
-			font-size: 1.25rem;
-			color: #5d5d5d;
-			font-weight: 300;
-		}
-
-		h2 {
-			font-size: 2.5rem;
-			color: #3c3f4f;
-			font-weight: bold;
-		}
-	}
 	.content {
 		display: flex;
 		flex-direction: column;
@@ -89,7 +17,7 @@ export default styled.main`
 			display: flex;
 			align-items: center;
 			> button {
-				width: 15.5rem;
+				max-width: 15.5rem;
 			}
 
 			.secondary {
@@ -123,5 +51,144 @@ export default styled.main`
 	}
 	@media (max-width: 1400px) {
 		padding: 2rem 4.01rem;
+	}
+
+	@media (max-width: 1300px) {
+		.header {
+			flex-direction: column;
+
+			.share {
+				align-self: center;
+				margin-top: 2rem;
+			}
+		}
+	}
+
+	@media (max-width: 800px) {
+		padding: 1rem;
+		.content .container_buttons {
+			flex-direction: column;
+			.secondary {
+				margin: 0;
+				margin-top: 2rem;
+			}
+		}
+	}
+`;
+
+export const Header = styled.div`
+	display: grid;
+	grid-template:
+		'title input button' / minmax(13.8rem, 1fr) minmax(10rem, 28.25rem)
+		4rem;
+	justify-content: space-between;
+	margin-bottom: 3.12rem;
+	align-items: center;
+	column-gap: 2rem;
+	.title {
+		grid-area: title;
+		margin-bottom: 1.5rem;
+		p {
+			font-size: 1.25rem;
+			color: #5d5d5d;
+			font-weight: 300;
+		}
+
+		h2 {
+			font-size: 2.5rem;
+			color: #3c3f4f;
+			font-weight: bold;
+		}
+	}
+
+	.share {
+		grid-area: input;
+		max-width: 28.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: 100%;
+
+		p {
+			font-size: 0.81rem;
+			margin-bottom: 0.5rem;
+		}
+		.input_container {
+			margin-bottom: 1.5rem;
+			height: 3rem;
+			width: 100%;
+			border: 1px solid #bebebe;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			padding-right: 1.75rem;
+			overflow: hidden;
+
+			button {
+				border: none;
+				background: none;
+				min-width: 5.56rem;
+				font-size: 1rem;
+				font-weight: bold;
+				color: #5d5d5d;
+				cursor: pointer;
+				transition: opacity 0.2s linear;
+
+				:hover {
+					opacity: 0.9;
+				}
+			}
+
+			input {
+				padding-left: 1.75rem;
+				flex: 1;
+				width: 100%;
+				align-self: stretch;
+				border: none;
+				outline: none;
+				font-size: 1rem;
+				color: #5d5d5d;
+				font-weight: 500;
+			}
+		}
+	}
+	> button {
+		grid-area: button;
+		min-width: 4rem;
+		max-width: 4rem;
+		min-height: 4rem;
+		max-height: 4rem;
+		border-radius: 100%;
+		background: #fcda7b;
+		border: none;
+		box-shadow: 0 10px 15px rgba(252, 218, 123, 0.38);
+	}
+
+	@media (max-width: 1000px) {
+		grid-template:
+			'title  button' 1fr
+			'input input' 1fr;
+		> button {
+			justify-self: flex-end;
+		}
+		.share {
+			max-width: 100%;
+		}
+	}
+
+	@media (max-width: 500px) {
+		.title h2 {
+			font-size: 1.7rem;
+		}
+	}
+
+	@media (max-width: 400px) {
+		grid-template:
+			'button  button' 1fr
+			'title  title' 1fr
+			'input input' 1fr;
+		> button {
+			justify-self: flex-start;
+		}
 	}
 `;
