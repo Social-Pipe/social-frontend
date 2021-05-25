@@ -22,6 +22,7 @@ export default styled.div`
 			margin: 0;
 
 			:first-child {
+				margin: 0;
 				margin-right: 1rem;
 			}
 		}

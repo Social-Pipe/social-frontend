@@ -19,6 +19,7 @@ const InfoClient = ({ onPressButton, formik }) => (
 				<input
 					type="text"
 					id="companyName"
+					autoComplete="organization"
 					name="companyName"
 					onBlur={formik.handleBlur}
 					value={formik.values.companyName}
@@ -31,6 +32,7 @@ const InfoClient = ({ onPressButton, formik }) => (
 					type="password"
 					id="passwordAccess"
 					name="passwordAccess"
+					autoComplete="new-password"
 					onBlur={formik.handleBlur}
 					value={formik.values.passwordAccess}
 					onChange={formik.handleChange}

@@ -18,6 +18,7 @@ const InfosForm = ({ onPressButton, formik }) => (
 					type="text"
 					id="name"
 					name="name"
+					autoComplete="name"
 					onBlur={formik.handleBlur}
 					value={formik.values.name}
 					onChange={formik.handleChange}
@@ -40,6 +41,7 @@ const InfosForm = ({ onPressButton, formik }) => (
 					type="tel"
 					id="phone"
 					name="phone"
+					autoComplete="tel-national"
 					value={formik.values.phone}
 					onBlur={formik.handleBlur}
 					onChange={e =>
@@ -55,6 +57,7 @@ const InfosForm = ({ onPressButton, formik }) => (
 					type="password"
 					id="password"
 					name="password"
+					autoComplete="new-password"
 					onBlur={formik.handleBlur}
 					value={formik.values.password}
 					onChange={formik.handleChange}

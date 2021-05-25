@@ -8,6 +8,7 @@ import Button from '../../../components/Button';
 import maskCardNumber from '../../../utils/maskCardNumber';
 import maskCep from '../../../utils/maskCep';
 import maskCpf from '../../../utils/maskCpf';
+import maskDate from '../../../utils/maskDate';
 import maskPhone from '../../../utils/maskPhone';
 import { ContainerButtons, FormContainer } from '../styles';
 
@@ -108,7 +109,7 @@ const PaymentForm = ({ formik }) => {
 									id="DDD"
 									name="ddd"
 									maxLength={2}
-									autoComplete="tel-country-code"
+									autoComplete="tel-area-code"
 									onChange={handleDDD}
 									value={formik.values.ddd}
 								/>
@@ -117,7 +118,7 @@ const PaymentForm = ({ formik }) => {
 								<label htmlFor="phone2">Número de celular</label>
 								<input
 									id="phone2"
-									autoComplete="tel-national"
+									autoComplete="tel-local"
 									name="phoneContact"
 									onChange={e =>
 										maskPhone(
@@ -154,6 +155,7 @@ const PaymentForm = ({ formik }) => {
 									type="text"
 									id="cardNumber"
 									name="cardNumber"
+									autoComplete="cc-number"
 									onBlur={formik.handleBlur}
 									value={formik.values.cardNumber}
 									onChange={e =>
@@ -168,6 +170,7 @@ const PaymentForm = ({ formik }) => {
 						<fieldset>
 							<label htmlFor="cardName">Nome (exatamente como no cartão)</label>
 							<input
+								autoComplete="cc-name"
 								id="cardName"
 								name="cardName"
 								onChange={formik.handleChange}
@@ -179,7 +182,11 @@ const PaymentForm = ({ formik }) => {
 							<input
 								id="vality"
 								name="vality"
-								onChange={formik.handleChange}
+								onChange={e => {
+									maskDate(e.target.value, value =>
+										formik.setFieldValue('vality', value)
+									);
+								}}
 								value={formik.values.vality}
 							/>
 						</fieldset>
@@ -190,6 +197,7 @@ const PaymentForm = ({ formik }) => {
 									type="text"
 									id="cardCode"
 									name="cardCode"
+									autoComplete="cc-csc"
 									onBlur={formik.handleBlur}
 									value={formik.values.cardCode}
 									onChange={e => {

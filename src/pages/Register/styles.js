@@ -207,7 +207,7 @@ export const FormContainer = styled.div`
 			font-weight: 600;
 		}
 
-		> input,
+		input,
 		.card {
 			width: 100%;
 			margin-top: 1rem;
@@ -221,6 +221,12 @@ export const FormContainer = styled.div`
 			font-weight: 500;
 			box-shadow: 0px 15px 40px rgba(183, 183, 183, 0.1);
 		}
+		> input {
+			padding-left: 1.5rem;
+			font-size: 1rem;
+			color: #5d5d5d;
+			font-weight: 500;
+		}
 
 		.card {
 			display: flex;
@@ -230,6 +236,7 @@ export const FormContainer = styled.div`
 			overflow: hidden;
 
 			input {
+				margin: 0;
 				padding-left: 1.5rem;
 				width: 100%;
 				height: 100%;
@@ -242,8 +249,10 @@ export const FormContainer = styled.div`
 			flex-direction: row;
 			align-items: center;
 			input[type='radio'] {
-				width: 1rem;
-				height: 1rem;
+				max-width: 1rem;
+				max-height: 1rem;
+				min-width: 1rem;
+				min-height: 1rem;
 				position: relative;
 				margin: 0;
 				cursor: pointer;
