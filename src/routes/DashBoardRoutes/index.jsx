@@ -4,6 +4,7 @@ import ContainerDashBoard, { ContainerProduct } from './styles';
 
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
+import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
 import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
 import DesactiveAccount from '../../pages/DesactiveAccount';
@@ -18,6 +19,11 @@ const DashBoardRoutes = () => {
 			<Header />
 			<Switch>
 				<Route exact path={`${route.path}/config`} component={ConfigUser} />
+				<Route
+					exact
+					path={`${route.path}/configPayment`}
+					component={ChangeConfigPayment}
+				/>
 				<Route
 					exact
 					path={`${route.path}/desactiveAccount`}
