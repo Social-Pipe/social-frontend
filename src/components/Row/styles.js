@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default styled.div`
 	width: 100%;
-	height: 5.87rem;
+	min-height: 5.87rem;
 	border-radius: 8px;
 	box-shadow: 0 10px 15px rgba(6, 6, 6, 0.05);
 	border: 1px solid rgba(190, 190, 190, 0.23);
@@ -19,7 +19,7 @@ export default styled.div`
 		img {
 			width: 4rem;
 			height: 4rem;
-			object-fit: contain;
+			object-fit: cover;
 			margin-right: 2.25rem;
 		}
 
@@ -32,6 +32,11 @@ export default styled.div`
 		&.buttons {
 			display: flex;
 			align-items: center;
+
+			> div {
+				display: flex;
+				align-items: center;
+			}
 
 			span {
 				font-size: 1rem;
@@ -85,5 +90,47 @@ export default styled.div`
 
 	@media (max-width: 1400px) {
 		padding: 0 2.2rem;
+	}
+
+	@media (max-width: 1300px) {
+		flex-direction: ${({ hdResponsive }) => (hdResponsive ? 'column' : 'row')};
+		justify-content: space-between;
+		padding: 1rem 2.2rem;
+
+		> div {
+			width: ${({ hdResponsive }) => (hdResponsive ? '100%' : 'auto')};
+			justify-content: space-between;
+		}
+	}
+
+	@media (max-width: 500px) {
+		flex-direction: column;
+		> div {
+			flex-direction: column;
+			width: 100%;
+			img {
+				margin: 0;
+				margin-bottom: 0.5rem;
+				width: 100%;
+				height: 10rem;
+			}
+
+			&.buttons {
+				span {
+					margin: 1rem 0;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 300px) {
+		> div.buttons {
+			> div {
+				flex-direction: column;
+				button {
+					margin: 0.5rem 0 !important;
+				}
+			}
+		}
 	}
 `;
