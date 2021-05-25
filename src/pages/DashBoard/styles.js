@@ -47,4 +47,15 @@ export default styled.main`
 	@media (max-width: 800px) {
 		padding: 2rem;
 	}
+
+	@media (max-width: 500px) {
+		.header {
+			p {
+				font-size: 1rem;
+			}
+			h2 {
+				font-size: 2rem;
+			}
+		}
+	}
 `;

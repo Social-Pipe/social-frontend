@@ -106,28 +106,50 @@ export default styled.main`
 	}
 
 	@media (max-width: 800px) {
-		.container .content {
-			form {
-				min-width: 12.5rem;
-				max-width: 100%;
-				margin-right: 0;
-				margin-bottom: 3rem;
+		span {
+			font-size: 0.8rem;
+		}
+		.container {
+			.header {
+				p {
+				}
+				h2 {
+					font-size: 1.67rem;
+				}
 			}
-			flex-direction: column;
+			.content {
+				h3 {
+					font-size: 1.15rem;
+				}
+				form {
+					min-width: 12.5rem;
+					max-width: 100%;
+					margin-right: 0;
+					margin-bottom: 3rem;
+				}
+				flex-direction: column;
+			}
 		}
 	}
 
 	@media (max-width: 500px) {
 		padding: 2rem;
-		.container .info .container_buttons {
-			flex-direction: column;
+		.container {
+			.header {
+				h2 {
+					font-size: 1.37rem;
+				}
+			}
+			.content .container_buttons {
+				flex-direction: column;
 
-			button {
-				max-width: 100%;
+				button {
+					max-width: 100%;
 
-				.edit {
-					margin: 0;
-					margin-bottom: 1rem;
+					.edit {
+						margin: 0;
+						margin-bottom: 1rem;
+					}
 				}
 			}
 		}
