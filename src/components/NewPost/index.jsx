@@ -12,7 +12,7 @@ const NewPost = ({ saveClient }) => (
 			<IoMdClose size={24} color="#fff" />
 		</button>
 		<div className="header_container">
-			<h3>Novo post</h3>
+			<input value="Novo post" />
 		</div>
 		<form>
 			<div className="photo_container">

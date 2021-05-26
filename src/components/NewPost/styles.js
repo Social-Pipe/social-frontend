@@ -7,6 +7,7 @@ export default styled.div`
 	height: 100%;
 	position: relative;
 
+	overflow: auto;
 	max-width: 54.3rem;
 	max-height: 34.75rem;
 
@@ -28,9 +29,11 @@ export default styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		h3 {
+		input {
 			font-size: 2.44rem;
-
+			border: none;
+			width: 100%;
+			font-weight: bold;
 			color: #3c3f4f;
 		}
 		button {
@@ -42,7 +45,6 @@ export default styled.div`
 		display: flex;
 		flex: 1;
 		flex-direction: column;
-
 		display: flex;
 		margin: 0 2rem;
 		padding-top: 2.5rem;
@@ -97,7 +99,7 @@ export default styled.div`
 			}
 
 			> button {
-				width: 15.5rem;
+				max-width: 15.5rem;
 			}
 		}
 		.inputs_container {
@@ -264,6 +266,76 @@ export default styled.div`
 			}
 			button {
 				max-width: 15.5rem;
+			}
+		}
+	}
+
+	@media (max-width: 900px) {
+		max-width: 36rem;
+
+		.header_container {
+			input {
+				font-size: 1.44rem;
+			}
+		}
+
+		form {
+			padding: 2rem 0;
+
+			.photo_container {
+				flex-direction: column-reverse;
+
+				.social_redes {
+					margin-top: 2rem;
+				}
+			}
+			.inputs_container {
+				flex-direction: column;
+
+				.creating {
+					> div {
+						justify-content: flex-start;
+
+						> svg:nth-child(2) {
+							margin: 0 1rem;
+						}
+					}
+				}
+
+				> div,
+				.date {
+					padding: 0;
+				}
+
+				.date {
+					margin: 1rem 0;
+				}
+			}
+			.text textarea {
+				min-height: 10rem;
+			}
+		}
+	}
+	@media (max-width: 600px) {
+		max-width: 20rem;
+		max-height: 80vh;
+		margin: 0 3rem;
+
+		form {
+			.photo_container {
+				.social_redes {
+					> div {
+						justify-content: space-between;
+					}
+				}
+			}
+
+			.inputs_container {
+				.creating {
+					> div {
+						justify-content: space-between;
+					}
+				}
 			}
 		}
 	}

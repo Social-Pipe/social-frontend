@@ -165,4 +165,46 @@ export default styled.div`
 			}
 		}
 	}
+
+	@media (max-width: 900px) {
+		max-width: 36rem;
+	}
+
+	@media (max-width: 600px) {
+		max-width: 20rem;
+		max-height: 80vh;
+		margin: 0 3rem;
+
+		form {
+			overflow: auto;
+
+			> div {
+				display: flex;
+				:first-child {
+					flex-direction: column;
+					align-items: center;
+					padding-left: 0;
+					padding-right: 0;
+					margin-bottom: 1.9rem;
+
+					.photo_container {
+						margin-bottom: 1.9rem;
+					}
+
+					.inputs_container {
+						margin-left: 0;
+					}
+				}
+
+				&.footer {
+					padding: 2rem;
+					flex-direction: column;
+					p {
+						margin-bottom: 1rem;
+						font-size: 1rem;
+					}
+				}
+			}
+		}
+	}
 `;
