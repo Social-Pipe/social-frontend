@@ -31,6 +31,7 @@ const ForgetPassword = ({ onPressButtonAfter }) => {
 				<fieldset>
 					<label htmlFor="email">Email</label>
 					<input
+						placeholder="usuário@teste.com"
 						type="text"
 						id="email"
 						name="email"

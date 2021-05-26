@@ -343,9 +343,11 @@ export const Info = styled.div`
 		margin-top: auto;
 		align-self: center;
 
-		button {
+		button,
+		a {
 			display: flex;
 			align-items: center;
+			text-decoration: none;
 			justify-content: center;
 			padding: 1rem;
 			font-size: 0.81rem;

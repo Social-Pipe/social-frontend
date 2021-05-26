@@ -122,7 +122,9 @@ export const FieldSet = styled.fieldset`
 	width: 100%;
 	margin-bottom: 1.87rem;
 	max-width: 28.56rem;
-
+	.cardName {
+		text-transform: uppercase;
+	}
 	label {
 		color: #5d5d5d;
 		font-size: 0.75rem;
@@ -160,8 +162,11 @@ export const FieldSet = styled.fieldset`
 			margin: 0;
 			padding-left: 1.5rem;
 			width: 100%;
+			color: #5d5d5d;
 			height: 100%;
+			font-size: 1rem;
 			border: none;
+			font-weight: 500;
 			outline: none;
 		}
 	}

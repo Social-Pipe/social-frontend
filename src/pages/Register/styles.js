@@ -196,6 +196,10 @@ export const FormContainer = styled.div`
 		flex-direction: column;
 		border: none;
 
+		.cardName {
+			text-transform: uppercase;
+		}
+
 		:not(:first-child) {
 			margin-top: 1.9rem;
 		}

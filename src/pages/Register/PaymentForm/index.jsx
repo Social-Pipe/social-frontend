@@ -35,6 +35,7 @@ const PaymentForm = ({ formik }) => {
 						<input
 							id="Cep"
 							name="cep"
+							placeholder="21020-020"
 							onChange={e =>
 								maskCep(e.target.value, newValue =>
 									formik.setFieldValue('cep', newValue)
@@ -47,6 +48,7 @@ const PaymentForm = ({ formik }) => {
 					<fieldset>
 						<label htmlFor="Adress">Endereço</label>
 						<input
+							placeholder="Avenida Alameda"
 							id="Adress"
 							name="adress"
 							onChange={formik.handleChange}
@@ -108,6 +110,7 @@ const PaymentForm = ({ formik }) => {
 								<input
 									id="DDD"
 									name="ddd"
+									placeholder="12"
 									maxLength={2}
 									autoComplete="tel-area-code"
 									onChange={handleDDD}
@@ -117,6 +120,7 @@ const PaymentForm = ({ formik }) => {
 							<fieldset>
 								<label htmlFor="phone2">Número de celular</label>
 								<input
+									placeholder="00000-0000"
 									id="phone2"
 									autoComplete="tel-local"
 									name="phoneContact"
@@ -138,6 +142,7 @@ const PaymentForm = ({ formik }) => {
 						<fieldset>
 							<label htmlFor="cpf">CPF</label>
 							<input
+								placeholder="xxx.xxx-xxx-xx"
 								id="cpf"
 								name="cpf"
 								value={formik.values.cpf}
@@ -153,6 +158,7 @@ const PaymentForm = ({ formik }) => {
 							<div className="card">
 								<input
 									type="text"
+									placeholder="0000 0000 0000 0000"
 									id="cardNumber"
 									name="cardNumber"
 									autoComplete="cc-number"
@@ -172,6 +178,9 @@ const PaymentForm = ({ formik }) => {
 							<input
 								autoComplete="cc-name"
 								id="cardName"
+								placeholder="EX: TITO LIMA"
+								autoCapitalize
+								className="cardName"
 								name="cardName"
 								onChange={formik.handleChange}
 								value={formik.values.cardName}
@@ -180,6 +189,7 @@ const PaymentForm = ({ formik }) => {
 						<fieldset>
 							<label htmlFor="vality">Validade</label>
 							<input
+								placeholder="Ex: 11/23"
 								id="vality"
 								name="vality"
 								onChange={e => {
@@ -194,6 +204,7 @@ const PaymentForm = ({ formik }) => {
 							<label htmlFor="cardCode">Código de segurança</label>
 							<div className="card">
 								<input
+									placeholder="123"
 									type="text"
 									id="cardCode"
 									name="cardCode"

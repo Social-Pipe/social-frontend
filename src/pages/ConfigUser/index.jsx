@@ -67,6 +67,7 @@ const ConfigUser = () => {
 								<FieldSet>
 									<label htmlFor="Name">Nome</label>
 									<input
+										placeholder="Usuário Teste"
 										type="text"
 										id="Name"
 										name="name"
@@ -78,6 +79,7 @@ const ConfigUser = () => {
 								<FieldSet>
 									<label htmlFor="email">Email</label>
 									<input
+										placeholder="usuário@teste.com"
 										type="email"
 										id="email"
 										name="email"
@@ -90,6 +92,7 @@ const ConfigUser = () => {
 								<FieldSet>
 									<label htmlFor="phone">Celular</label>
 									<input
+										placeholder="(12) 00000-0000"
 										autoComplete="tel-national"
 										type="tel"
 										id="phone"
@@ -106,6 +109,7 @@ const ConfigUser = () => {
 									<label htmlFor="cpf">CPF</label>
 									<input
 										id="cpf"
+										placeholder="xxx.xxx-xxx-xx"
 										name="cpf"
 										onChange={e =>
 											maskCpf(e.target.value, newValue =>
@@ -120,6 +124,7 @@ const ConfigUser = () => {
 									<input
 										type="password"
 										id="password"
+										placeholder="**********"
 										name="password"
 										autoComplete="current-password"
 										onChange={formik.handleChange}
@@ -132,6 +137,7 @@ const ConfigUser = () => {
 								<FieldSet>
 									<label htmlFor="Cep">Cep</label>
 									<input
+										placeholder="21020-020"
 										id="Cep"
 										name="cep"
 										onChange={e =>
@@ -146,6 +152,7 @@ const ConfigUser = () => {
 								<FieldSet>
 									<label htmlFor="Adress">Endereço</label>
 									<input
+										placeholder="Avenida Alameda"
 										id="Adress"
 										name="adress"
 										onChange={formik.handleChange}
@@ -208,6 +215,7 @@ const ConfigUser = () => {
 									<FieldSet>
 										<label htmlFor="DDD">DDD</label>
 										<input
+											placeholder="12"
 											id="DDD"
 											name="ddd"
 											maxLength={2}
@@ -222,6 +230,7 @@ const ConfigUser = () => {
 											id="phone2"
 											autoComplete="tel-national"
 											name="phoneContact"
+											placeholder="00000-0000"
 											onChange={e =>
 												maskPhone(e.target.value, newValue =>
 													formik.setFieldValue('phoneContact', newValue)
@@ -265,9 +274,9 @@ const ConfigUser = () => {
 							</div>
 						</div>
 						<div className="container_buttons">
-							<button type="button" className="edit">
+							<Link to="configPayment" className="edit">
 								Alterar informação de pagamento
-							</button>
+							</Link>
 							<button type="button" className="desactive">
 								Desativar conta
 							</button>

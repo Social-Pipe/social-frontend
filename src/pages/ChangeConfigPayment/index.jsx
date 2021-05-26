@@ -44,6 +44,7 @@ const ChangeConfigPayment = () => {
 							<div className="card">
 								<input
 									type="text"
+									placeholder="0000 0000 0000 0000"
 									id="cardNumber"
 									name="cardNumber"
 									autoComplete="cc-number"
@@ -62,7 +63,10 @@ const ChangeConfigPayment = () => {
 							<input
 								type="name"
 								id="name"
+								className="cardName"
 								name="name"
+								autoCapitalize
+								placeholder="EX: TITO LIMA"
 								autoComplete="name"
 								onChange={formik.handleChange}
 								value={formik.values.name}
@@ -72,10 +76,9 @@ const ChangeConfigPayment = () => {
 						<FieldSet>
 							<label htmlFor="vality">Validade</label>
 							<input
-								autoComplete="tel-national"
-								type="tel"
 								id="vality"
 								name="vality"
+								placeholder="Ex: 11/23"
 								value={formik.values.vality}
 								onChange={e =>
 									maskDate(e.target.value, newValue =>
@@ -91,6 +94,7 @@ const ChangeConfigPayment = () => {
 									type="text"
 									id="cardCode"
 									name="codeCard"
+									placeholder="123"
 									autoComplete="cc-csc"
 									onBlur={formik.handleBlur}
 									value={formik.values.codeCard}

@@ -20,7 +20,7 @@ const DashBoard = () => {
 			</div>
 			<div className="content">
 				<Card />
-				<Card text="Coca Cola" />
+				<Card text="Coca Cola" id={1} />
 				<Card text="Coca Cola" />
 				<Card text="Coca Cola" />
 				<Card text="Coca Cola" />
