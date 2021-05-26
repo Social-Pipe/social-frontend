@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { HiMenu } from 'react-icons/hi';
+import { useLocation } from 'react-router-dom';
 
 import Container from './styles';
 
@@ -7,11 +8,23 @@ import logo from '../../assets/images/logo.png';
 import { Context } from '../../services/context';
 
 const Header = () => {
-	const { toggleOpenMenu, menuOpen, smart } = useContext(Context);
+	const { toggleOpenMenu, smart } = useContext(Context);
+	const [exitMenuRoute, setExistMenuRoute] = useState(true);
+	const route = useLocation();
+
+	useEffect(() => {
+		const routesWithMenu = ['product', 'dashboard'];
+		const array = route.pathname.split('/');
+		const routes =
+			array[array.length - 1] !== ''
+				? array[array.length - 1]
+				: array[array.length - 2];
+		setExistMenuRoute(routesWithMenu.includes(routes));
+	}, [route.pathname]);
 	return (
 		<Container>
 			<div>
-				{smart && (
+				{smart && exitMenuRoute && (
 					<button type="button" onClick={toggleOpenMenu}>
 						<HiMenu color="#fff" size={36} />
 					</button>
