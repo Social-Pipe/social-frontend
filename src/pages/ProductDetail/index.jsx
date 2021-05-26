@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
-import Container from './styles';
+import Container, { Feed } from './styles';
 
 import logoTest from '../../assets/images/Coca.png';
 import logoTproductTestest from '../../assets/images/productTest.png';
@@ -25,27 +25,29 @@ const ProductDetail = () => {
 				</div>
 				<div className="social_redes">
 					<p>Selecione a rede social ao lado</p>
-					<button
-						type="button"
-						onClick={() => setFilter('facebook')}
-						className={`facebook ${filter === 'facebook' ? 'active' : ''}`}
-					>
-						<FaFacebookF size={24} color="#fff" />
-					</button>
-					<button
-						type="button"
-						onClick={() => setFilter('instagram')}
-						className={`instagram ${filter === 'instagram' ? 'active' : ''}`}
-					>
-						<FaInstagram size={24} color="#fff" />
-					</button>
-					<button
-						type="button"
-						onClick={() => setFilter('linkedin')}
-						className={`linkedin ${filter === 'linkedin' ? 'active' : ''}`}
-					>
-						<FaLinkedinIn size={24} color="#fff" />
-					</button>
+					<div>
+						<button
+							type="button"
+							onClick={() => setFilter('facebook')}
+							className={`facebook ${filter === 'facebook' ? 'active' : ''}`}
+						>
+							<FaFacebookF size={24} color="#fff" />
+						</button>
+						<button
+							type="button"
+							onClick={() => setFilter('instagram')}
+							className={`instagram ${filter === 'instagram' ? 'active' : ''}`}
+						>
+							<FaInstagram size={24} color="#fff" />
+						</button>
+						<button
+							type="button"
+							onClick={() => setFilter('linkedin')}
+							className={`linkedin ${filter === 'linkedin' ? 'active' : ''}`}
+						>
+							<FaLinkedinIn size={24} color="#fff" />
+						</button>
+					</div>
 				</div>
 			</div>
 			<div className="content">
@@ -64,12 +66,28 @@ const ProductDetail = () => {
 					</ul>
 				</div>
 				{page === 0 ? (
-					<div className="feed">
+					<Feed>
 						<div>
 							<img src={logoTproductTestest} alt="produto" />
 							<span>Reprovado</span>
 						</div>
-					</div>
+						<div>
+							<img src={logoTproductTestest} alt="produto" />
+							<span>Reprovado</span>
+						</div>
+						<div>
+							<img src={logoTproductTestest} alt="produto" />
+							<span>Reprovado</span>
+						</div>
+						<div>
+							<img src={logoTproductTestest} alt="produto" />
+							<span>Reprovado</span>
+						</div>
+						<div>
+							<img src={logoTproductTestest} alt="produto" />
+							<span>Reprovado</span>
+						</div>
+					</Feed>
 				) : (
 					<div className="products">
 						<Row buttons={false} />

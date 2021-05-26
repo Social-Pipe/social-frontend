@@ -13,7 +13,6 @@ import ProductDetail from '../../pages/ProductDetail';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	console.log(route);
 	return (
 		<ContainerDashBoard>
 			<Header />
