@@ -30,8 +30,8 @@ export default styled(Link)`
 	margin-bottom: 1.87rem;
 	margin-right: 1.87rem;
 
-	${({ existProduct }) =>
-		!existProduct &&
+	${({ existproduct }) =>
+		!existproduct &&
 		css`
 			background-color: #facd53;
 			box-shadow: 0 3px 50px rgba(252, 218, 123, 0.48);
