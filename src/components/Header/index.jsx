@@ -22,7 +22,7 @@ const Header = () => {
 		setExistMenuRoute(routesWithMenu.includes(routes));
 	}, [route.pathname]);
 	return (
-		<Container>
+		<Container smart={smart && exitMenuRoute}>
 			<div>
 				{smart && exitMenuRoute && (
 					<button type="button" onClick={toggleOpenMenu}>

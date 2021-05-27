@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default styled.header`
 	display: flex;
@@ -7,6 +7,12 @@ export default styled.header`
 	width: 100%;
 	height: 3.75rem;
 	background: #ee4266;
+
+	${({ smart }) =>
+		smart &&
+		css`
+			padding-left: 1rem;
+		`}
 
 	> div {
 		display: flex;
