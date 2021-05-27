@@ -157,10 +157,21 @@ export default styled.div`
 
 		.rating {
 			flex-direction: column;
+			> {
+				padding: 1rem;
+			}
 		}
 	}
 
-	/* @media (max-height: 800px) {
-		max-height: 30rem;
-	} */
+	@media (max-width: 400px) {
+		form .buttons {
+			flex-direction: column;
+			align-items: center;
+
+			button {
+				margin-right: 0 !important;
+				margin-bottom: 1rem;
+			}
+		}
+	}
 `;

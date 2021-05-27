@@ -115,4 +115,8 @@ export default styled.aside`
 				transform: translateX(0%);
 			`}
 	}
+
+	@media (max-width: 400px) {
+		width: 100vw;
+	}
 `;
