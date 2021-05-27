@@ -7,19 +7,25 @@ export default styled.div`
 	position: relative;
 
 	max-width: 73.37rem;
-	max-height: 43.5rem;
 	position: relative;
-	> div {
-		overflow: auto;
+	.rating {
 		display: flex;
+		max-height: 43.5rem;
 		width: 100%;
 		background-color: #fff;
 
 		> div {
+			flex: 1;
 			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			padding: 2.5rem 3rem;
+
+			&.image {
+				flex: 3;
+				padding: 0;
+				overflow: hidden;
+			}
 		}
 	}
 
@@ -35,6 +41,7 @@ export default styled.div`
 	img {
 		object-fit: cover;
 		width: 100%;
+		height: 100%;
 	}
 
 	.close_button {
@@ -49,12 +56,6 @@ export default styled.div`
 		font-size: 1.5rem;
 
 		color: #3c3f4f;
-	}
-
-	.image {
-		flex: 5;
-		padding: 0;
-		overflow: hidden;
 	}
 
 	form {
@@ -105,6 +106,7 @@ export default styled.div`
 		margin: 2rem 0;
 		padding-top: 2rem;
 		min-height: 8.2rem;
+		max-height: 30rem;
 		overflow: auto;
 		border-top: 1px solid #e5e5e5;
 	}
@@ -133,7 +135,32 @@ export default styled.div`
 		}
 	}
 
-	@media (max-height: 800px) {
-		max-height: 30rem;
+	@media (max-width: 1400px) {
+		max-height: 90vh;
 	}
+
+	@media (max-width: 1200px) {
+		max-width: 55rem;
+		.image {
+			flex: 2;
+		}
+	}
+	@media (max-width: 900px) {
+		max-width: 35rem;
+		margin: 2rem;
+		margin-top: 3rem;
+		height: 90vh;
+		.image {
+			flex: 2;
+			max-height: 15rem;
+		}
+
+		.rating {
+			flex-direction: column;
+		}
+	}
+
+	/* @media (max-height: 800px) {
+		max-height: 30rem;
+	} */
 `;

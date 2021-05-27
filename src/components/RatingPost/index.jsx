@@ -10,7 +10,7 @@ import Comment from '../Comment';
 
 const RatingPost = ({ saveClient }) => (
 	<Container>
-		<div>
+		<div className="rating">
 			<button type="button" className="close_button" onClick={saveClient}>
 				<IoMdClose size={24} color="#fff" />
 			</button>

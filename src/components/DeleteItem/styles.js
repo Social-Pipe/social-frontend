@@ -14,6 +14,7 @@ export default styled.div`
 		display: flex;
 
 		button {
+			min-height: 3rem;
 			flex: 1;
 
 			:last-child {
@@ -25,6 +26,25 @@ export default styled.div`
 				border: none;
 				margin-left: 1rem;
 				cursor: pointer;
+			}
+		}
+	}
+
+	@media (max-width: 800px) {
+		p {
+			font-size: 1.5rem;
+		}
+	}
+
+	@media (max-width: 500px) {
+		padding: 2rem;
+		margin: 2rem;
+		> div {
+			flex-direction: column;
+
+			button:last-child {
+				margin-top: 1rem;
+				margin-left: 0;
 			}
 		}
 	}

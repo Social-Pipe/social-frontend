@@ -12,7 +12,9 @@ const EditPost = ({ saveClient }) => (
 		<button type="button" className="close_button" onClick={saveClient}>
 			<IoMdClose size={24} color="#fff" />
 		</button>
-		<img src={productTest} alt="produto" />
+		<div className="image">
+			<img src={productTest} alt="produto" />
+		</div>
 		<div>
 			<div className="header_container">
 				<h3>Editar Post</h3>

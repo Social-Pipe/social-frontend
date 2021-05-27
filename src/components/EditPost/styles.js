@@ -5,7 +5,7 @@ export default styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
-
+	overflow: auto;
 	max-width: 73.37rem;
 	max-height: 43.5rem;
 
@@ -42,8 +42,15 @@ export default styled.div`
 		}
 	}
 
-	img {
+	.image {
 		flex: 4;
+		padding: 0;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
 	}
 
 	form {
@@ -282,7 +289,43 @@ export default styled.div`
 		}
 	}
 
-	@media (max-height: 800px) {
-		max-height: 35rem;
+	@media (max-width: 1300px) {
+		max-width: 55rem;
+
+		.image {
+			flex: 2.5;
+		}
+	}
+	@media (max-width: 900px) {
+		max-width: 40rem;
+		flex-direction: column;
+		max-height: 90vh;
+		margin: 0 3rem;
+
+		.image {
+			flex: 2.5;
+		}
+	}
+
+	@media (max-width: 600px) {
+		form {
+			.inputs_container {
+				flex-direction: column;
+
+				.creating {
+					margin-bottom: 1rem;
+				}
+			}
+
+			.photo_container {
+				flex-direction: column;
+				align-items: flex-start;
+				.select {
+					margin: 0;
+					margin-top: 1rem;
+					width: 100%;
+				}
+			}
+		}
 	}
 `;
