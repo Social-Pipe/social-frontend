@@ -4,11 +4,14 @@ export const Context = createContext({
 	menuOpen: true,
 	toggleOpenMenu() {},
 	smart: true,
+	showPopUp: false,
+	showSucessPopUp() {},
 });
 
 const ContextProvider = ({ children }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [smart, setSmart] = useState(false);
+	const [showPopUp, setShowPopUp] = useState(false);
 
 	const verifyWidthAndSetNumberSlides = useCallback(width => {
 		if (width <= 800) {
@@ -34,8 +37,16 @@ const ContextProvider = ({ children }) => {
 		setMenuOpen(props => !props);
 	}
 
+	function showSucessPopUp() {
+		setShowPopUp(true);
+
+		setTimeout(() => setShowPopUp(false), 1000);
+	}
+
 	return (
-		<Context.Provider value={{ menuOpen, toggleOpenMenu, smart }}>
+		<Context.Provider
+			value={{ menuOpen, toggleOpenMenu, smart, showPopUp, showSucessPopUp }}
+		>
 			{children}
 		</Context.Provider>
 	);
