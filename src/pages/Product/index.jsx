@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 import Container, { Header } from './styles';
 
@@ -66,9 +67,9 @@ const Product = () => {
 						<button type="button">copiar link</button>
 					</div>
 				</div>
-				<button type="button">
+				<Link to="config">
 					<BsFillGearFill size={24} color="#fff" />
-				</button>
+				</Link>
 			</Header>
 			<div className="content">
 				<div className="container_buttons">

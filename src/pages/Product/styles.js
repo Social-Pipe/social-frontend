@@ -152,7 +152,10 @@ export const Header = styled.div`
 			}
 		}
 	}
-	> button {
+	> a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		grid-area: button;
 		min-width: 4rem;
 		max-width: 4rem;
