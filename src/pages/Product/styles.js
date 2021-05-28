@@ -22,6 +22,7 @@ export default styled.main`
 
 			.secondary {
 				width: auto;
+				text-decoration: none;
 				background: none;
 				border: none;
 				font-weight: 500;

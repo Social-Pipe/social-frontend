@@ -5,7 +5,7 @@ import Container from './styles';
 import imageTest from '../../assets/images/Coca.png';
 
 const Card = ({ text, id }) => (
-	<Container to={`dashboard/:${id}/detail`} existproduct={text}>
+	<Container to="dashboard/product" existproduct={text}>
 		{text ? (
 			<>
 				<img src={imageTest} alt="logo" />
