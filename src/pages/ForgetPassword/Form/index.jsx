@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Container from './styles';
@@ -50,6 +51,10 @@ const ForgetPassword = ({ onPressButtonAfter }) => {
 			</form>
 		</Container>
 	);
+};
+
+ForgetPassword.propTypes = {
+	onPressButtonAfter: PropTypes.func.isRequired,
 };
 
 export default ForgetPassword;

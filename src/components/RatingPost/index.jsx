@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { BsX } from 'react-icons/bs';
 import { ImCheckmark } from 'react-icons/im';
 import { IoMdClose } from 'react-icons/io';
@@ -60,5 +61,9 @@ const RatingPost = ({ saveClient }) => (
 		</p>
 	</Container>
 );
+
+RatingPost.propTypes = {
+	saveClient: PropTypes.func.isRequired,
+};
 
 export default RatingPost;

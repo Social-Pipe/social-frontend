@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 
@@ -6,7 +7,7 @@ import Container from './styles';
 import Button from '../Button';
 import PhotoContainer from '../PhotoContainer';
 
-const NewClient = ({ saveClient, editClient = false, handleClose }) => (
+const NewClient = ({ saveClient, editClient, handleClose }) => (
 	<Container>
 		<button type="button" className="close_button" onClick={handleClose}>
 			<IoMdClose size={24} color="#fff" />
@@ -103,5 +104,15 @@ const NewClient = ({ saveClient, editClient = false, handleClose }) => (
 		</form>
 	</Container>
 );
+
+NewClient.propTypes = {
+	saveClient: PropTypes.func.isRequired,
+	editClient: PropTypes.bool,
+	handleClose: PropTypes.func.isRequired,
+};
+
+NewClient.defaultProps = {
+	editClient: false,
+};
 
 export default NewClient;

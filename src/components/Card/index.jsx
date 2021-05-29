@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { HiPlusSm } from 'react-icons/hi';
 
 import Container from './styles';
@@ -19,5 +20,15 @@ const Card = ({ text, id }) => (
 		)}
 	</Container>
 );
+
+Card.propTypes = {
+	text: PropTypes.string,
+	id: PropTypes.number,
+};
+
+Card.defaultProps = {
+	text: '',
+	id: -1,
+};
 
 export default Card;

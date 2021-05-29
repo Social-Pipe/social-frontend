@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import Container from './styles';
@@ -234,6 +235,10 @@ const PaymentForm = ({ formik }) => {
 			</div>
 		</Container>
 	);
+};
+
+PaymentForm.propTypes = {
+	formik: PropTypes.object.isRequired,
 };
 
 export default PaymentForm;

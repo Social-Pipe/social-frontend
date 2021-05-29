@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { BsX } from 'react-icons/bs';
 import { TiPencil } from 'react-icons/ti';
 
@@ -6,13 +7,7 @@ import Container from './styles';
 import likeIcon from '../../assets/icons/likeIcon.svg';
 import productTest from '../../assets/images/productTest.png';
 
-const Row = ({
-	buttons = true,
-	hdResponsive,
-	deleteItem,
-	editItem,
-	ratingItem,
-}) => (
+const Row = ({ buttons, hdResponsive, deleteItem, editItem, ratingItem }) => (
 	<Container hdResponsive={hdResponsive}>
 		<div>
 			<img src={productTest} alt="produto" />
@@ -37,4 +32,15 @@ const Row = ({
 	</Container>
 );
 
+Row.propTypes = {
+	buttons: PropTypes.bool,
+	hdResponsive: PropTypes.bool.isRequired,
+	editItem: PropTypes.func.isRequired,
+	deleteItem: PropTypes.func.isRequired,
+	ratingItem: PropTypes.func.isRequired,
+};
+
+Row.defaultProps = {
+	buttons: true,
+};
 export default Row;

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Container from './styles';
 
 import Button from '../../../components/Button';
@@ -89,4 +91,10 @@ const InfosForm = ({ onPressButton, formik }) => (
 		</FormContainer>
 	</Container>
 );
+
+InfosForm.propTypes = {
+	onPressButton: PropTypes.func.isRequired,
+	formik: PropTypes.object.isRequired,
+};
+
 export default InfosForm;

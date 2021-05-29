@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Container from './styles';
 
 import Button from '../Button';
@@ -15,5 +17,10 @@ const DeleteItem = ({ handleDeleteItem, handleNotDeleteItem }) => (
 		</div>
 	</Container>
 );
+
+DeleteItem.propTypes = {
+	handleDeleteItem: PropTypes.func.isRequired,
+	handleNotDeleteItem: PropTypes.func.isRequired,
+};
 
 export default DeleteItem;

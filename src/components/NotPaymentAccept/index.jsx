@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 
 import Container from './styles';
@@ -11,5 +12,9 @@ const NotPaymentAccept = ({ handleButton }) => (
 		<Button onClick={handleButton}>Ir para pagamentos</Button>
 	</Container>
 );
+
+NotPaymentAccept.propTypes = {
+	handleButton: PropTypes.func.isRequired,
+};
 
 export default NotPaymentAccept;

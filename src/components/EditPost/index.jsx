@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
@@ -472,5 +473,9 @@ const EditPost = ({ saveClient }) => (
 		</div>
 	</Container>
 );
+
+EditPost.propTypes = {
+	saveClient: PropTypes.func.isRequired,
+};
 
 export default EditPost;

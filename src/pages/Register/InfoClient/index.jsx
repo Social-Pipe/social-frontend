@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 import Container from './styles';
@@ -79,5 +80,10 @@ const InfoClient = ({ onPressButton, formik }) => (
 		</FormContainer>
 	</Container>
 );
+
+InfoClient.propTypes = {
+	onPressButton: PropTypes.func.isRequired,
+	formik: PropTypes.object.isRequired,
+};
 
 export default InfoClient;

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Container from './styles';
 
 import Button from '../Button';
@@ -13,5 +15,9 @@ const Authenticate = ({ handleButton }) => (
 		<Button onClick={handleButton}>Autenticar</Button>
 	</Container>
 );
+
+Authenticate.propTypes = {
+	handleButton: PropTypes.func.isRequired,
+};
 
 export default Authenticate;
