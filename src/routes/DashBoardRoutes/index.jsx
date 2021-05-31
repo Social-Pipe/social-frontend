@@ -4,7 +4,6 @@ import ContainerDashBoard, { ContainerProduct } from './styles';
 
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
-import SucessPopUp from '../../components/SucessPopUp';
 import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
 import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
@@ -16,7 +15,6 @@ const DashBoardRoutes = () => {
 	const route = useRouteMatch();
 	return (
 		<ContainerDashBoard>
-			<SucessPopUp />
 			<Header />
 			<Switch>
 				<Route exact path={`${route.path}/config`} component={ConfigUser} />

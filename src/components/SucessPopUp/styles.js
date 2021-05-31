@@ -5,7 +5,6 @@ export default styled.span`
 	align-items: center;
 	padding-left: 3rem;
 	width: 100%;
-	background: #30a22c;
 	max-width: 32.13rem;
 	height: 4.69rem;
 	border-radius: 8px;
@@ -21,6 +20,23 @@ export default styled.span`
 		css`
 			transform: translateX(110%);
 		`}
+
+	${({ type }) => {
+		switch (type) {
+			case 'sucess':
+				return css`
+					background: #30a22c;
+				`;
+			case 'error':
+				return css`
+					background: #fe6969;
+				`;
+			default:
+				return css`
+					background: #30a22c;
+				`;
+		}
+	}}
 
 	p {
 		color: #fff;
