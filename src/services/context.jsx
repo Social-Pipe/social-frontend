@@ -4,14 +4,22 @@ export const Context = createContext({
 	menuOpen: true,
 	toggleOpenMenu() {},
 	smart: true,
-	showPopUp: false,
+	showPopUp: {
+		show: false,
+		type: 'sucess',
+		text: 'Alterações salvas com sucesso!',
+	},
 	showSucessPopUp() {},
+	token: '',
+	login() {},
+	signOut() {},
 });
 
 const ContextProvider = ({ children }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [smart, setSmart] = useState(false);
 	const [showPopUp, setShowPopUp] = useState(false);
+	const [token, setToken] = useState('');
 
 	const verifyWidthAndSetNumberSlides = useCallback(width => {
 		if (width <= 800) {
@@ -37,15 +45,43 @@ const ContextProvider = ({ children }) => {
 		setMenuOpen(props => !props);
 	}
 
-	function showSucessPopUp() {
-		setShowPopUp(true);
+	function showSucessPopUp(type, text) {
+		setShowPopUp({
+			show: true,
+			type,
+			text,
+		});
 
-		setTimeout(() => setShowPopUp(false), 1000);
+		setTimeout(
+			() =>
+				setShowPopUp(props => ({
+					...props,
+					show: false,
+				})),
+			1500
+		);
+	}
+
+	function login(newToken) {
+		setToken(newToken);
+	}
+
+	function signOut() {
+		setToken('');
 	}
 
 	return (
 		<Context.Provider
-			value={{ menuOpen, toggleOpenMenu, smart, showPopUp, showSucessPopUp }}
+			value={{
+				menuOpen,
+				toggleOpenMenu,
+				smart,
+				showPopUp,
+				showSucessPopUp,
+				token,
+				login,
+				signOut,
+			}}
 		>
 			{children}
 		</Context.Provider>
