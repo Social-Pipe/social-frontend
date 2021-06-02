@@ -1,22 +1,32 @@
-import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { BiPlusMedical } from 'react-icons/bi';
 
 import Container from './styles';
 
-function MyDropzone() {
+function MyDropzone({ handleChange, value }) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState('');
 	const onDrop = useCallback(acceptedFiles => {
 		const file = acceptedFiles[0];
 
 		if (!file) {
-			// setFileReject(true);
 			return;
 		}
 		const fileUrl = URL.createObjectURL(file);
 		setSelectedFileUrl(fileUrl);
+		handleChange(file);
 	}, []);
 	const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+	useEffect(() => {
+		if (!value) {
+			return;
+		}
+		console.log(value);
+		const fileUrl = URL.createObjectURL(value);
+		setSelectedFileUrl(fileUrl);
+	}, []);
 
 	return (
 		<Container {...getRootProps()}>
@@ -31,5 +41,9 @@ function MyDropzone() {
 		</Container>
 	);
 }
+
+MyDropzone.propTypes = {
+	handleChange: PropTypes.func.isRequired,
+};
 
 export default MyDropzone;

@@ -1,6 +1,18 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+const rotate = keyframes`
+	from{
+		transform:rotateZ(0)
+	}
+	to{
+		transform:rotateZ(360deg)
+	}
+`;
 
 export default styled.button`
+	.loading {
+		animation: ${rotate} 2s infinite;
+	}
 	height: 3rem;
 	width: 100%;
 	text-align: center;
