@@ -43,7 +43,7 @@ const initialValues = {
 const Register = () => {
 	const [page, setPage] = useState(0);
 	const [loading, setLoading] = useState(false);
-	const { login, handleShowPopUp } = useContext(Context);
+	const { handleShowPopUp } = useContext(Context);
 
 	const formik = useFormik({
 		initialValues,
@@ -92,7 +92,6 @@ const Register = () => {
 					email: values.email,
 					password: values.password,
 				});
-				login(responseLogin.data.access, responseLogin.data.refresh);
 				const formClient = new FormData();
 				formClient.append('logo', values.logo);
 				formClient.append('name', values.companyName);
