@@ -12,7 +12,7 @@ export const Context = createContext({
 		type: 'sucess',
 		text: 'Alterações salvas com sucesso!',
 	},
-	showSucessPopUp() {},
+	handleShowPopUp() {},
 	token: {
 		acessToken: '',
 		refreshToken: '',
@@ -95,7 +95,7 @@ const ContextProvider = ({ children }) => {
 		setMenuOpen(props => !props);
 	}
 
-	function showSucessPopUp(type, text) {
+	function handleShowPopUp(type, text) {
 		setShowPopUp({
 			show: true,
 			type,
@@ -128,7 +128,7 @@ const ContextProvider = ({ children }) => {
 				toggleOpenMenu,
 				smart,
 				showPopUp,
-				showSucessPopUp,
+				handleShowPopUp,
 				token,
 				login,
 				signOut,

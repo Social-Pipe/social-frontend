@@ -15,7 +15,7 @@ const initialValues = {
 };
 
 const Login = () => {
-	const { login, showSucessPopUp } = useContext(Context);
+	const { login, handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 	const formik = useFormik({
@@ -28,10 +28,10 @@ const Login = () => {
 					email: values.email,
 					password: values.password,
 				});
-				login(data.acess, data.refresh);
+				login(data.access, data.refresh);
 				history.replace('/dashboard');
 			} catch (e) {
-				showSucessPopUp('error', 'Erro no login');
+				handleShowPopUp('error', 'Erro no login');
 			} finally {
 				setLoading(false);
 			}

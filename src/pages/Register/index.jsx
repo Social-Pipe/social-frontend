@@ -43,7 +43,7 @@ const initialValues = {
 const Register = () => {
 	const [page, setPage] = useState(0);
 	const [loading, setLoading] = useState(false);
-	const { login, showSucessPopUp } = useContext(Context);
+	const { login, handleShowPopUp } = useContext(Context);
 
 	const formik = useFormik({
 		initialValues,
@@ -57,7 +57,6 @@ const Register = () => {
 					card_expiration_date: values.vality.match(/\d+/g).join(''),
 					card_cvv: values.cardCode,
 				};
-				console.log(cardValues);
 				const client = await pagarme.client.connect({
 					api_key: 'ak_test_Wa4vKvUZGvchQYclsvaXxbnI1jtcOy',
 				});
@@ -88,7 +87,7 @@ const Register = () => {
 					},
 				};
 
-				const response = await api.post('users/', request);
+				await api.post('users/', request);
 				const responseLogin = await api.post('token/', {
 					email: values.email,
 					password: values.password,
@@ -100,15 +99,14 @@ const Register = () => {
 				formClient.append('instagram', values.instagram);
 				formClient.append('facebook', values.facebook);
 				formClient.append('linkedin', values.linkedin);
-				const responseClient = await api.post('clients/', formClient, {
+				await api.post('clients/', formClient, {
 					headers: {
 						Authorization: `Bearer ${responseLogin.data.access}`,
 					},
 				});
 				setPage(3);
 			} catch (e) {
-				console.log(e);
-				showSucessPopUp('error', 'Erro no cadastro');
+				handleShowPopUp('error', 'Erro no cadastro');
 			} finally {
 				setLoading(false);
 			}
