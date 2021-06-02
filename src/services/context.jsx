@@ -20,6 +20,8 @@ export const Context = createContext({
 	login() {},
 	signOut() {},
 	api: {},
+	showModal: false,
+	handleShowModal() {},
 });
 
 const ContextProvider = ({ children }) => {
@@ -35,6 +37,7 @@ const ContextProvider = ({ children }) => {
 			baseURL: process.env.REACT_APP_API_URL,
 		})
 	);
+	const [showModal, setShowModal] = useState(false);
 
 	// useEffect(() => {
 	// 	console.log(token);
@@ -121,6 +124,10 @@ const ContextProvider = ({ children }) => {
 		setToken('');
 	}
 
+	function handleShowModal(modal) {
+		setShowModal(modal);
+	}
+
 	return (
 		<Context.Provider
 			value={{
@@ -133,6 +140,8 @@ const ContextProvider = ({ children }) => {
 				login,
 				signOut,
 				api: apiFetch,
+				showModal,
+				handleShowModal,
 			}}
 		>
 			{children}
