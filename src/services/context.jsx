@@ -22,6 +22,8 @@ export const Context = createContext({
 	api: {},
 	showModal: false,
 	handleShowModal() {},
+	clients: [],
+	handleClients() {},
 });
 
 const ContextProvider = ({ children }) => {
@@ -38,7 +40,7 @@ const ContextProvider = ({ children }) => {
 		})
 	);
 	const [showModal, setShowModal] = useState(false);
-
+	const [clients, setClients] = useState([]);
 	// useEffect(() => {
 	// 	console.log(token);
 	// 	if (!token) {
@@ -72,6 +74,10 @@ const ContextProvider = ({ children }) => {
 		}
 		// console.log()
 		return api[requestType](url, date);
+	}
+
+	function handleClients(clientsArray) {
+		setClients(clientsArray);
 	}
 
 	const verifyWidthAndSetNumberSlides = useCallback(width => {
@@ -142,6 +148,8 @@ const ContextProvider = ({ children }) => {
 				api: apiFetch,
 				showModal,
 				handleShowModal,
+				handleClients,
+				clients,
 			}}
 		>
 			{children}
