@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 
 export default Yup.object().shape({
 	name: Yup.string().required(),
+	logo: Yup.mixed().required(),
 	email: Yup.string().email().required(),
 	phone: Yup.string()
 		.matches(/(\(\d{2}\)\s\d{5}-\d{4})|(\(\d{2}\)\s\d{4}-\d{4})/g)
@@ -23,6 +24,7 @@ export default Yup.object().shape({
 	number: Yup.string().required(),
 	state: Yup.string().required(),
 	city: Yup.string().required(),
+	sigla: Yup.string().required(),
 	district: Yup.string().required(),
 	phoneContact: Yup.string()
 		.matches(/(\d{5}-\d{4})|(\d{4}-\d{4})/g)
