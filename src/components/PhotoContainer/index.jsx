@@ -21,12 +21,12 @@ function MyDropzone({ handleChange, value }) {
 
 	useEffect(() => {
 		if (!value) {
+			setSelectedFileUrl('');
 			return;
 		}
-		console.log(value);
 		const fileUrl = URL.createObjectURL(value);
 		setSelectedFileUrl(fileUrl);
-	}, []);
+	}, [value]);
 
 	return (
 		<Container {...getRootProps()}>
