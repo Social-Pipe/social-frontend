@@ -3,14 +3,12 @@ import { HiPlusSm } from 'react-icons/hi';
 
 import Container from './styles';
 
-import imageTest from '../../assets/images/Coca.png';
-
-const Card = ({ text, id }) => (
-	<Container to="dashboard/product" existproduct={text}>
-		{text ? (
+const Card = ({ name, id, logo, handleButton }) => (
+	<Container type="button" onClick={() => handleButton(id)} existproduct={name}>
+		{name ? (
 			<>
-				<img src={imageTest} alt="logo" />
-				<p>{text}</p>
+				<img src={logo} alt="logo" />
+				<p>{name}</p>
 			</>
 		) : (
 			<>
@@ -22,13 +20,16 @@ const Card = ({ text, id }) => (
 );
 
 Card.propTypes = {
-	text: PropTypes.string,
+	name: PropTypes.string,
 	id: PropTypes.number,
+	logo: PropTypes.string,
+	handleButton: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
-	text: '',
+	name: '',
 	id: -1,
+	logo: '',
 };
 
 export default Card;

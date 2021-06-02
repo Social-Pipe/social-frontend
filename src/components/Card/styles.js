@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-export default styled(Link)`
+export default styled.button`
 	text-decoration: none;
+	border: none;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -11,12 +11,14 @@ export default styled(Link)`
 	height: 9.25rem;
 	box-shadow: 0 3px 50px rgba(0, 0, 0, 0.07);
 	border-radius: 8px;
+	overflow: hidden;
+	cursor: pointer;
 
 	img {
 		width: 4rem;
 		height: 4rem;
 		border: 1px solid #707070;
-		object-fit: contain;
+		object-fit: cover;
 		border-radius: 100%;
 	}
 
