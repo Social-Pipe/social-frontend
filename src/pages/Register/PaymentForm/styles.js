@@ -1,6 +1,18 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const rotate = keyframes`
+	from{
+		transform:rotateZ(0)
+	}
+	to{
+		transform:rotateZ(360deg)
+	}
+`;
 
 export default styled.div`
+	.loading {
+		animation: ${rotate} 2s infinite;
+	}
 	p {
 		max-width: 23.3rem;
 		margin: 1rem 0;

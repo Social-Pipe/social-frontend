@@ -1,4 +1,7 @@
+import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { AiOutlineLoading } from 'react-icons/ai';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import Container from './styles';
@@ -13,7 +16,8 @@ import maskDate from '../../../utils/maskDate';
 import maskPhone from '../../../utils/maskPhone';
 import { ContainerButtons, FormContainer } from '../styles';
 
-const PaymentForm = ({ formik }) => {
+const PaymentForm = ({ formik, loading }) => {
+	const [states, setStates] = useState([]);
 	function handleDDD(e) {
 		const valueNumber = e.target.value.match(/\d+/g)?.join('');
 		if (valueNumber?.length > 2) {
@@ -21,6 +25,38 @@ const PaymentForm = ({ formik }) => {
 		}
 		formik.setFieldValue('ddd', valueNumber || '');
 	}
+
+	useEffect(() => {
+		console.log('oio');
+		if (!formik.values.state) {
+			return;
+		}
+		const uf = states.find(state => state.nome === formik.values.state);
+		if (!uf) {
+			return;
+		}
+
+		formik.setFieldValue('sigla', uf.sigla);
+	}, [formik.values.state]);
+
+	useEffect(() => {
+		async function getStates() {
+			try {
+				const { data } = await axios.get(
+					'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+				);
+				setStates(data);
+				if (data[0] && !formik.values.state) {
+					formik.setFieldValue('state', data[0].nome);
+				}
+			} catch (e) {
+				console.log(e);
+			}
+		}
+
+		getStates();
+	}, []);
+
 	return (
 		<Container>
 			<h1>Informações de pagamento</h1>
@@ -75,10 +111,14 @@ const PaymentForm = ({ formik }) => {
 									<MdKeyboardArrowDown size={32} color="#717171" />
 								</div>
 								<select
+									defaultValue={formik.values.state}
 									onChange={e => formik.setFieldValue('state', e.target.value)}
 								>
-									<option value="rio de janeiro">Rio de Janeiro</option>
-									<option>Sao paulo</option>
+									{states.map(state => (
+										<option value={state.nome} key={state.id}>
+											{state.nome}
+										</option>
+									))}
 								</select>
 							</div>
 						</div>
@@ -180,7 +220,7 @@ const PaymentForm = ({ formik }) => {
 								autoComplete="cc-name"
 								id="cardName"
 								placeholder="EX: TITO LIMA"
-								autoCapitalize
+								autoCapitalize="true"
 								className="cardName"
 								name="cardName"
 								onChange={formik.handleChange}
@@ -226,7 +266,18 @@ const PaymentForm = ({ formik }) => {
 						</fieldset>
 					</div>
 					<ContainerButtons className="container_buttons">
-						<Button type="submit" className="button">
+						<Button
+							type="button"
+							onClick={() => {
+								console.log(loading);
+								if (loading) {
+									return;
+								}
+								formik.handleSubmit();
+							}}
+							className="button"
+							loading={loading}
+						>
 							Finalizar cadastro
 						</Button>
 						<div className="container_forget" />

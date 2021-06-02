@@ -12,7 +12,10 @@ const InfoClient = ({ onPressButton, formik }) => (
 		<h1>Insira as informações do seu primeiro cliente</h1>
 		<div className="photo_container">
 			<p>Logo da empresa</p>
-			<PhotoContainer />
+			<PhotoContainer
+				value={formik.values.logo}
+				handleChange={file => formik.setFieldValue('logo', file)}
+			/>
 		</div>
 		<FormContainer>
 			<fieldset>

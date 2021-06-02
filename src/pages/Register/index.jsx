@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import pagarme from 'pagarme';
+import { useContext, useState } from 'react';
 
 import InfoClient from './InfoClient';
 import InfosForm from './InfosForm';
@@ -7,6 +8,8 @@ import PaymentForm from './PaymentForm';
 import Container, { ProgressBar } from './styles';
 import Success from './Success';
 
+import api from '../../config/api';
+import { Context } from '../../services/context';
 import registerSchema from '../../validations/registerSchema';
 
 const initialValues = {
@@ -15,6 +18,7 @@ const initialValues = {
 	phone: '',
 	password: '',
 	companyName: '',
+	logo: null,
 	passwordAccess: '',
 	checkbox: false,
 	instagram: false,
@@ -33,17 +37,81 @@ const initialValues = {
 	phoneContact: '',
 	cardName: '',
 	vality: '',
+	sigla: '',
 };
 
 const Register = () => {
 	const [page, setPage] = useState(0);
+	const [loading, setLoading] = useState(false);
+	const { login, showSucessPopUp } = useContext(Context);
 
 	const formik = useFormik({
 		initialValues,
 		validationSchema: registerSchema,
-		onSubmit: values => {
-			console.log(values);
-			setPage(3);
+		onSubmit: async values => {
+			try {
+				setLoading(true);
+				const cardValues = {
+					card_number: values.cardNumber.match(/\d+/g).join(''),
+					card_holder_name: values.cardName,
+					card_expiration_date: values.vality.match(/\d+/g).join(''),
+					card_cvv: values.cardCode,
+				};
+				console.log(cardValues);
+				const client = await pagarme.client.connect({
+					api_key: 'ak_test_Wa4vKvUZGvchQYclsvaXxbnI1jtcOy',
+				});
+				const cardId = await client.cards.create(cardValues);
+
+				const request = {
+					email: values.email,
+					password: values.password,
+					name: values.name,
+					cpf: values.cpf.match(/\d+/g).join(''),
+					phone: values.phone.match(/\d+/g).join(''),
+					payment: {
+						address: {
+							cep: values.cep.match(/\d+/g).join(''),
+							street: values.adress,
+							number: values.number,
+							city: values.city,
+							state_uf: values.sigla,
+							neighborhood: values.district,
+						},
+						card_id: cardId.id,
+					},
+					client: {
+						name: values.companyName,
+						instagram: values.instagram,
+						facebook: values.facebook,
+						linkedin: values.linkedin,
+					},
+				};
+
+				const response = await api('post', request, 'users/');
+				const responseLogin = await api.post('token/', {
+					email: values.email,
+					password: values.password,
+				});
+				login(responseLogin.data.access, responseLogin.data.refresh);
+				const formClient = new FormData();
+				formClient.append('logo', values.logo);
+				formClient.append('name', values.companyName);
+				formClient.append('instagram', values.instagram);
+				formClient.append('facebook', values.facebook);
+				formClient.append('linkedin', values.linkedin);
+				const responseClient = await api.post('clients/', formClient, {
+					headers: {
+						Authorization: `Bearer ${responseLogin.data.access}`,
+					},
+				});
+				setPage(3);
+			} catch (e) {
+				console.log(e);
+				showSucessPopUp('error', 'Erro no cadastro');
+			} finally {
+				setLoading(false);
+			}
 		},
 	});
 
@@ -118,6 +186,7 @@ const Register = () => {
 										'password',
 										'companyName',
 										'passwordAccess',
+										'file',
 									],
 									2
 								);
@@ -142,7 +211,7 @@ const Register = () => {
 						<InfoClient
 							formik={formik}
 							onPressButton={() =>
-								verifyValues(['companyName', 'passwordAccess'], 2)
+								verifyValues(['companyName', 'passwordAccess', 'logo'], 2)
 							}
 						/>
 					)}
@@ -153,6 +222,7 @@ const Register = () => {
 							onPressButtonFinished={() => {
 								formik.handleSubmit();
 							}}
+							loading={loading}
 						/>
 					)}
 				</form>
