@@ -1,13 +1,24 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { RiArrowRightSLine } from 'react-icons/ri';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Container from './styles';
 
 import { Context } from '../../services/context';
 
 const Aside = () => {
-	const { menuOpen, handleShowModal } = useContext(Context);
+	const { menuOpen, handleShowModal, clients } = useContext(Context);
+	const [clientActiveId, setClientActiveId] = useState(-1);
+
+	const history = useHistory();
+	const route = useLocation();
+
+	useEffect(() => {
+		const array = route.pathname.split('/');
+		const id = array[array.length - 1];
+		setClientActiveId(Number(id));
+	}, [route]);
 
 	return (
 		<>
@@ -19,6 +30,18 @@ const Aside = () => {
 					</button>
 					<h2>Meus Clientes</h2>
 					<p>Coca Cola</p>
+				</div>
+				<div className="clients">
+					{clients.map(client => (
+						<button
+							type="button"
+							onClick={() => history.push(`/dashboard/product/${client.id}`)}
+							className={client.id === clientActiveId ? 'active' : ''}
+							key={client.id}
+						>
+							{client.name}
+						</button>
+					))}
 				</div>
 				<div>
 					<div className="comment">

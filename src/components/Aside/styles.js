@@ -5,6 +5,7 @@ export default styled.aside`
 	flex-direction: column;
 	background-color: #f9f9f9;
 	min-width: 21.5rem;
+	max-width: 21.5rem;
 	height: 100%;
 	overflow: auto;
 	transition: transform 0.2s ease-in;
@@ -15,7 +16,7 @@ export default styled.aside`
 		color: #5d5d5d;
 		:first-child {
 			flex: 1;
-
+			padding-bottom: 0;
 			button {
 				display: flex;
 				align-items: center;
@@ -95,6 +96,34 @@ export default styled.aside`
 					font-size: 1rem;
 					font-weight: bold;
 				}
+			}
+		}
+	}
+
+	.clients {
+		padding: 0;
+		flex: 2;
+		padding-top: 1.25rem;
+		overflow: auto;
+		display: flex;
+		flex-direction: column;
+
+		button {
+			text-align: start;
+			background: none;
+			border: none;
+			color: #5d5d5d;
+			font-weight: 500;
+			padding: 0.375rem 0;
+			font-size: 1.25rem;
+			padding-left: 3rem;
+			margin-bottom: 1rem;
+			cursor: pointer;
+
+			&.active {
+				padding-left: 2.25rem;
+				color: #ee4266;
+				border-left: 11px solid #ee4266;
 			}
 		}
 	}
