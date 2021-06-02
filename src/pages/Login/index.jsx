@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import Container from './styles';
@@ -17,21 +16,24 @@ const initialValues = {
 
 const Login = () => {
 	const { login, showSucessPopUp } = useContext(Context);
+	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 	const formik = useFormik({
 		initialValues,
 		validationSchema: loginSchema,
 		onSubmit: async values => {
-			console.log(values);
 			try {
-				const { data } = await api.post('/token', {
-					email: 'lucasribeiro61345@gmail.com',
-					password: '12345678',
+				setLoading(true);
+				const { data } = await api.post('token/', {
+					email: values.email,
+					password: values.password,
 				});
-				// login(data.access);
-				// history.replace('/dashboard');
-			} catch {
+				login(data.acess, data.refresh);
+				history.replace('/dashboard');
+			} catch (e) {
 				showSucessPopUp('error', 'Erro no login');
+			} finally {
+				setLoading(false);
 			}
 		},
 	});
@@ -67,7 +69,17 @@ const Login = () => {
 							/>
 						</fieldset>
 						<div className="container_buttons">
-							<Button type="submit" className="button">
+							<Button
+								type="button"
+								onClick={() => {
+									if (loading) {
+										return;
+									}
+									formik.handleSubmit();
+								}}
+								loading={loading}
+								className="button"
+							>
 								Fazer login
 							</Button>
 							<div className="container_forget">
