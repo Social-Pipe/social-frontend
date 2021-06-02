@@ -1,4 +1,7 @@
+import axios from 'axios';
 import { createContext, useEffect, useState, useCallback } from 'react';
+
+import api from '../config/api';
 
 export const Context = createContext({
 	menuOpen: true,
@@ -10,16 +13,63 @@ export const Context = createContext({
 		text: 'Alterações salvas com sucesso!',
 	},
 	showSucessPopUp() {},
-	token: '',
+	token: {
+		acessToken: '',
+		refreshToken: '',
+	},
 	login() {},
 	signOut() {},
+	api: {},
 });
 
 const ContextProvider = ({ children }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [smart, setSmart] = useState(false);
 	const [showPopUp, setShowPopUp] = useState(false);
-	const [token, setToken] = useState('');
+	const [token, setToken] = useState({
+		acessToken: '',
+		refreshToken: '',
+	});
+	const [apiState, setApiState] = useState(
+		axios.create({
+			baseURL: process.env.REACT_APP_API_URL,
+		})
+	);
+
+	// useEffect(() => {
+	// 	console.log(token);
+	// 	if (!token) {
+	// 		return;
+	// 	}
+
+	// 	const newApi = axios.create({
+	// 		baseURL: process.env.REACT_APP_API_URL,
+	// 		headers: {
+	// 			Authorization: `Bearer ${token.acessToken}`,
+	// 		},
+	// 	});
+
+	// 	// newApi.interceptors.response.use(config => {
+	// 	// 	if (config.status === 403) {
+	// 	// 		console.log('a');
+	// 	// 	}
+	// 	// });
+
+	// 	setApiState(newApi);
+	// }, [token]);
+
+	function apiFetch(requestType, date, url) {
+		console.log(token);
+		if (token.acessToken) {
+			return api[requestType](url, date, {
+				headers: {
+					authorization: `Bearer ${token?.acessToken}`,
+				},
+			});
+		}
+		// console.log()
+		return api[requestType](url, date);
+	}
 
 	const verifyWidthAndSetNumberSlides = useCallback(width => {
 		if (width <= 800) {
@@ -62,8 +112,9 @@ const ContextProvider = ({ children }) => {
 		);
 	}
 
-	function login(newToken) {
-		setToken(newToken);
+	function login(newAcessToken, newRefreshToken) {
+		console.log(newAcessToken);
+		setToken({ acessToken: newAcessToken, refreshToken: newRefreshToken });
 	}
 
 	function signOut() {
@@ -81,6 +132,7 @@ const ContextProvider = ({ children }) => {
 				token,
 				login,
 				signOut,
+				api: apiFetch,
 			}}
 		>
 			{children}
