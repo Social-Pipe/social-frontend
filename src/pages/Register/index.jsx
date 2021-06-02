@@ -88,7 +88,7 @@ const Register = () => {
 					},
 				};
 
-				const response = await api('post', request, 'users/');
+				const response = await api.post('users/', request);
 				const responseLogin = await api.post('token/', {
 					email: values.email,
 					password: values.password,
