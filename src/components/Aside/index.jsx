@@ -16,7 +16,7 @@ const Aside = () => {
 
 	useEffect(() => {
 		const array = route.pathname.split('/');
-		const id = array[array.length - 1];
+		const id = array[array.length - 2];
 		setClientActiveId(Number(id));
 	}, [route]);
 
@@ -35,7 +35,9 @@ const Aside = () => {
 					{clients.map(client => (
 						<button
 							type="button"
-							onClick={() => history.push(`/dashboard/product/${client.id}`)}
+							onClick={() =>
+								history.push(`/dashboard/product/${client.id}/post`)
+							}
 							className={client.id === clientActiveId ? 'active' : ''}
 							key={client.id}
 						>

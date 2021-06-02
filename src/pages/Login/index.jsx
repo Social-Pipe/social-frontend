@@ -71,6 +71,7 @@ const Login = () => {
 								placeholder="***********"
 								type="password"
 								id="password"
+								autoComplete="current-password"
 								name="password"
 								onChange={formik.handleChange}
 								value={formik.values.password}

@@ -122,7 +122,6 @@ const ContextProvider = ({ children }) => {
 	}
 
 	function login(newAcessToken, newRefreshToken) {
-		console.log(newAcessToken);
 		setToken({ acessToken: newAcessToken, refreshToken: newRefreshToken });
 	}
 
