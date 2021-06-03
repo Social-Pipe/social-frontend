@@ -15,8 +15,7 @@ const ForgetPassword = ({ onPressButtonAfter }) => {
 	const formik = useFormik({
 		initialValues,
 		validationSchema: forgetPasswordSchema,
-		onSubmit: values => {
-			console.log(values);
+		onSubmit: () => {
 			onPressButtonAfter();
 		},
 	});

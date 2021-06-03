@@ -17,27 +17,21 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal, token, login } = useContext(Context);
+	const { showModal, handleShowModal } = useContext(Context);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
 	useEffect(() => {
 		setLoading(true);
 		const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
-		if (!tokenStorage) {
+		if (!tokenStorage?.acessToken) {
 			setLoading(false);
 			history.replace('/');
 			return;
 		}
-		login(tokenStorage.acessToken, tokenStorage.refreshToken);
+		setLoading(false);
 	}, []);
 
-	useEffect(() => {
-		if (!token?.acessToken) {
-			return;
-		}
-		setLoading(false);
-	}, [token]);
 	return (
 		<ContainerDashBoard>
 			{!loading && (

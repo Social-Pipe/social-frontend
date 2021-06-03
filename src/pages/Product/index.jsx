@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import Container, { Header } from './styles';
 
@@ -10,13 +10,30 @@ import EditPost from '../../components/EditPost';
 import NewPost from '../../components/NewPost';
 import RatingPost from '../../components/RatingPost';
 import Row from '../../components/Row';
+import api from '../../config/api';
 import Modal from '../../Container/Modal';
+import { Context } from '../../services/context';
 
 const Product = () => {
 	const [showModalDeleteItem, setShowModalDeleteItem] = useState(false);
 	const [showModalEdit, setShowModalEdit] = useState(false);
 	const [showModalRating, setShowModalRating] = useState(false);
 	const [showModalNewPost, setShowModalNewPost] = useState(false);
+	const [client, setClient] = useState();
+	const params = useParams();
+	const { handleShowPopUp } = useContext(Context);
+
+	useEffect(() => {
+		async function fetchData() {
+			const response = await api.get(`clients/${params.id}/`);
+			setClient(response?.data || {});
+		}
+
+		if (params?.id) {
+			fetchData();
+		}
+	}, [params]);
+
 	return (
 		<Container>
 			<Modal
@@ -58,16 +75,27 @@ const Product = () => {
 			<Header>
 				<div className="title">
 					<p>Dashboard</p>
-					<h2>Coca Cola</h2>
+					<h2>{client?.name || 'Cliente'}</h2>
 				</div>
 				<div className="share">
 					<p>Link de compartilhamento com o cliente</p>
 					<div className="input_container">
-						<input />
-						<button type="button">copiar link</button>
+						<p>{client?.accessHash || ''}</p>
+						<button
+							onClick={async () => {
+								if (!client?.accessHash) {
+									return;
+								}
+								await navigator.clipboard.writeText(client.accessHash);
+								handleShowPopUp('sucess', 'Link copiado!');
+							}}
+							type="button"
+						>
+							copiar link
+						</button>
 					</div>
 				</div>
-				<Link to="config">
+				<Link to="/dashboard/config">
 					<BsFillGearFill size={24} color="#fff" />
 				</Link>
 			</Header>
@@ -76,7 +104,7 @@ const Product = () => {
 					<Button type="button" onClick={() => setShowModalNewPost(true)}>
 						Novo post
 					</Button>
-					<Link className="secondary" to=":1/detail">
+					<Link className="secondary" to="/dashboard/products/id/archive">
 						Mostrar arquivados
 					</Link>
 				</div>

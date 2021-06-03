@@ -31,8 +31,8 @@ const initialValues = {
 const ConfigUser = () => {
 	const formik = useFormik({
 		initialValues,
-		onSubmit(values) {
-			console.log(values);
+		onSubmit() {
+			// console.log(values);
 		},
 		validationSchema: configUserSchema,
 	});
