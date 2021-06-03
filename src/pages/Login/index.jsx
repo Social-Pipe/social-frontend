@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import Container from './styles';
@@ -15,7 +15,7 @@ const initialValues = {
 };
 
 const Login = () => {
-	const { login, handleShowPopUp, token } = useContext(Context);
+	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 	const formik = useFormik({
@@ -28,7 +28,6 @@ const Login = () => {
 					email: values.email,
 					password: values.password,
 				});
-				console.log(data);
 				window.localStorage.setItem(
 					'token',
 					JSON.stringify({
@@ -37,7 +36,6 @@ const Login = () => {
 					})
 				);
 				history.replace('/dashboard');
-				// login(data.access, data.refresh);
 			} catch (e) {
 				handleShowPopUp('error', 'Erro no login');
 			} finally {
@@ -45,14 +43,6 @@ const Login = () => {
 			}
 		},
 	});
-
-	// useEffect(() => {
-	// 	if (!token?.acessToken) {
-	// 		return;
-	// 	}
-	// 	window.localStorage.setItem('token', JSON.stringify(token));
-	// 	history.replace('/dashboard');
-	// }, [token]);
 
 	return (
 		<Container>

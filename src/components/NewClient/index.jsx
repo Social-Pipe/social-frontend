@@ -24,7 +24,7 @@ const initialValues = {
 
 const NewClient = ({ saveClient, editClient, handleClose }) => {
 	const [loading, setLoading] = useState(false);
-	const { token, handleShowPopUp } = useContext(Context);
+	const { handleShowPopUp } = useContext(Context);
 	const formik = useFormik({
 		initialValues,
 		onSubmit: async (values, { resetForm }) => {

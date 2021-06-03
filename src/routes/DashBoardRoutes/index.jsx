@@ -17,7 +17,7 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal, token, login } = useContext(Context);
+	const { showModal, handleShowModal } = useContext(Context);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 

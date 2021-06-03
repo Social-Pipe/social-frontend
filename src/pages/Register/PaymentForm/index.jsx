@@ -263,7 +263,6 @@ const PaymentForm = ({ formik, loading }) => {
 						<Button
 							type="button"
 							onClick={() => {
-								console.log(loading);
 								if (loading) {
 									return;
 								}

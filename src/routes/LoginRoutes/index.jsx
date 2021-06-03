@@ -14,13 +14,11 @@ const LoginRoutes = () => {
 	const { token } = useContext(Context);
 	const route = useRouteMatch();
 	const history = useHistory();
-	const { login } = useContext(Context);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		setLoading(true);
 		const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
-		console.log(tokenStorage);
 		if (!tokenStorage?.acessToken) {
 			setLoading(false);
 			return;
