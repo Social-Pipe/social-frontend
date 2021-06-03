@@ -53,7 +53,16 @@ const Aside = () => {
 						<RiArrowRightSLine color="#FCDA7B" size={32} />
 					</div>
 
-					<button type="button">Sair</button>
+					<button
+						type="button"
+						onClick={() => {
+							window.localStorage.clear();
+
+							history.replace('/');
+						}}
+					>
+						Sair
+					</button>
 				</div>
 			</Container>
 		</>
