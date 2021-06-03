@@ -1,7 +1,5 @@
 import { createContext, useEffect, useState, useCallback } from 'react';
 
-import api from '../config/api';
-
 export const Context = createContext({
 	menuOpen: true,
 	toggleOpenMenu() {},
@@ -12,13 +10,6 @@ export const Context = createContext({
 		text: 'Alterações salvas com sucesso!',
 	},
 	handleShowPopUp() {},
-	token: {
-		acessToken: '',
-		refreshToken: '',
-	},
-	login() {},
-	signOut() {},
-	api: {},
 	showModal: false,
 	handleShowModal() {},
 	clients: [],
@@ -29,23 +20,8 @@ const ContextProvider = ({ children }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [smart, setSmart] = useState(false);
 	const [showPopUp, setShowPopUp] = useState(false);
-	const [token, setToken] = useState({
-		acessToken: '',
-		refreshToken: '',
-	});
 	const [showModal, setShowModal] = useState(false);
 	const [clients, setClients] = useState([]);
-
-	function apiFetch(requestType, date, url) {
-		if (token.acessToken) {
-			return api[requestType](url, date, {
-				headers: {
-					authorization: `Bearer ${token?.acessToken}`,
-				},
-			});
-		}
-		return api[requestType](url, date);
-	}
 
 	function handleClients(clientsArray) {
 		setClients(clientsArray);
@@ -92,14 +68,6 @@ const ContextProvider = ({ children }) => {
 		);
 	}
 
-	function login(newAcessToken, newRefreshToken) {
-		setToken({ acessToken: newAcessToken, refreshToken: newRefreshToken });
-	}
-
-	function signOut() {
-		setToken('');
-	}
-
 	function handleShowModal(modal) {
 		setShowModal(modal);
 	}
@@ -112,10 +80,6 @@ const ContextProvider = ({ children }) => {
 				smart,
 				showPopUp,
 				handleShowPopUp,
-				token,
-				login,
-				signOut,
-				api: apiFetch,
 				showModal,
 				handleShowModal,
 				handleClients,
