@@ -11,35 +11,34 @@ import { Context } from '../../services/context';
 
 const DashBoard = () => {
 	const [showModal, setShowModal] = useState(false);
-	const { token, handleShowModal, clients, handleClients } = useContext(
-		Context
-	);
+	const { handleShowModal, clients, handleClients } = useContext(Context);
+	const [page, setPage] = useState(1);
 	const history = useHistory();
+
 	useEffect(() => {
 		async function fetchClients() {
-			try {
-				console.log(token);
-				const { data } = await api.get('clients/?page=1', {
-					headers: {
-						Authorization: `Bearer ${token.acessToken}`,
-					},
-				});
-				const clientsResult = data.results.map(client => ({
-					id: client.id,
-					logo: client.logo,
-					name: client.name,
-				}));
-				handleClients(clientsResult);
-			} catch (e) {
-				console.log(e);
-			}
+			const { data } = await api.get(`clients/?page=${page}`);
+			const clientsResult = data.results.map(client => ({
+				id: client.id,
+				logo: client.logo,
+				name: client.name,
+			}));
+			handleClients(props => [...props, ...clientsResult]);
 		}
 
 		fetchClients();
-	}, []);
+	}, [page]);
 
 	return (
-		<Container>
+		<Container
+			onScroll={e => {
+				const height = e.currentTarget.scrollHeight;
+				if (e.currentTarget.scrollTop + e.currentTarget.offsetHeight < height) {
+					return;
+				}
+				setPage(page + 1);
+			}}
+		>
 			<Modal showModal={showModal} handleOutClick={() => setShowModal(false)}>
 				<NotPaymentAccept />
 			</Modal>
@@ -54,7 +53,7 @@ const DashBoard = () => {
 						handleButton={id => {
 							history.push(`/dashboard/product/${id}/post`);
 						}}
-						key={client.key}
+						key={client.id}
 						name={client.name}
 						logo={client.logo}
 						id={client.id}

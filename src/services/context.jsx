@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createContext, useEffect, useState, useCallback } from 'react';
 
 import api from '../config/api';
@@ -34,37 +33,10 @@ const ContextProvider = ({ children }) => {
 		acessToken: '',
 		refreshToken: '',
 	});
-	const [apiState, setApiState] = useState(
-		axios.create({
-			baseURL: process.env.REACT_APP_API_URL,
-		})
-	);
 	const [showModal, setShowModal] = useState(false);
 	const [clients, setClients] = useState([]);
-	// useEffect(() => {
-	// 	console.log(token);
-	// 	if (!token) {
-	// 		return;
-	// 	}
-
-	// 	const newApi = axios.create({
-	// 		baseURL: process.env.REACT_APP_API_URL,
-	// 		headers: {
-	// 			Authorization: `Bearer ${token.acessToken}`,
-	// 		},
-	// 	});
-
-	// 	// newApi.interceptors.response.use(config => {
-	// 	// 	if (config.status === 403) {
-	// 	// 		console.log('a');
-	// 	// 	}
-	// 	// });
-
-	// 	setApiState(newApi);
-	// }, [token]);
 
 	function apiFetch(requestType, date, url) {
-		console.log(token);
 		if (token.acessToken) {
 			return api[requestType](url, date, {
 				headers: {
@@ -72,7 +44,6 @@ const ContextProvider = ({ children }) => {
 				},
 			});
 		}
-		// console.log()
 		return api[requestType](url, date);
 	}
 

@@ -36,11 +36,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			formData.append('linkedin', values.linkedin);
 			formData.append('logo', values.logo);
 			try {
-				await api.post('clients/', formData, {
-					headers: {
-						Authorization: `Bearer ${token.acessToken}`,
-					},
-				});
+				await api.post('clients/', formData);
 				handleShowPopUp('sucess', 'Client Cadastrado');
 				resetForm();
 				saveClient();
@@ -104,6 +100,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 								type="password"
 								id="password"
 								name="password"
+								autoComplete="new-password"
 								onChange={formik.handleChange}
 								value={formik.values.password}
 							/>

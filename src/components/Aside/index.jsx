@@ -29,7 +29,6 @@ const Aside = () => {
 						<p>Novo Cliente</p>
 					</button>
 					<h2>Meus Clientes</h2>
-					<p>Coca Cola</p>
 				</div>
 				<div className="clients">
 					{clients.map(client => (

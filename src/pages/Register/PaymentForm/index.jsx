@@ -1,7 +1,6 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { AiOutlineLoading } from 'react-icons/ai';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import Container from './styles';
@@ -27,7 +26,6 @@ const PaymentForm = ({ formik, loading }) => {
 	}
 
 	useEffect(() => {
-		console.log('oio');
 		if (!formik.values.state) {
 			return;
 		}
@@ -41,16 +39,12 @@ const PaymentForm = ({ formik, loading }) => {
 
 	useEffect(() => {
 		async function getStates() {
-			try {
-				const { data } = await axios.get(
-					'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
-				);
-				setStates(data);
-				if (data[0] && !formik.values.state) {
-					formik.setFieldValue('state', data[0].nome);
-				}
-			} catch (e) {
-				console.log(e);
+			const { data } = await axios.get(
+				'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+			);
+			setStates(data);
+			if (data[0] && !formik.values.state) {
+				formik.setFieldValue('state', data[0].nome);
 			}
 		}
 

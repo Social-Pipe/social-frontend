@@ -21,8 +21,8 @@ const initialValues = {
 const ChangeConfigPayment = () => {
 	const formik = useFormik({
 		initialValues,
-		onSubmit(values) {
-			console.log(values);
+		onSubmit() {
+			// console.log(values);
 		},
 		validationSchema: configPaymentSchema,
 	});

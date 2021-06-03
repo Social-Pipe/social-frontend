@@ -22,7 +22,7 @@ const NewPost = ({ saveClient }) => (
 					<div>
 						<button
 							type="button"
-							className={`facebook ${'formik.values.facebook' ? 'active' : ''}`}
+							className="facebook"
 							onClick={
 								() => {}
 								// formik.setFieldValue('facebook', !formik.values.facebook)
@@ -32,9 +32,7 @@ const NewPost = ({ saveClient }) => (
 						</button>
 						<button
 							type="button"
-							className={`instagram ${
-								'formik.values.instagram ' ? 'active' : ''
-							}`}
+							className="instagram"
 							onClick={
 								() => {}
 								// formik.setFieldValue('instagram', !formik.values.instagram)
@@ -44,9 +42,10 @@ const NewPost = ({ saveClient }) => (
 						</button>
 						<button
 							type="button"
-							className={`linkedin ${
-								'formik.values.linkedin ' ? 'active' : ''
-							}`}
+							className="linkedin"
+							// className={`linkedin ${
+							// 	'formik.values.linkedin ' ? 'active' : ''
+							// }`}
 							onClick={
 								() => {}
 								// formik.setFieldValue('linkedin', !formik.values.linkedin)

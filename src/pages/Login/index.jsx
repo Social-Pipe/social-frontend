@@ -28,7 +28,16 @@ const Login = () => {
 					email: values.email,
 					password: values.password,
 				});
-				login(data.access, data.refresh);
+				console.log(data);
+				window.localStorage.setItem(
+					'token',
+					JSON.stringify({
+						acessToken: data.access,
+						refreshToken: data.refresh,
+					})
+				);
+				history.replace('/dashboard');
+				// login(data.access, data.refresh);
 			} catch (e) {
 				handleShowPopUp('error', 'Erro no login');
 			} finally {
@@ -37,13 +46,13 @@ const Login = () => {
 		},
 	});
 
-	useEffect(() => {
-		if (!token?.acessToken) {
-			return;
-		}
-		window.localStorage.setItem('token', JSON.stringify(token));
-		history.replace('/dashboard');
-	}, [token]);
+	// useEffect(() => {
+	// 	if (!token?.acessToken) {
+	// 		return;
+	// 	}
+	// 	window.localStorage.setItem('token', JSON.stringify(token));
+	// 	history.replace('/dashboard');
+	// }, [token]);
 
 	return (
 		<Container>

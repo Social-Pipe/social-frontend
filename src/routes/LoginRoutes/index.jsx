@@ -20,11 +20,13 @@ const LoginRoutes = () => {
 	useEffect(() => {
 		setLoading(true);
 		const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
-		if (!tokenStorage) {
+		console.log(tokenStorage);
+		if (!tokenStorage?.acessToken) {
 			setLoading(false);
 			return;
 		}
-		login(tokenStorage.acessToken, tokenStorage.refreshToken);
+		history.replace('/dashboard');
+		setLoading(false);
 	}, []);
 
 	useEffect(() => {
@@ -32,8 +34,6 @@ const LoginRoutes = () => {
 			return;
 		}
 		window.localStorage.setItem('token', JSON.stringify(token));
-		history.replace('/dashboard');
-		setLoading(false);
 	}, [token]);
 
 	return (

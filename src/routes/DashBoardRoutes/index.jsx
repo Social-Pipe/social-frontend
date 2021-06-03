@@ -24,20 +24,14 @@ const DashBoardRoutes = () => {
 	useEffect(() => {
 		setLoading(true);
 		const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
-		if (!tokenStorage) {
+		if (!tokenStorage?.acessToken) {
 			setLoading(false);
 			history.replace('/');
 			return;
 		}
-		login(tokenStorage.acessToken, tokenStorage.refreshToken);
+		setLoading(false);
 	}, []);
 
-	useEffect(() => {
-		if (!token?.acessToken) {
-			return;
-		}
-		setLoading(false);
-	}, [token]);
 	return (
 		<ContainerDashBoard>
 			{!loading && (
