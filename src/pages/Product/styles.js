@@ -89,6 +89,7 @@ export const Header = styled.div`
 	.title {
 		grid-area: title;
 		margin-bottom: 1.5rem;
+		overflow: hidden;
 		p {
 			font-size: 1.25rem;
 			color: #5d5d5d;
@@ -140,15 +141,18 @@ export const Header = styled.div`
 				}
 			}
 
-			input {
+			p {
 				padding-left: 1.75rem;
 				flex: 1;
+				display: flex;
+				align-items: center;
 				width: 100%;
 				align-self: stretch;
 				border: none;
 				outline: none;
 				font-size: 1rem;
 				color: #5d5d5d;
+				margin: 0;
 				font-weight: 500;
 			}
 		}
