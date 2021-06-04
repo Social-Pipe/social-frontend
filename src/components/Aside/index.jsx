@@ -8,7 +8,7 @@ import Container from './styles';
 import { Context } from '../../services/context';
 
 const Aside = () => {
-	const { menuOpen, handleShowModal, clients } = useContext(Context);
+	const { menuOpen, handleShowModal, clients, user } = useContext(Context);
 	const [clientActiveId, setClientActiveId] = useState(-1);
 
 	const history = useHistory();
@@ -48,7 +48,7 @@ const Aside = () => {
 					<div className="comment">
 						<div>
 							<span>Você está logado como</span>
-							<p>Usuário Teste</p>
+							<p>{user?.name || 'Usuário'} </p>
 						</div>
 						<RiArrowRightSLine color="#FCDA7B" size={32} />
 					</div>

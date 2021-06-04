@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState, useCallback } from 'react';
 
+import api from '../config/api';
+
 export const Context = createContext({
 	menuOpen: true,
 	toggleOpenMenu() {},
@@ -13,7 +15,9 @@ export const Context = createContext({
 	showModal: false,
 	handleShowModal() {},
 	clients: [],
-	handleClients() {},
+	user: {},
+	addUser() {},
+	setNewPage() {},
 });
 
 const ContextProvider = ({ children }) => {
@@ -21,11 +25,9 @@ const ContextProvider = ({ children }) => {
 	const [smart, setSmart] = useState(false);
 	const [showPopUp, setShowPopUp] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-	const [clients, setClients] = useState([]);
-
-	function handleClients(clientsArray) {
-		setClients(clientsArray);
-	}
+	const [clients, setClients] = useState({ clients: [], page: 0 });
+	const [user, setUser] = useState({});
+	const [newPage, setNewPage] = useState(0);
 
 	const verifyWidthAndSetNumberSlides = useCallback(width => {
 		if (width <= 800) {
@@ -35,6 +37,30 @@ const ContextProvider = ({ children }) => {
 
 		setSmart(false);
 	}, []);
+
+	const fetchClients = async () => {
+		const { data } = await api.get(`clients/?page=${newPage}`);
+		const clientsResult = data.results.map(client => ({
+			id: client.id,
+			logo: client.logo,
+			name: client.name,
+		}));
+		setClients(props => ({
+			clients: [...props.clients, ...clientsResult],
+			page: newPage,
+		}));
+	};
+
+	useEffect(() => {
+		if (newPage <= clients.page) {
+			return;
+		}
+		fetchClients();
+	}, [newPage, clients.page]);
+
+	function addNewPage() {
+		setNewPage(newPage + 1);
+	}
 
 	useEffect(() => {
 		verifyWidthAndSetNumberSlides(window.innerWidth);
@@ -72,6 +98,10 @@ const ContextProvider = ({ children }) => {
 		setShowModal(modal);
 	}
 
+	function addUser(newUser) {
+		setUser(newUser);
+	}
+
 	return (
 		<Context.Provider
 			value={{
@@ -82,8 +112,10 @@ const ContextProvider = ({ children }) => {
 				handleShowPopUp,
 				showModal,
 				handleShowModal,
-				handleClients,
-				clients,
+				clients: clients.clients,
+				user,
+				addUser,
+				setNewPage: addNewPage,
 			}}
 		>
 			{children}
