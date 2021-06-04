@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { useContext, useEffect, useState } from 'react';
 import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import ContainerDashBoard, { ContainerProduct } from './styles';
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
 import NewClient from '../../components/NewClient';
+import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
 import ConfigUser from '../../pages/ConfigUser';
@@ -17,19 +19,29 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal } = useContext(Context);
+	const { showModal, handleShowModal, addUser, setNewPage } = useContext(
+		Context
+	);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
 	useEffect(() => {
 		setLoading(true);
-		const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
-		if (!tokenStorage?.acessToken) {
+		async function fetchData() {
+			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
+			if (!tokenStorage?.acessToken) {
+				setLoading(false);
+				history.replace('/');
+				return;
+			}
+
+			const content = jwtDecode(tokenStorage?.acessToken);
+			const user = await api.get(`users/${content.user_id}/`);
+			addUser(user.data);
+			setNewPage();
 			setLoading(false);
-			history.replace('/');
-			return;
 		}
-		setLoading(false);
+		fetchData();
 	}, []);
 
 	return (
