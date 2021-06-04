@@ -26,7 +26,7 @@ api.interceptors.response.use(
 
 		if (
 			token?.acessToken &&
-			error.response.status === 403 &&
+			error?.response?.status === 403 &&
 			!originalRequest._retry
 		) {
 			originalRequest._retry = true;
