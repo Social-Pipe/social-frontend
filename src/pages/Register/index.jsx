@@ -92,17 +92,20 @@ const Register = () => {
 					email: values.email,
 					password: values.password,
 				});
+				window.localStorage.setItem(
+					'token',
+					JSON.stringify({
+						acessToken: responseLogin.data.access,
+						refreshToken: responseLogin.data.refresh,
+					})
+				);
 				const formClient = new FormData();
 				formClient.append('logo', values.logo);
 				formClient.append('name', values.companyName);
 				formClient.append('instagram', values.instagram);
 				formClient.append('facebook', values.facebook);
 				formClient.append('linkedin', values.linkedin);
-				await api.post('clients/', formClient, {
-					headers: {
-						Authorization: `Bearer ${responseLogin.data.access}`,
-					},
-				});
+				await api.post('clients/', formClient);
 				setPage(3);
 			} catch (e) {
 				handleShowPopUp('error', 'Erro no cadastro');
