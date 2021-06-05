@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { RiArrowLeftSLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,8 @@ import { Link } from 'react-router-dom';
 import Container, { FieldSet, Info, Form } from './styles';
 
 import Button from '../../components/Button';
+import api from '../../config/api';
+import { Context } from '../../services/context';
 import maskCep from '../../utils/maskCep';
 import maskCpf from '../../utils/maskCpf';
 import maskPhone from '../../utils/maskPhone';
@@ -26,16 +29,94 @@ const initialValues = {
 	bairro: '',
 	ddd: '',
 	phoneContact: '',
+	sigla: '',
 };
 
 const ConfigUser = () => {
+	const { user } = useContext(Context);
+	const [states, setStates] = useState([]);
 	const formik = useFormik({
 		initialValues,
-		onSubmit() {
-			// console.log(values);
+		async onSubmit(values) {
+			const variables = {
+				email: values.email,
+				name: values.name,
+				cpf: values.cpf.match(/\d+/g),
+				phone: values.phone.match(/\d+/g),
+				payment: {
+					address: {
+						cep: values.cep.match(/\d+/g),
+						street: values.adress,
+						number: values.number,
+						city: values.city,
+						stateUf: values.sigla,
+						neighborhood: values.bairro,
+					},
+				},
+			};
+			if (values.password) {
+				variables.password = values.password;
+			}
+			try {
+				await api.patch('users/', variables);
+			} catch {}
 		},
 		validationSchema: configUserSchema,
 	});
+
+	useEffect(() => {
+		async function getStates() {
+			const { data } = await axios.get(
+				'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+			);
+			setStates(data);
+			if (data[0] && !formik.values.state && !user.payment?.address?.stateUf) {
+				formik.setFieldValue('state', data[0].nome);
+				formik.setFieldValue('sigla', data[0].sigla);
+			}
+
+			let phone = '';
+			let cpf = '';
+			let cep = '';
+
+			maskPhone(user.phone, newValue => {
+				phone = newValue;
+			});
+			maskCpf(user.cpf, newValue => {
+				cpf = newValue;
+			});
+
+			maskCep(user.payment.address.cep, newValue => {
+				cep = newValue;
+			});
+
+			formik.setValues({
+				adress: user.payment.address.street,
+				bairro: user.payment.address.neighborhood,
+				cep,
+				city: user.payment.address.city,
+				cpf,
+				email: user.email,
+				name: user.name,
+				number: user.payment.address.number,
+				phone,
+				sigla: user.payment.address.stateUf,
+			});
+		}
+
+		getStates();
+	}, []);
+	useEffect(() => {
+		if (!formik.values.sigla) {
+			return;
+		}
+		const uf = states.find(state => state.sigla === formik.values.sigla);
+		if (!uf) {
+			return;
+		}
+
+		formik.setFieldValue('state', uf.nome);
+	}, [formik.values.sigla]);
 
 	function handleDDD(e) {
 		const valueNumber = e.target.value.match(/\d+/g)?.join('');
@@ -182,8 +263,11 @@ const ConfigUser = () => {
 													formik.setFieldValue('state', e.target.value)
 												}
 											>
-												<option value="rio de janeiro">Rio de Janeiro</option>
-												<option>Sao paulo</option>
+												{states.map(state => (
+													<option value={state.nome} key={state.id}>
+														{state.nome}
+													</option>
+												))}
 											</select>
 										</div>
 									</div>

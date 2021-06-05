@@ -14,6 +14,7 @@ export default Yup.object().shape({
 	city: Yup.string(),
 	state: Yup.string(),
 	bairro: Yup.string(),
+	sigla: Yup.string(),
 	ddd: Yup.string().min(2).max(2),
 	phoneContact: Yup.string(/(\d{5}-\d{4})|(\d{4}-\d{4})/g),
 });
