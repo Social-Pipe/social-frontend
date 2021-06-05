@@ -21,7 +21,7 @@ const Product = () => {
 	const [showModalNewPost, setShowModalNewPost] = useState(false);
 	const [client, setClient] = useState();
 	const params = useParams();
-	const { handleShowPopUp } = useContext(Context);
+	const { handleShowPopUp, handleShowModal } = useContext(Context);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -95,9 +95,14 @@ const Product = () => {
 						</button>
 					</div>
 				</div>
-				<Link to="/dashboard/config">
+				<button
+					type="button"
+					onClick={() => {
+						handleShowModal({ show: true, edit: true, client: params.id });
+					}}
+				>
 					<BsFillGearFill size={24} color="#fff" />
-				</Link>
+				</button>
 			</Header>
 			<div className="content">
 				<div className="container_buttons">

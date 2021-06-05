@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { RiArrowRightSLine } from 'react-icons/ri';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import Container from './styles';
 
@@ -24,7 +24,10 @@ const Aside = () => {
 		<>
 			<Container openMenu={menuOpen}>
 				<div>
-					<button type="button" onClick={() => handleShowModal(true)}>
+					<button
+						type="button"
+						onClick={() => handleShowModal({ show: true, edit: false })}
+					>
 						<AiOutlinePlus color="#fff" size={16} />
 						<p>Novo Cliente</p>
 					</button>
@@ -45,13 +48,13 @@ const Aside = () => {
 					))}
 				</div>
 				<div>
-					<div className="comment">
+					<Link to="/dashboard/config" className="comment">
 						<div>
 							<span>Você está logado como</span>
 							<p>{user?.name || 'Usuário'} </p>
 						</div>
 						<RiArrowRightSLine color="#FCDA7B" size={32} />
-					</div>
+					</Link>
 
 					<button
 						type="button"

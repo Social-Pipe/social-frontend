@@ -10,19 +10,11 @@ import { Context } from '../../services/context';
 
 const DashBoard = () => {
 	const [showModal, setShowModal] = useState(false);
-	const { handleShowModal, clients, user, setNewPage } = useContext(Context);
+	const { handleShowModal, clients, user } = useContext(Context);
 	const history = useHistory();
 
 	return (
-		<Container
-			onScroll={e => {
-				const height = e.currentTarget.scrollHeight;
-				if (e.currentTarget.scrollTop + e.currentTarget.offsetHeight < height) {
-					return;
-				}
-				setNewPage();
-			}}
-		>
+		<Container>
 			<Modal showModal={showModal} handleOutClick={() => setShowModal(false)}>
 				<NotPaymentAccept />
 			</Modal>
@@ -31,7 +23,9 @@ const DashBoard = () => {
 				<h2>Dashboard</h2>
 			</div>
 			<div className="content">
-				<Card handleButton={() => handleShowModal(true)} />
+				<Card
+					handleButton={() => handleShowModal({ show: true, edit: false })}
+				/>
 				{clients.map(client => (
 					<Card
 						handleButton={id => {

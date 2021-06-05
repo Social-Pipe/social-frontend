@@ -157,11 +157,12 @@ export const Header = styled.div`
 			}
 		}
 	}
-	> a {
+	> button {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		grid-area: button;
+		cursor: pointer;
 		min-width: 4rem;
 		max-width: 4rem;
 		min-height: 4rem;

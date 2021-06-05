@@ -17,17 +17,18 @@ export const Context = createContext({
 	clients: [],
 	user: {},
 	addUser() {},
-	setNewPage() {},
 });
 
 const ContextProvider = ({ children }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [smart, setSmart] = useState(false);
 	const [showPopUp, setShowPopUp] = useState(false);
-	const [showModal, setShowModal] = useState(false);
-	const [clients, setClients] = useState({ clients: [], page: 0 });
+	const [showModal, setShowModal] = useState({
+		show: false,
+		edit: false,
+	});
+	const [clients, setClients] = useState([]);
 	const [user, setUser] = useState({});
-	const [newPage, setNewPage] = useState(0);
 
 	const verifyWidthAndSetNumberSlides = useCallback(width => {
 		if (width <= 800) {
@@ -38,29 +39,20 @@ const ContextProvider = ({ children }) => {
 		setSmart(false);
 	}, []);
 
-	const fetchClients = async () => {
-		const { data } = await api.get(`clients/?page=${newPage}`);
-		const clientsResult = data.results.map(client => ({
-			id: client.id,
-			logo: client.logo,
-			name: client.name,
-		}));
-		setClients(props => ({
-			clients: [...props.clients, ...clientsResult],
-			page: newPage,
-		}));
-	};
-
 	useEffect(() => {
-		if (newPage <= clients.page) {
-			return;
-		}
+		const fetchClients = async () => {
+			try {
+				const { data } = await api.get('clients/');
+				const clientsResult = data.map(client => ({
+					id: client.id,
+					logo: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${client.logo}`,
+					name: client.name,
+				}));
+				setClients([...clientsResult]);
+			} catch {}
+		};
 		fetchClients();
-	}, [newPage, clients.page]);
-
-	function addNewPage() {
-		setNewPage(newPage + 1);
-	}
+	}, []);
 
 	useEffect(() => {
 		verifyWidthAndSetNumberSlides(window.innerWidth);
@@ -112,10 +104,9 @@ const ContextProvider = ({ children }) => {
 				handleShowPopUp,
 				showModal,
 				handleShowModal,
-				clients: clients.clients,
+				clients,
 				user,
 				addUser,
-				setNewPage: addNewPage,
 			}}
 		>
 			{children}
