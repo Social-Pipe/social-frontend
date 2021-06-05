@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
+import jwtDecode from 'jwt-decode';
 import { useContext, useEffect, useState } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { RiArrowLeftSLine } from 'react-icons/ri';
@@ -33,33 +34,49 @@ const initialValues = {
 };
 
 const ConfigUser = () => {
-	const { user } = useContext(Context);
+	const { user, addUser, handleShowPopUp } = useContext(Context);
 	const [states, setStates] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values) {
+			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
+
+			if (!tokenStorage?.acessToken) {
+				return;
+			}
+			setLoading(true);
+
+			const content = jwtDecode(tokenStorage?.acessToken);
 			const variables = {
 				email: values.email,
 				name: values.name,
-				cpf: values.cpf.match(/\d+/g),
-				phone: values.phone.match(/\d+/g),
+				cpf: values.cpf.match(/\d+/g).join(''),
+				phone: values.phone.match(/\d+/g).join(''),
 				payment: {
 					address: {
-						cep: values.cep.match(/\d+/g),
+						cep: values.cep.match(/\d+/g).join(''),
 						street: values.adress,
 						number: values.number,
 						city: values.city,
 						stateUf: values.sigla,
 						neighborhood: values.bairro,
 					},
+					cardId: user.payment.cardId,
 				},
 			};
 			if (values.password) {
 				variables.password = values.password;
 			}
 			try {
-				await api.patch('users/', variables);
-			} catch {}
+				const response = await api.put(`users/${content.user_id}/`, variables);
+				addUser(response.data);
+				handleShowPopUp('sucess', 'Usuário Editadas!');
+			} catch {
+				handleShowPopUp('error', 'Tente Novamente');
+			} finally {
+				setLoading(false);
+			}
 		},
 		validationSchema: configUserSchema,
 	});
@@ -326,7 +343,18 @@ const ConfigUser = () => {
 								</div>
 							</div>
 						</div>
-						<Button type="submit" secondary>
+						<Button
+							type="button"
+							secondary
+							loading={loading}
+							onClick={() => {
+								if (loading) {
+									return;
+								}
+
+								formik.handleSubmit();
+							}}
+						>
 							Alterar informações
 						</Button>
 					</Form>

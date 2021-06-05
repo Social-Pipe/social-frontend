@@ -12,7 +12,7 @@ export default styled.span`
 	position: fixed;
 	right: 1.12rem;
 	top: 6rem;
-	z-index: 2;
+	z-index: 10;
 	transition: transform 0.3s linear;
 
 	${({ show }) =>
