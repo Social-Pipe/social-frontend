@@ -36,7 +36,11 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			formData.append('linkedin', values.linkedin);
 			formData.append('logo', values.logo);
 			try {
-				await api.post('clients/', formData);
+				if (editClient.edit) {
+					await api.put(`clients/${editClient.client}/`, formData);
+				} else {
+					await api.post('clients/', formData);
+				}
 				handleShowPopUp('sucess', 'Client Cadastrado');
 				resetForm();
 				saveClient();
@@ -49,7 +53,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 	});
 
 	useEffect(() => {
-		formik.setFieldValue('edit', editClient);
+		formik.setFieldValue('edit', editClient.edit);
 	}, [editClient]);
 
 	return (
@@ -58,8 +62,8 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 				<IoMdClose size={24} color="#fff" />
 			</button>
 			<header className="header_container">
-				{editClient ? <h3>Editar cliente</h3> : <h3>Novo cliente</h3>}
-				{editClient && (
+				{editClient.edit ? <h3>Editar cliente</h3> : <h3>Novo cliente</h3>}
+				{editClient.edit && (
 					<Button
 						loading={loading}
 						onClick={() => {
@@ -145,7 +149,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 						</div>
 					</div>
 				</div>
-				{!editClient && (
+				{!editClient.edit && (
 					<footer>
 						<p>
 							Será adicionado o valor de <strong>R$ 9,90</strong> na sua

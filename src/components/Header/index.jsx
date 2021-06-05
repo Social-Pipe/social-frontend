@@ -15,10 +15,18 @@ const Header = () => {
 	useEffect(() => {
 		const routesWithMenu = ['product', 'dashboard'];
 		const array = route.pathname.split('/');
-		const routes =
+		let existRoute = false;
+		let routes =
 			array[array.length - 1] !== ''
 				? array[array.length - 1]
 				: array[array.length - 2];
+		existRoute = routesWithMenu.includes(routes);
+		if (!existRoute) {
+			routes =
+				array[array.length - 1] !== ''
+					? array[array.length - 3]
+					: array[array.length - 4];
+		}
 		setExistMenuRoute(routesWithMenu.includes(routes));
 	}, [route.pathname]);
 	return (

@@ -61,7 +61,7 @@ export default styled.aside`
 			height: 12.25rem;
 			padding: 2.5rem 3rem;
 
-			button {
+			button:last-child {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -83,10 +83,21 @@ export default styled.aside`
 			}
 
 			.comment {
+				cursor: pointer;
+				background: none;
+				border: none;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				max-width: 11.81rem;
+				color: #5d5d5d;
+				text-decoration: none;
+
+				> div {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+				}
 
 				span {
 					font-size: 0.75rem;

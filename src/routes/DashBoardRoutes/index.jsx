@@ -19,9 +19,7 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal, addUser, setNewPage } = useContext(
-		Context
-	);
+	const { showModal, handleShowModal, addUser } = useContext(Context);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
@@ -38,7 +36,6 @@ const DashBoardRoutes = () => {
 			const content = jwtDecode(tokenStorage?.acessToken);
 			const user = await api.get(`users/${content.user_id}/`);
 			addUser(user.data);
-			setNewPage();
 			setLoading(false);
 		}
 		fetchData();
@@ -70,12 +67,22 @@ const DashBoardRoutes = () => {
 						<Route path={`${route.path}`}>
 							<ContainerProduct>
 								<Modal
-									showModal={showModal}
-									handleOutClick={() => handleShowModal(false)}
+									showModal={showModal.show}
+									handleOutClick={() =>
+										handleShowModal(props => ({ ...props, show: false }))
+									}
 								>
 									<NewClient
-										saveClient={() => handleShowModal(false)}
-										handleClose={() => handleShowModal(false)}
+										editClient={{
+											edit: showModal.edit,
+											client: showModal?.client,
+										}}
+										saveClient={() =>
+											handleShowModal(props => ({ ...props, show: false }))
+										}
+										handleClose={() =>
+											handleShowModal(props => ({ ...props, show: false }))
+										}
 									/>
 								</Modal>
 								<Aside />
