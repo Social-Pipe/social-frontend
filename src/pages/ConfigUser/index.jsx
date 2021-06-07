@@ -69,7 +69,10 @@ const ConfigUser = () => {
 				variables.password = values.password;
 			}
 			try {
-				const response = await api.put(`users/${content.user_id}/`, variables);
+				const response = await api.patch(
+					`users/${content.user_id}/`,
+					variables
+				);
 				addUser(response.data);
 				handleShowPopUp('sucess', 'Usuário Editadas!');
 			} catch {

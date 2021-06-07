@@ -34,9 +34,15 @@ const DashBoardRoutes = () => {
 			}
 
 			const content = jwtDecode(tokenStorage?.acessToken);
-			const user = await api.get(`users/${content.user_id}/`);
-			addUser(user.data);
-			setLoading(false);
+			try {
+				const user = await api.get(`users/${content.user_id}/`);
+				addUser(user.data);
+				setLoading(false);
+			} catch {
+				window.localStorage.clear();
+				history.replace('/');
+				setLoading(false);
+			}
 		}
 		fetchData();
 	}, []);
