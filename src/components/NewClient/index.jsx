@@ -24,7 +24,7 @@ const initialValues = {
 
 const NewClient = ({ saveClient, editClient, handleClose }) => {
 	const [loading, setLoading] = useState(false);
-	const { handleShowPopUp } = useContext(Context);
+	const { handleShowPopUp, showModal } = useContext(Context);
 	const formik = useFormik({
 		initialValues,
 		onSubmit: async (values, { resetForm }) => {
@@ -34,7 +34,9 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			formData.append('instagram', values.instagram);
 			formData.append('facebook', values.facebook);
 			formData.append('linkedin', values.linkedin);
-			formData.append('logo', values.logo);
+			if (formik.values.logo) {
+				formData.append('logo', values.logo);
+			}
 			try {
 				if (editClient.edit) {
 					await api.put(`clients/${editClient.client.id}/`, formData);
@@ -53,6 +55,15 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 	});
 
 	useEffect(() => {
+		if (!showModal.show) {
+			formik.resetForm(initialValues);
+		}
+	}, [showModal]);
+
+	useEffect(() => {
+		if (!editClient.edit || !showModal.show) {
+			return;
+		}
 		formik.setFieldValue('edit', editClient.edit);
 		formik.setFieldValue('name', editClient.client.name);
 		formik.setFieldValue('facebook', editClient.client.facebook);
@@ -62,7 +73,14 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 
 	return (
 		<Container>
-			<button type="button" className="close_button" onClick={handleClose}>
+			<button
+				type="button"
+				className="close_button"
+				onClick={() => {
+					formik.resetForm();
+					handleClose();
+				}}
+			>
 				<IoMdClose size={24} color="#fff" />
 			</button>
 			<header className="header_container">
@@ -86,10 +104,18 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 				<div>
 					<div className="photo_container">
 						<p>Logo da empresa</p>
-						<PhotoContainer
-							value={formik.values.logo}
-							handleChange={file => formik.setFieldValue('logo', file)}
-						/>
+						<div>
+							{editClient?.client?.logo && !formik.values.logo && (
+								<img
+									src={`${process.env.REACT_APP_DJANGO_MEDIA_URL}/${editClient.client.logo}`}
+									alt="logo"
+								/>
+							)}
+							<PhotoContainer
+								value={formik.values.logo}
+								handleChange={file => formik.setFieldValue('logo', file)}
+							/>
+						</div>
 					</div>
 					<div className="inputs_container">
 						<fieldset>

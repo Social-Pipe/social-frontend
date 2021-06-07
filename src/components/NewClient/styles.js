@@ -58,6 +58,20 @@ export default styled.div`
 						color: #5d5d5d;
 						font-weight: 500;
 					}
+
+					> div {
+						position: relative;
+						img {
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 8.94rem;
+							height: 8.94rem;
+							pointer-events: none;
+							border-radius: 100%;
+							object-fit: cover;
+						}
+					}
 				}
 				.inputs_container {
 					flex: 1;
