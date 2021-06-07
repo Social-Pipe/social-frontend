@@ -37,9 +37,7 @@ const Aside = () => {
 					{clients.map(client => (
 						<button
 							type="button"
-							onClick={() =>
-								history.push(`/dashboard/product/${client.id}/post`)
-							}
+							onClick={() => history.push(`/cliente/product/${client.id}/post`)}
 							className={client.id === clientActiveId ? 'active' : ''}
 							key={client.id}
 						>
@@ -48,7 +46,7 @@ const Aside = () => {
 					))}
 				</div>
 				<div>
-					<Link to="/dashboard/config" className="comment">
+					<Link to="/dashboard/configuracao" className="comment">
 						<div>
 							<span>Você está logado como</span>
 							<p>{user?.name || 'Usuário'} </p>

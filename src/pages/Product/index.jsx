@@ -109,7 +109,7 @@ const Product = () => {
 					<Button type="button" onClick={() => setShowModalNewPost(true)}>
 						Novo post
 					</Button>
-					<Link className="secondary" to="/dashboard/products/id/archive">
+					<Link className="secondary" to="/dashboard/cliente/1/arquivo">
 						Mostrar arquivados
 					</Link>
 				</div>

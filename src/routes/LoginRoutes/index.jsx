@@ -45,13 +45,13 @@ const LoginRoutes = () => {
 						<Route exact path={`${route.path}`} component={Login} />
 						<Route
 							exact
-							path={`${route.path}forgetPassword`}
+							path={`${route.path}esqueciSenha`}
 							component={ForgetPassword}
 						/>
-						<Route exact path={`${route.path}register`} component={Register} />
+						<Route exact path={`${route.path}cadastrar`} component={Register} />
 						<Route
 							exact
-							path={`${route.path}desactiveSucess`}
+							path={`${route.path}contaDesativada`}
 							component={DesactiveSucess}
 						/>
 					</Switch>

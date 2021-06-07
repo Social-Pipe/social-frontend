@@ -389,7 +389,7 @@ const ConfigUser = () => {
 							</div>
 						</div>
 						<div className="container_buttons">
-							<Link to="configPayment" className="edit">
+							<Link to="pagamentoConfiguracao" className="edit">
 								Alterar informação de pagamento
 							</Link>
 							<button type="button" className="desactive">

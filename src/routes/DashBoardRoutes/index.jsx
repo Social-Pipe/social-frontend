@@ -55,20 +55,24 @@ const DashBoardRoutes = () => {
 				<>
 					<Header />
 					<Switch>
-						<Route exact path={`${route.path}/config`} component={ConfigUser} />
 						<Route
 							exact
-							path={`${route.path}/configPayment`}
+							path={`${route.path}/configuracao`}
+							component={ConfigUser}
+						/>
+						<Route
+							exact
+							path={`${route.path}/pagamentoConfiguracao`}
 							component={ChangeConfigPayment}
 						/>
 						<Route
 							exact
-							path={`${route.path}/desactiveAccount`}
+							path={`${route.path}/desativarConta`}
 							component={DesactiveAccount}
 						/>
 						<Route
 							exact
-							path={`${route.path}/products/:id/archive`}
+							path={`${route.path}/cliente/:id/arquivo`}
 							component={ProductDetail}
 						/>
 
@@ -99,7 +103,7 @@ const DashBoardRoutes = () => {
 									<Route exact path={`${route.path}`} component={DashBoard} />
 									<Route
 										exact
-										path={`${route.path}/product/:id/post`}
+										path={`${route.path}/cliente/:id/post`}
 										component={Product}
 									/>
 								</Switch>
