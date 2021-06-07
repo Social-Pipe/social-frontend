@@ -66,8 +66,6 @@ const Register = () => {
 					email: values.email,
 					password: values.password,
 					name: values.name,
-					cpf: values.cpf.match(/\d+/g).join(''),
-					phone: values.phone.match(/\d+/g).join(''),
 					payment: {
 						address: {
 							cep: values.cep.match(/\d+/g).join(''),
@@ -86,6 +84,12 @@ const Register = () => {
 						linkedin: values.linkedin,
 					},
 				};
+				if (values.phone) {
+					request.phone = values.phone.match(/\d+/g).join('');
+				}
+				if (values.cpf) {
+					request.cpf = values.cpf.match(/\d+/g).join('');
+				}
 
 				await api.post('users/', request);
 				const responseLogin = await api.post('token/', {
@@ -107,7 +111,7 @@ const Register = () => {
 				formClient.append('linkedin', values.linkedin);
 				await api.post('clients/', formClient);
 				setPage(3);
-			} catch (e) {
+			} catch {
 				handleShowPopUp('error', 'Erro no cadastro');
 			} finally {
 				setLoading(false);
