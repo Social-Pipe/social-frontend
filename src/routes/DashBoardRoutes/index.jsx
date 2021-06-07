@@ -19,7 +19,9 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal, addUser } = useContext(Context);
+	const { showModal, handleShowModal, addUser, fetchMoreClients } = useContext(
+		Context
+	);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
@@ -83,9 +85,10 @@ const DashBoardRoutes = () => {
 											edit: showModal.edit,
 											client: showModal?.client,
 										}}
-										saveClient={() =>
-											handleShowModal(props => ({ ...props, show: false }))
-										}
+										saveClient={() => {
+											fetchMoreClients();
+											handleShowModal(props => ({ ...props, show: false }));
+										}}
 										handleClose={() =>
 											handleShowModal(props => ({ ...props, show: false }))
 										}

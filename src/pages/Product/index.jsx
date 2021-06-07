@@ -98,7 +98,7 @@ const Product = () => {
 				<button
 					type="button"
 					onClick={() => {
-						handleShowModal({ show: true, edit: true, client: params.id });
+						handleShowModal({ show: true, edit: true, client });
 					}}
 				>
 					<BsFillGearFill size={24} color="#fff" />

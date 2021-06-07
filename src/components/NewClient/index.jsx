@@ -37,7 +37,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			formData.append('logo', values.logo);
 			try {
 				if (editClient.edit) {
-					await api.put(`clients/${editClient.client}/`, formData);
+					await api.put(`clients/${editClient.client.id}/`, formData);
 				} else {
 					await api.post('clients/', formData);
 				}
@@ -54,6 +54,10 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 
 	useEffect(() => {
 		formik.setFieldValue('edit', editClient.edit);
+		formik.setFieldValue('name', editClient.client.name);
+		formik.setFieldValue('facebook', editClient.client.facebook);
+		formik.setFieldValue('instagram', editClient.client.instagram);
+		formik.setFieldValue('linkedin', editClient.client.linkedin);
 	}, [editClient]);
 
 	return (
@@ -176,12 +180,18 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 
 NewClient.propTypes = {
 	saveClient: PropTypes.func.isRequired,
-	editClient: PropTypes.bool,
+	editClient: PropTypes.exact({
+		edit: PropTypes.bool,
+		client: PropTypes.object,
+	}),
 	handleClose: PropTypes.func.isRequired,
 };
 
 NewClient.defaultProps = {
-	editClient: false,
+	editClient: {
+		edit: false,
+		client: {},
+	},
 };
 
 export default NewClient;

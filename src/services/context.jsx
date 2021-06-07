@@ -16,6 +16,7 @@ export const Context = createContext({
 	handleShowModal() {},
 	clients: [],
 	user: {},
+	fetchMoreClients() {},
 	addUser() {},
 });
 
@@ -39,11 +40,11 @@ const ContextProvider = ({ children }) => {
 		setSmart(false);
 	}, []);
 
-	useEffect(() => {
-		const fetchClients = async () => {
+	const fetchClients = useCallback(() => {
+		const fetchData = async () => {
 			try {
 				const { data } = await api.get('clients/');
-				const clientsResult = data.map(client => ({
+				const clientsResult = data.results.map(client => ({
 					id: client.id,
 					logo: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${client.logo}`,
 					name: client.name,
@@ -51,8 +52,12 @@ const ContextProvider = ({ children }) => {
 				setClients([...clientsResult]);
 			} catch {}
 		};
-		fetchClients();
+		fetchData();
 	}, []);
+
+	useEffect(() => {
+		fetchClients();
+	}, [fetchClients]);
 
 	useEffect(() => {
 		verifyWidthAndSetNumberSlides(window.innerWidth);
@@ -107,6 +112,7 @@ const ContextProvider = ({ children }) => {
 				clients,
 				user,
 				addUser,
+				fetchMoreClients: fetchClients,
 			}}
 		>
 			{children}
