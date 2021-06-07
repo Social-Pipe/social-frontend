@@ -1,4 +1,7 @@
 import { useFormik } from 'formik';
+import jwtDecode from 'jwt-decode';
+import pagarme from 'pagarme';
+import { useContext, useState } from 'react';
 import { RiArrowLeftSLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +10,8 @@ import Container, { FieldSet, Form } from './styles';
 import creditCard from '../../assets/icons/credit-card.svg';
 import creditCardTwo from '../../assets/icons/credit-card2.png';
 import Button from '../../components/Button';
+import api from '../../config/api';
+import { Context } from '../../services/context';
 import maskCardNumber from '../../utils/maskCardNumber';
 import maskDate from '../../utils/maskDate';
 import configPaymentSchema from '../../validations/configPaymentSchema';
@@ -19,10 +24,45 @@ const initialValues = {
 };
 
 const ChangeConfigPayment = () => {
+	const { handleShowPopUp, user } = useContext(Context);
+	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues,
-		onSubmit() {
-			// console.log(values);
+		async onSubmit(values) {
+			setLoading(true);
+			const cardValues = {
+				card_number: values.numberCard.match(/\d+/g).join(''),
+				card_holder_name: values.name,
+				card_expiration_date: values.vality.match(/\d+/g).join(''),
+				card_cvv: values.codeCard,
+			};
+			try {
+				const client = await pagarme.client.connect({
+					api_key: 'ak_test_Wa4vKvUZGvchQYclsvaXxbnI1jtcOy',
+				});
+				const cardId = await client.cards.create(cardValues);
+
+				const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
+
+				if (!tokenStorage?.acessToken) {
+					setLoading(false);
+					return;
+				}
+
+				const content = jwtDecode(tokenStorage?.acessToken);
+				await api.patch(`users/${content.user_id}/`, {
+					...user,
+					payment: {
+						...user.payment,
+						cardId: cardId.id,
+					},
+				});
+				handleShowPopUp('sucess', 'Informações Atualizadas!');
+			} catch {
+				handleShowPopUp('error', 'Tente Novamente');
+			} finally {
+				setLoading(false);
+			}
 		},
 		validationSchema: configPaymentSchema,
 	});
@@ -65,7 +105,7 @@ const ChangeConfigPayment = () => {
 								id="name"
 								className="cardName"
 								name="name"
-								autoCapitalize
+								autoCapitalize="true"
 								placeholder="EX: TITO LIMA"
 								autoComplete="name"
 								onChange={formik.handleChange}
@@ -111,7 +151,18 @@ const ChangeConfigPayment = () => {
 							</div>
 						</FieldSet>
 
-						<Button type="submit">Salvar informações</Button>
+						<Button
+							type="button"
+							loading={loading}
+							onClick={() => {
+								if (loading) {
+									return;
+								}
+								formik.handleSubmit();
+							}}
+						>
+							Salvar informações
+						</Button>
 					</Form>
 				</div>
 
