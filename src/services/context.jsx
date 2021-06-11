@@ -56,10 +56,6 @@ const ContextProvider = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		fetchClients();
-	}, [fetchClients]);
-
-	useEffect(() => {
 		verifyWidthAndSetNumberSlides(window.innerWidth);
 		window.addEventListener('resize', () => {
 			verifyWidthAndSetNumberSlides(window.innerWidth);

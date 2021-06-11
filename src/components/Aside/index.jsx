@@ -59,7 +59,7 @@ const Aside = () => {
 						onClick={() => {
 							window.localStorage.clear();
 
-							history.replace('/');
+							history.replace('/login');
 						}}
 					>
 						Sair

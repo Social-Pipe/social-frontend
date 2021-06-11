@@ -31,7 +31,7 @@ const DashBoardRoutes = () => {
 			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
 			if (!tokenStorage?.acessToken) {
 				setLoading(false);
-				history.replace('/');
+				history.replace('/login');
 				return;
 			}
 
@@ -40,9 +40,10 @@ const DashBoardRoutes = () => {
 				const user = await api.get(`users/${content.user_id}/`);
 				addUser(user.data);
 				setLoading(false);
+				fetchMoreClients();
 			} catch {
 				window.localStorage.clear();
-				history.replace('/');
+				history.replace('/login');
 				setLoading(false);
 			}
 		}

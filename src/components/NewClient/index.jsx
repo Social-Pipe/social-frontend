@@ -39,7 +39,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			}
 			try {
 				if (editClient.edit) {
-					await api.put(`clients/${editClient.client.id}/`, formData);
+					await api.patch(`clients/${editClient.client.id}/`, formData);
 				} else {
 					await api.post('clients/', formData);
 				}

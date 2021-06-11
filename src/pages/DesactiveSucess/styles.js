@@ -7,6 +7,8 @@ export default styled.div`
 	flex: 2;
 	> div {
 		max-width: 28.75rem;
+		display: flex;
+		flex-direction: column;
 
 		h1 {
 			color: #3c3f4f;
@@ -21,6 +23,17 @@ export default styled.div`
 		}
 		button {
 			max-width: 20.6rem;
+		}
+	}
+
+	@media (max-width: 800px) {
+		> div {
+			align-items: center;
+			margin: 0.5rem;
+			h1 {
+				font-size: 2rem;
+				text-align: center;
+			}
 		}
 	}
 `;

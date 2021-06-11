@@ -40,4 +40,19 @@ export default styled.div`
 		margin-top: 2.5rem;
 		max-width: 15.5rem;
 	}
+
+	@media (max-width: 800px) {
+		padding: 2rem;
+		h3 {
+			font-size: 2rem;
+		}
+	}
+
+	@media (max-width: 700px) {
+		max-width: 26rem;
+	}
+
+	@media (max-width: 500px) {
+		max-width: 20rem;
+	}
 `;

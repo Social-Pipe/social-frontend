@@ -37,6 +37,7 @@ const ConfigUser = () => {
 	const { user, addUser, handleShowPopUp } = useContext(Context);
 	const [states, setStates] = useState([]);
 	const [loading, setLoading] = useState(false);
+
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values) {
@@ -392,9 +393,9 @@ const ConfigUser = () => {
 							<Link to="pagamentoConfiguracao" className="edit">
 								Alterar informação de pagamento
 							</Link>
-							<button type="button" className="desactive">
+							<Link to="desativarConta" className="desactive">
 								Desativar conta
-							</button>
+							</Link>
 						</div>
 					</Info>
 				</div>

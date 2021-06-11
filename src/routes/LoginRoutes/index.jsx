@@ -45,13 +45,17 @@ const LoginRoutes = () => {
 						<Route exact path={`${route.path}`} component={Login} />
 						<Route
 							exact
-							path={`${route.path}esqueciSenha`}
+							path={`${route.path}/esqueciSenha`}
 							component={ForgetPassword}
 						/>
-						<Route exact path={`${route.path}cadastrar`} component={Register} />
 						<Route
 							exact
-							path={`${route.path}contaDesativada`}
+							path={`${route.path}/cadastrar`}
+							component={Register}
+						/>
+						<Route
+							exact
+							path={`${route.path}/contaDesativada`}
 							component={DesactiveSucess}
 						/>
 					</Switch>
