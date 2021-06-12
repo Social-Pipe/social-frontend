@@ -22,7 +22,7 @@ const Routes = () => (
 				<Header />
 				<ProductDetail />
 			</Route>
-			<Route exact="/">
+			<Route exact path="/">
 				<Redirect to="/login" />
 			</Route>
 		</Switch>

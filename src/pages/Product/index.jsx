@@ -21,18 +21,12 @@ const Product = () => {
 	const [showModalNewPost, setShowModalNewPost] = useState(false);
 	const [client, setClient] = useState();
 	const params = useParams();
-	const { handleShowPopUp, handleShowModal } = useContext(Context);
+	const { handleShowPopUp, handleShowModal, clients } = useContext(Context);
 
 	useEffect(() => {
-		async function fetchData() {
-			const response = await api.get(`clients/${params.id}/`);
-			setClient(response?.data || {});
-		}
-
-		if (params?.id) {
-			fetchData();
-		}
-	}, [params]);
+		const newClient = clients.find(clientI => clientI.id === Number(params.id));
+		setClient(newClient);
+	}, [params, clients]);
 
 	return (
 		<Container>

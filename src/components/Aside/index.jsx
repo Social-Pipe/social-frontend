@@ -37,7 +37,9 @@ const Aside = () => {
 					{clients.map(client => (
 						<button
 							type="button"
-							onClick={() => history.push(`/cliente/product/${client.id}/post`)}
+							onClick={() =>
+								history.push(`/dashboard/cliente/${client.id}/post`)
+							}
 							className={client.id === clientActiveId ? 'active' : ''}
 							key={client.id}
 						>
