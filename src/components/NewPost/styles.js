@@ -29,12 +29,13 @@ export default styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		input {
+		h2 {
 			font-size: 2.44rem;
 			border: none;
 			width: 100%;
 			font-weight: bold;
 			color: #3c3f4f;
+			outline: none;
 		}
 		button {
 			max-width: 15.5rem;
@@ -112,13 +113,17 @@ export default styled.div`
 			}
 
 			.date {
+				background: none;
+				border: none;
 				flex: 1.3;
 				display: flex;
 				padding-left: 3.125rem;
 				padding-right: 1.75rem;
 				flex-direction: column;
 
-				> div {
+				> button {
+					background: none;
+					cursor: pointer;
 					display: flex;
 					align-items: center;
 					height: 3rem;
@@ -184,12 +189,12 @@ export default styled.div`
 					> div {
 						position: relative;
 						padding-left: 0.5rem;
-						svg:first-child {
+						.imageContainer {
 							position: absolute;
 							top: 0;
 							right: 2.4rem;
 						}
-						svg:last-child {
+						> svg:last-child {
 							z-index: 2;
 						}
 					}
@@ -338,5 +343,31 @@ export default styled.div`
 				}
 			}
 		}
+	}
+`;
+
+export const ContainerCalendar = styled.div`
+	position: fixed;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	display: ${({ show }) => (show ? 'block' : 'none')};
+	z-index: 3;
+	> span {
+		border: none;
+		top: 0;
+		left: 0;
+		display: block;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.77);
+	}
+
+	> div {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 `;
