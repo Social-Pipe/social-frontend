@@ -34,12 +34,9 @@ const DesactiveAccount = () => {
 								);
 								const content = jwtDecode(tokenStorage?.acessToken);
 								try {
-									const response = await api.delete(
-										`users/${content.user_id}/`
-									);
-									console.log(response);
+									await api.delete(`users/${content.user_id}/`);
 									window.localStorage.clear();
-									history.push('/contaDesativada');
+									history.push('/login/contaDesativada');
 								} catch {
 									handleShowPopUp('error', 'Tente Novamente');
 								}
