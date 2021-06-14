@@ -38,21 +38,40 @@ const NewPost = ({ saveClient, clientInfo }) => {
 		async onSubmit(values, { resetForm }) {
 			setLoading(true);
 			try {
+				let type = 'SINGLE';
+				if (values.logo.length > 1) {
+					type = 'GALLERY';
+				}
+				if (values.logo[0].type.split('/')[0] === 'video') {
+					type = 'VIDEO';
+				}
 				const response = await api.post(
 					`clients/${clientInfo.accessHash}/posts/`,
 					{
-						publish: true,
+						publish: values.showForClient,
 						instagram: values.instagram,
 						facebook: values.facebook,
 						linkedin: values.linkedin,
 						postingDate: values.date,
+						caption: values.description,
+						type,
 					}
 				);
-
-				const formData = new FormData();
-				formData.append('logo', values.logo);
-				const logo = await api.post(`postfiles/${response.data.id}`, formData);
-				console.log(logo);
+				if (values.logo.length > 1) {
+					const files = values.logo.map(logo => {
+						const formData = new FormData();
+						formData.append('file', logo);
+						formData.append('post', response.data.id);
+						const logoResult = api.post('postfiles/', formData);
+						return logoResult;
+					});
+					await Promise.all(files);
+				} else {
+					const formData = new FormData();
+					formData.append('file', values.logo[0]);
+					formData.append('post', response.data.id);
+					await api.post('postfiles/', formData);
+				}
 				handleShowPopUp('sucess', 'Post Criado');
 
 				setLoading(false);

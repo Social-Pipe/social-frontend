@@ -15,7 +15,8 @@ function MyDropzone({ handleChange, value, ...rest }) {
 		}
 		const fileUrl = URL.createObjectURL(file);
 		setSelectedFileUrl(fileUrl);
-		handleChange(file);
+		console.log(acceptedFiles);
+		handleChange(acceptedFiles);
 	}, []);
 	const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -24,7 +25,7 @@ function MyDropzone({ handleChange, value, ...rest }) {
 			setSelectedFileUrl('');
 			return;
 		}
-		const fileUrl = URL.createObjectURL(value);
+		const fileUrl = URL.createObjectURL(value[0]);
 		setSelectedFileUrl(fileUrl);
 	}, [value]);
 
