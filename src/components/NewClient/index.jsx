@@ -34,6 +34,8 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			formData.append('instagram', values.instagram);
 			formData.append('facebook', values.facebook);
 			formData.append('linkedin', values.linkedin);
+			formData.append('linkedin', values.linkedin);
+			formData.append('password ', values.password);
 			if (formik.values.logo) {
 				formData.append('logo', values.logo);
 			}
