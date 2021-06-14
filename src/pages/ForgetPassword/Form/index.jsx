@@ -1,10 +1,13 @@
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import Container from './styles';
 
 import Button from '../../../components/Button';
+import api from '../../../config/api';
+import { Context } from '../../../services/context';
 import forgetPasswordSchema from '../../../validations/forgetPasswordSchema';
 
 const initialValues = {
@@ -12,11 +15,27 @@ const initialValues = {
 };
 
 const ForgetPassword = ({ onPressButtonAfter }) => {
+	const [loading, setLoading] = useState(false);
+	const { handleShowPopUp } = useContext(Context);
 	const formik = useFormik({
 		initialValues,
 		validationSchema: forgetPasswordSchema,
-		onSubmit: () => {
-			onPressButtonAfter();
+		onSubmit: async values => {
+			if (loading) {
+				return;
+			}
+			setLoading(true);
+			try {
+				await api.post('users/recover-password', {
+					email: values.email,
+				});
+				setLoading(false);
+				onPressButtonAfter();
+				handleShowPopUp('sucess', 'Enviado');
+			} catch (e) {
+				setLoading(false);
+				handleShowPopUp('error', 'Erro, tente Novamente');
+			}
 		},
 	});
 
@@ -43,7 +62,7 @@ const ForgetPassword = ({ onPressButtonAfter }) => {
 					<div className="container_forget">
 						<Link to="/login">Voltar para a tela de login</Link>
 					</div>
-					<Button type="submit" className="button">
+					<Button type="submit" className="button" loading={loading}>
 						Recuperar senha
 					</Button>
 				</div>
