@@ -1,6 +1,5 @@
 import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
-import jwtDecode from 'jwt-decode';
 import { useEffect, useState, useContext, useCallback } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
