@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
+import Carrousel from 'nuka-carousel';
 import { useEffect, useState, useContext } from 'react';
 import { BsX } from 'react-icons/bs';
 import { ImCheckmark } from 'react-icons/im';
@@ -51,6 +52,54 @@ const RatingPost = ({ closeModal, values = { comments: [] }, user }) => {
 					<IoMdClose size={24} color="#fff" />
 				</button>
 				<div className="image">
+					{values.type === 'VIDEO' &&
+						(!values.logoFormat ? (
+							<video autoPlay>
+								<source
+									src={values.logo && values.logo[0] && values.logo[0].file}
+								/>
+							</video>
+						) : (
+							<video autoPlay>
+								<source src={values.logoFormat && values.logoFormat[0]} />
+							</video>
+						))}
+					{values.type === 'SINGLE' &&
+						(!values.logoFormat ? (
+							<img
+								src={values.logo && values.logo[0] && values.logo[0].file}
+								alt="produto"
+							/>
+						) : (
+							<img
+								src={values.logoFormat && values.logoFormat[0]}
+								alt="produto"
+							/>
+						))}
+					{values.type === 'GALLERY' && (
+						<Carrousel
+							autoplay
+							slidesToShow={1}
+							style={{
+								width: '100%',
+								height: '100%',
+							}}
+							height="100%"
+							defaultControlsConfig={{
+								nextButtonStyle: { display: 'none' },
+								prevButtonStyle: { display: 'none' },
+								pagingDotsStyle: { display: 'none' },
+							}}
+						>
+							{values.logo && !values.logoFormat
+								? values.logo.map(img => (
+										<img key={img.id} src={img && img.file} alt="produto" />
+								  ))
+								: values.logoFormat.map(img => (
+										<img key={img.id} src={img && img} alt="produto" />
+								  ))}
+						</Carrousel>
+					)}
 					<img
 						src={values?.files && values.files[0] && values.files[0].file}
 						alt="produto"
