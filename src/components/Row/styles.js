@@ -16,7 +16,8 @@ export default styled.div`
 		display: flex;
 		align-items: center;
 
-		img {
+		img,
+		video {
 			width: 4rem;
 			height: 4rem;
 			object-fit: cover;
