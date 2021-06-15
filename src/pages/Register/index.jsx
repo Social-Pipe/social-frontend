@@ -106,6 +106,7 @@ const Register = () => {
 				const formClient = new FormData();
 				formClient.append('logo', values.logo);
 				formClient.append('name', values.companyName);
+				formClient.append('password', values.passwordAccess);
 				formClient.append('instagram', values.instagram);
 				formClient.append('facebook', values.facebook);
 				formClient.append('linkedin', values.linkedin);
