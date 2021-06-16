@@ -9,6 +9,11 @@ export default styled.div`
 	max-width: 73.37rem;
 	max-height: 43.5rem;
 
+	.slider-list,
+	.slider-list .slider-slide {
+		height: 100% !important;
+	}
+
 	img {
 		object-fit: cover;
 	}
@@ -46,7 +51,8 @@ export default styled.div`
 		flex: 4;
 		padding: 0;
 
-		img {
+		img,
+		video {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
@@ -167,7 +173,9 @@ export default styled.div`
 				display: flex;
 				flex-direction: column;
 
-				> div {
+				> button {
+					background: none;
+					cursor: pointer;
 					display: flex;
 					align-items: center;
 					height: 3rem;
@@ -303,6 +311,7 @@ export default styled.div`
 		margin: 0 3rem;
 
 		.image {
+			min-height: 23rem;
 			flex: 2.5;
 		}
 	}
@@ -327,5 +336,34 @@ export default styled.div`
 				}
 			}
 		}
+	}
+`;
+
+export const ContainerCalendar = styled.div`
+	position: fixed;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	display: ${({ show }) => (show ? 'block' : 'none')} !important;
+	z-index: 3;
+	padding: 0 !important;
+
+	> span {
+		border: none;
+		top: 0;
+		left: 0;
+		display: block;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.77);
+	}
+
+	> div {
+		position: absolute;
+		background: #fff;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 `;
