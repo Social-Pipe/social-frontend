@@ -16,6 +16,7 @@ export default styled.div`
 		button {
 			min-height: 3rem;
 			flex: 1;
+			min-width: 8rem;
 
 			:last-child {
 				color: #5d5d5d;
