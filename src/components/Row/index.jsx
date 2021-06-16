@@ -51,7 +51,12 @@ const Row = ({
 			<p>{date}</p>
 		</div>
 		<div className="buttons">
-			<Status status={status}>{statusText}</Status>
+			<Status status={status}>
+				{status === 'CANCELED' && <span>Reprovado</span>}
+				{status === 'ATTENTION' && <span>Alteração</span>}
+				{status === 'APPROVED' && <span>Aprovado</span>}
+				{status === 'NONE' && <span>Sem status</span>}
+			</Status>
 			{buttons && (
 				<div>
 					<button onClick={deleteItem} className="cancel" type="button">

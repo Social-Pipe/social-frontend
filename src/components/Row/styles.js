@@ -132,7 +132,8 @@ export const Status = styled.span`
 		switch (status) {
 			case 'NONE':
 				return css`
-					background-color: #fee569;
+					color: #474747;
+					background: #f5f5f5;
 				`;
 			case 'APPROVED':
 				return css`
