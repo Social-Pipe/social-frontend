@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import Carrousel from 'nuka-carousel';
 import { useEffect, useState, useContext } from 'react';
@@ -13,26 +13,42 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import Comment from '../Comment';
 
-const RatingPost = ({ closeModal, values = { comments: [] }, user }) => {
+const RatingPost = ({
+	closeModal,
+	values = { comments: [] },
+	user,
+	clientToken,
+	updatePosts,
+}) => {
 	const [comment, setComment] = useState('');
 	const [comments, SetComments] = useState([]);
 	const { handleShowPopUp } = useContext(Context);
+	const [post, setPost] = useState({});
 
 	async function fetchComment() {
 		try {
-			const commentResponse = await api.post('comments/', {
-				post: values.id,
-				writer: user ? 'USER' : 'CLIENT ',
-				message: comment,
-			});
+			const commentResponse = await api.post(
+				'comments/',
+				{
+					post: values.id,
+					writer: user ? 'USER' : 'CLIENT',
+					message: comment,
+				},
+				{
+					headers: {
+						'X-Client': `Bearer ${clientToken}`,
+					},
+				}
+			);
 			const newComment = {
 				...commentResponse.data,
 				dataFormat: format(new Date(), "eeeeee, 'de' MMMM 'às' HH:mm", {
 					locale: ptBr,
 				}),
 			};
+
 			const newComments = [...comments, newComment];
-			SetComments(newComments);
+			setPost(postProps => ({ ...postProps, comments: newComments }));
 			setComment('');
 		} catch {
 			handleShowPopUp('error', 'Erro,tente novamente');
@@ -41,9 +57,59 @@ const RatingPost = ({ closeModal, values = { comments: [] }, user }) => {
 
 	useEffect(() => {
 		if (values?.comments) {
-			SetComments(values.comments);
+			setPost(values);
 		}
-	}, []);
+	}, [values]);
+
+	async function changeStatus(status) {
+		if (post.status === status) {
+			return;
+		}
+		try {
+			const { data } = await api.patch(
+				`posts/${post.id}/`,
+				{
+					status,
+				},
+				{
+					headers: {
+						'X-Client': `Bearer ${clientToken}`,
+					},
+				}
+			);
+			const newComment = data.comments.map(commentMap => ({
+				...commentMap,
+				dataFormat: format(
+					parseISO(commentMap.createdAt),
+					"eeeeee, 'de' MMMM 'às' HH:mm",
+					{
+						locale: ptBr,
+					}
+				),
+			}));
+			const files = data.files.map(file => ({
+				...file,
+				file: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${file.file}`,
+			}));
+			const newPost = {
+				...data,
+				comments: newComment,
+				files,
+				dataFormat: format(
+					parseISO(data.postingDate),
+					"eeeeee, 'de' MMMM 'às' HH:mm",
+					{
+						locale: ptBr,
+					}
+				),
+			};
+
+			setPost(newPost);
+			updatePosts(data.id, newPost);
+		} catch (e) {
+			console.log(e);
+		}
+	}
 
 	return (
 		<Container>
@@ -52,31 +118,20 @@ const RatingPost = ({ closeModal, values = { comments: [] }, user }) => {
 					<IoMdClose size={24} color="#fff" />
 				</button>
 				<div className="image">
-					{values.type === 'VIDEO' &&
-						(!values.logoFormat ? (
-							<video autoPlay>
-								<source
-									src={values.logo && values.logo[0] && values.logo[0].file}
-								/>
-							</video>
-						) : (
-							<video autoPlay>
-								<source src={values.logoFormat && values.logoFormat[0]} />
-							</video>
-						))}
-					{values.type === 'SINGLE' &&
-						(!values.logoFormat ? (
-							<img
-								src={values.logo && values.logo[0] && values.logo[0].file}
-								alt="produto"
+					{post?.type === 'VIDEO' && (
+						<video autoPlay>
+							<source
+								src={post?.files && post?.files[0] && post?.files[0].file}
 							/>
-						) : (
-							<img
-								src={values.logoFormat && values.logoFormat[0]}
-								alt="produto"
-							/>
-						))}
-					{values.type === 'GALLERY' && (
+						</video>
+					)}
+					{post?.type === 'SINGLE' && (
+						<img
+							src={post?.files && post?.files[0] && post?.files[0].file}
+							alt="produto"
+						/>
+					)}
+					{post?.type === 'GALLERY' && (
 						<Carrousel
 							autoplay
 							slidesToShow={1}
@@ -91,39 +146,57 @@ const RatingPost = ({ closeModal, values = { comments: [] }, user }) => {
 								pagingDotsStyle: { display: 'none' },
 							}}
 						>
-							{values.logo && !values.logoFormat
-								? values.logo.map(img => (
-										<img key={img.id} src={img && img.file} alt="produto" />
-								  ))
-								: values.logoFormat.map(img => (
-										<img key={img.id} src={img && img} alt="produto" />
-								  ))}
+							{post?.files &&
+								post?.files.map(img => (
+									<img key={img.id} src={img && img.file} alt="produto" />
+								))}
 						</Carrousel>
 					)}
-					<img
-						src={values?.files && values.files[0] && values.files[0].file}
-						alt="produto"
-					/>
 				</div>
 				<div>
 					<h3>O que achou do post?</h3>
 					<form>
 						<div className="buttons">
-							<button className="good active" type="button">
+							<button
+								onClick={() => {
+									changeStatus('APPROVED');
+								}}
+								className={`good ${
+									post?.status === 'APPROVED' ? 'active' : ''
+								}`}
+								type="button"
+							>
 								<ImCheckmark color="#fff" size={24} />
 							</button>
-							<button className="edit" type="button">
+							<button
+								onClick={() => {
+									changeStatus('ATTENTION');
+								}}
+								className={`edit ${
+									post?.status === 'ATTENTION' ? 'active' : ''
+								}`}
+								type="button"
+							>
 								<TiPencil color="#fff" size={24} />
 							</button>
-							<button className="cancel" type="button">
+							<button
+								onClick={() => {
+									changeStatus('CANCELED');
+								}}
+								className={`cancel ${
+									post?.status === 'CANCELED' ? 'active' : ''
+								}`}
+								type="button"
+							>
 								<BsX color="#fff" size={24} />
 							</button>
 						</div>
 					</form>
 					<div className="content_container">
-						{comments.map(oldComment => (
-							<Comment key={oldComment.id} comment={oldComment} />
-						))}
+						{post.comments &&
+							post.comments.map(oldComment => (
+								<Comment key={oldComment.id} comment={oldComment} />
+							))}
 					</div>
 
 					<div className="newPost">
@@ -141,7 +214,7 @@ const RatingPost = ({ closeModal, values = { comments: [] }, user }) => {
 					</div>
 				</div>
 			</div>
-			<p className="content_text">{values?.caption}</p>
+			<p className="content_text">{post?.caption}</p>
 		</Container>
 	);
 };
