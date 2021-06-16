@@ -367,6 +367,7 @@ export const ContainerCalendar = styled.div`
 	> div {
 		position: absolute;
 		top: 50%;
+		background: #fff;
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}

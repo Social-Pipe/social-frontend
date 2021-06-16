@@ -3,12 +3,11 @@ import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
-import Calendar from 'react-calendar';
+import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
-import 'react-calendar/dist/Calendar.css';
 import Image from './component/Image';
 import Container, { ContainerCalendar } from './styles';
 
@@ -75,7 +74,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 				handleShowPopUp('sucess', 'Post Criado');
 
 				setLoading(false);
-				resetForm(initialValues);
+				resetForm();
 				saveClient();
 			} catch (e) {
 				setLoading(false);
@@ -93,6 +92,9 @@ const NewPost = ({ saveClient, clientInfo }) => {
 				<div>
 					<Calendar
 						onChange={valueDate => {
+							if (!valueDate) {
+								return;
+							}
 							const dateFormat = format(valueDate, "d 'de' MMMM 'de' yyyy", {
 								locale: ptBr,
 							});
@@ -615,7 +617,11 @@ const NewPost = ({ saveClient, clientInfo }) => {
 				</div>
 				<div className="text">
 					<label>Legenda</label>
-					<textarea name="description" onChange={formik.handleChange} />
+					<textarea
+						name="description"
+						value={formik.values.description}
+						onChange={formik.handleChange}
+					/>
 				</div>
 			</form>
 		</Container>
