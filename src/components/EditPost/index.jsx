@@ -50,7 +50,7 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 						type = 'VIDEO';
 					}
 				}
-				const response = await api.patch(`posts/${editValues.id}/`, {
+				await api.patch(`posts/${editValues.id}/`, {
 					publish: values.showForClient,
 					instagram: values.instagram,
 					facebook: values.facebook,
@@ -59,12 +59,19 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 					caption: values.description,
 					type,
 				});
+				if (values.logo[0]?.type?.split('/')[0]) {
+					const files = editValues.files.map(logo => {
+						const logoResult = api.delete(`postfiles/${logo.id}/`);
+						return logoResult;
+					});
+					await Promise.all(files);
+				}
 				if (values.logo.length > 1 && values.logo[0]?.type?.split('/')[0]) {
 					const files = values.logo.map(logo => {
 						const formData = new FormData();
 						formData.append('file', logo);
 						formData.append('post', editValues.id);
-						const logoResult = api.patch(`postfiles/${logo.id}`, formData);
+						const logoResult = api.post('postfiles/', formData);
 						return logoResult;
 					});
 					await Promise.all(files);
