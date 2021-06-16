@@ -22,7 +22,11 @@ const Product = () => {
 	const [client, setClient] = useState();
 	const [posts, setPosts] = useState([]);
 	const [editValues, setEditValues] = useState({});
-	const [deleteItem, setDeleteItem] = useState(-1);
+	const [deleteItem, setDeleteItem] = useState({
+		show: false,
+		id: -1,
+		name: '',
+	});
 	const params = useParams();
 	const { handleShowPopUp, handleShowModal, clients, user } = useContext(
 		Context
@@ -46,8 +50,8 @@ const Product = () => {
 					let statusText = 'Aprovado pelo cliente';
 
 					if (post.status === 'CANCELED') statusText = 'Reprovado';
-					if (post.status === 'NONE' || post.status === 'ATTENTION')
-						statusText = 'Atenção';
+					if (post.status === 'NONE') statusText = 'Sem status';
+					if (post.status === 'ATTENTION') statusText = 'Atenção';
 
 					const newComments = post.comments.map(comment => ({
 						...comment,
@@ -60,9 +64,15 @@ const Product = () => {
 						),
 					}));
 
+					const files = post.files.map(file => ({
+						...file,
+						file: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${file.file}`,
+					}));
+
 					return {
 						...post,
 						statusText,
+						files,
 						comments: newComments,
 						dateFormat: format(
 							parseISO(post.postingDate),
@@ -88,22 +98,30 @@ const Product = () => {
 	return (
 		<Container>
 			<Modal
-				showModal={showModalDeleteItem}
-				handleOutClick={() => setShowModalDeleteItem(false)}
+				showModal={deleteItem.show}
+				handleOutClick={() =>
+					setDeleteItem(props => ({
+						...props,
+						show: false,
+					}))
+				}
 			>
 				<DeleteItem
-					id={deleteItem}
-					handleDeleteItem={async () => {
-						try {
-							await api.delete(`posts/${deleteItem}/`);
-							setShowModalDeleteItem(false);
-							fetchPosts();
-							handleShowPopUp('sucess', 'Link copiado!');
-						} catch {
-							handleShowPopUp('error', 'Tente Novamente');
-						}
+					item={deleteItem}
+					handleDeleteItem={id => {
+						setDeleteItem(props => ({
+							...props,
+							show: false,
+						}));
+						const newPosts = posts.filter(value => value.id !== id);
+						setPosts(newPosts);
 					}}
-					handleNotDeleteItem={() => setShowModalDeleteItem(false)}
+					handleNotDeleteItem={() =>
+						setDeleteItem(props => ({
+							...props,
+							show: false,
+						}))
+					}
 				/>
 			</Modal>
 			<Modal
@@ -112,7 +130,10 @@ const Product = () => {
 			>
 				<EditPost
 					editValues={editValues}
-					saveClient={() => setShowModalEdit(false)}
+					saveClient={() => {
+						fetchPosts();
+						setShowModalEdit(false);
+					}}
 					editClient
 					handleClose={() => setShowModalEdit(false)}
 					clientInfo={client}
@@ -181,8 +202,7 @@ const Product = () => {
 							statusText={post.statusText}
 							hdResponsive
 							deleteItem={() => {
-								setDeleteItem(post.id);
-								setShowModalDeleteItem(true);
+								setDeleteItem({ id: post.id, name: 'post', show: true });
 							}}
 							editItem={() => {
 								setShowModalEdit(true);
