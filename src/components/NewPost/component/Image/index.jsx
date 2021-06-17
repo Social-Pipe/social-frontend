@@ -27,7 +27,6 @@ function MyDropzone({ handleChange, value, type, ...rest }) {
 	});
 
 	useEffect(() => {
-		console.log(value);
 		if (!value) {
 			setSelectedFileUrl({
 				file: '',

@@ -2,14 +2,15 @@ import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
+import Carrousel from './component/Carrousel';
 import Image from './component/Image';
-import Container, { ContainerCalendar } from './styles';
+import Container, { ContainerCalendar, Select, InputContainer } from './styles';
 
 import api from '../../config/api';
 import { Context } from '../../services/context';
@@ -20,15 +21,15 @@ const initialValues = {
 	facebook: false,
 	instagram: false,
 	linkedin: false,
-	date: '',
+	date: new Date(),
 	showForClient: true,
 	description: '',
 	logo: null,
 	dateFormat: '',
+	typeFile: 'Imagem',
 };
 
 const NewPost = ({ saveClient, clientInfo }) => {
-	const [value, onChange] = useState(new Date());
 	const [showDate, setShowDate] = useState(false);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 				if (values.logo.length > 1) {
 					type = 'GALLERY';
 				}
-				if (values.logo[0].type.split('/')[0] === 'video') {
+				if (values.logo[0]?.type?.split('/')[0] === 'video') {
 					type = 'VIDEO';
 				}
 				const response = await api.post(
@@ -74,16 +75,33 @@ const NewPost = ({ saveClient, clientInfo }) => {
 				handleShowPopUp('sucess', 'Post Criado');
 
 				setLoading(false);
-				resetForm();
+				const date = new Date();
+				const dateFormat = format(date, "d 'de' MMMM 'de' yyyy à's' HH'h'mm", {
+					locale: ptBr,
+				});
+				resetForm({ ...initialValues, dateFormat, date });
 				saveClient();
 			} catch (e) {
 				setLoading(false);
 				handleShowPopUp('error', 'Erro, tente novamente');
-				console.log(e);
 			}
 		},
 		validationSchema: newPostSchema,
 	});
+
+	useEffect(() => {
+		if (formik.values.date) {
+			const dateFormat = format(
+				formik.values.date,
+				"d 'de' MMMM 'de' yyyy à's' HH'h'mm",
+				{
+					locale: ptBr,
+				}
+			);
+
+			formik.setFieldValue('dateFormat', dateFormat);
+		}
+	}, [formik.values.date]);
 
 	return (
 		<Container>
@@ -95,14 +113,9 @@ const NewPost = ({ saveClient, clientInfo }) => {
 							if (!valueDate) {
 								return;
 							}
-							const dateFormat = format(valueDate, "d 'de' MMMM 'de' yyyy", {
-								locale: ptBr,
-							});
-
-							formik.setFieldValue('dateFormat', dateFormat);
 							formik.setFieldValue('date', valueDate);
 						}}
-						value={formik.values.date || value}
+						value={formik.values.date}
 					/>
 				</div>
 			</ContainerCalendar>
@@ -111,9 +124,21 @@ const NewPost = ({ saveClient, clientInfo }) => {
 			</button>
 			<div className="header_container">
 				<h2>Novo post</h2>
+				<Button
+					loading={loading}
+					onClick={() => {
+						if (loading) {
+							return;
+						}
+						formik.handleSubmit();
+					}}
+					type="button"
+				>
+					Salvar novo Post
+				</Button>
 			</div>
 			<form onSubmit={formik.handleSubmit}>
-				<div className="photo_container">
+				<InputContainer>
 					<div className="social_redes">
 						<p>Redes Sociais</p>
 						<div>
@@ -146,155 +171,6 @@ const NewPost = ({ saveClient, clientInfo }) => {
 							>
 								<FaLinkedinIn size={24} color="#fff" />
 							</button>
-						</div>
-					</div>
-
-					<Button
-						loading={loading}
-						onClick={() => {
-							if (loading) {
-								return;
-							}
-							formik.handleSubmit();
-						}}
-						type="button"
-					>
-						Salvar novo Post
-					</Button>
-				</div>
-				<div className="inputs_container">
-					<div className="creating">
-						<p>Criativo</p>
-						<div>
-							<Image
-								className="imageContainer"
-								value={formik.values.logo}
-								handleChange={file => formik.setFieldValue('logo', file)}
-							/>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="38.422"
-								height="29.266"
-								viewBox="0 0 38.422 29.266"
-							>
-								<g id="youtube" opacity="0.96">
-									<path
-										id="Caminho_13"
-										data-name="Caminho 13"
-										d="M5.628,29.266H32.793a5.635,5.635,0,0,0,5.628-5.628V5.628A5.635,5.635,0,0,0,32.793,0H5.628A5.635,5.635,0,0,0,0,5.628v18.01A5.635,5.635,0,0,0,5.628,29.266ZM2.251,5.628A3.381,3.381,0,0,1,5.628,2.251H32.793A3.381,3.381,0,0,1,36.17,5.628v18.01a3.381,3.381,0,0,1-3.377,3.377H5.628a3.381,3.381,0,0,1-3.377-3.377Zm0,0"
-										fill="#3c3f4f"
-									/>
-									<path
-										id="Caminho_14"
-										data-name="Caminho 14"
-										d="M181,94.508v15.3l13.545-7.776Zm2.251,3.826,6.716,3.731-6.716,3.856Zm0,0"
-										transform="translate(-167.417 -87.416)"
-										fill="#3c3f4f"
-									/>
-								</g>
-							</svg>
-							<div>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="10.422"
-									height="29.288"
-									viewBox="0 0 10.422 29.288"
-								>
-									<path
-										id="Subtração_2"
-										data-name="Subtração 2"
-										d="M-2026.578-2481.212h-8.854a1.569,1.569,0,0,1-1.568-1.568v-26.152a1.57,1.57,0,0,1,1.568-1.568h8.854v1.568h-8.854v26.152h8.854v1.566Zm0-3.334h-5.912a.785.785,0,0,1-.784-.784.785.785,0,0,1,.784-.784h5.912v1.567Zm0-3.334h-5.912a.785.785,0,0,1-.784-.784v-17.325a.785.785,0,0,1,.784-.784h5.912v1.568h-5.128v12.285l5.128-5.128v2.217l-5.128,5.128v1.255h5.128v1.567Z"
-										transform="translate(2037 2510.5)"
-										fill="#3c3f4f"
-										opacity="0.96"
-									/>
-								</svg>
-
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="35.51"
-									height="29.288"
-									viewBox="0 0 35.51 29.288"
-								>
-									<g id="image" opacity="0.96">
-										<g
-											id="Grupo_30"
-											data-name="Grupo 30"
-											transform="translate(0 0)"
-										>
-											<g id="Grupo_29" data-name="Grupo 29">
-												<path
-													id="Caminho_15"
-													data-name="Caminho 15"
-													d="M33.942,44.856H1.568A1.569,1.569,0,0,0,0,46.424V72.576a1.569,1.569,0,0,0,1.568,1.568H33.942a1.569,1.569,0,0,0,1.568-1.568V46.424A1.569,1.569,0,0,0,33.942,44.856Zm0,27.72H1.568V46.424H33.942Z"
-													transform="translate(0 -44.856)"
-													fill="#3c3f4f"
-												/>
-											</g>
-										</g>
-										<g
-											id="Grupo_32"
-											data-name="Grupo 32"
-											transform="translate(3.726 3.726)"
-										>
-											<g id="Grupo_31" data-name="Grupo 31">
-												<path
-													id="Caminho_16"
-													data-name="Caminho 16"
-													d="M81,98.58H54.506a.784.784,0,0,0-.784.784v17.325a.784.784,0,0,0,.784.784H81a.784.784,0,0,0,.784-.784V99.364A.784.784,0,0,0,81,98.58ZM55.29,100.148H80.212v13.27l-4.94-4.94a.784.784,0,0,0-1.109,0l-3.011,3.011-6.905-6.905a.784.784,0,0,0-1.109,0l-7.849,7.848V100.148Zm0,15.757V114.65l8.4-8.4L73.35,115.9Zm24.923,0H75.568L72.261,112.6l2.457-2.457,5.314,5.313a.783.783,0,0,0,.18.134v.316Z"
-													transform="translate(-53.722 -98.58)"
-													fill="#3c3f4f"
-												/>
-											</g>
-										</g>
-										<g
-											id="Grupo_34"
-											data-name="Grupo 34"
-											transform="translate(18.145 6.781)"
-										>
-											<g id="Grupo_33" data-name="Grupo 33">
-												<path
-													id="Caminho_17"
-													data-name="Caminho 17"
-													d="M264.579,142.629a2.964,2.964,0,1,0,2.964,2.964A2.967,2.967,0,0,0,264.579,142.629Zm0,4.359a1.4,1.4,0,1,1,1.4-1.4A1.4,1.4,0,0,1,264.579,146.988Z"
-													transform="translate(-261.616 -142.629)"
-													fill="#3c3f4f"
-												/>
-											</g>
-										</g>
-										<g
-											id="Grupo_36"
-											data-name="Grupo 36"
-											transform="translate(3.726 24.386)"
-										>
-											<g id="Grupo_35" data-name="Grupo 35">
-												<path
-													id="Caminho_18"
-													data-name="Caminho 18"
-													d="M61.324,396.458H54.506a.784.784,0,1,0,0,1.568h6.818a.784.784,0,1,0,0-1.568Z"
-													transform="translate(-53.722 -396.458)"
-													fill="#3c3f4f"
-												/>
-											</g>
-										</g>
-										<g
-											id="Grupo_38"
-											data-name="Grupo 38"
-											transform="translate(14.121 24.386)"
-										>
-											<g id="Grupo_37" data-name="Grupo 37">
-												<path
-													id="Caminho_19"
-													data-name="Caminho 19"
-													d="M206.174,396.458h-1.788a.784.784,0,1,0,0,1.568h1.788a.784.784,0,1,0,0-1.568Z"
-													transform="translate(-203.602 -396.458)"
-													fill="#3c3f4f"
-												/>
-											</g>
-										</g>
-									</g>
-								</svg>
-							</div>
 						</div>
 					</div>
 					<div className="date">
@@ -593,7 +469,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 							<p>{formik.values.dateFormat}</p>
 						</button>
 					</div>
-					<div className="select">
+					<Select>
 						<p>Mostrar para o cliente?</p>
 						<div>
 							<div className="mask">
@@ -613,8 +489,47 @@ const NewPost = ({ saveClient, clientInfo }) => {
 								<option value="false">nao</option>
 							</select>
 						</div>
+					</Select>
+				</InputContainer>
+				<div>
+					<div className="creating">
+						<Select>
+							<p>Criativo</p>
+							<div>
+								<div className="mask">
+									<p>{formik.values.typeFile}</p>
+									<MdKeyboardArrowDown size={32} color="#717171" />
+								</div>
+								<select
+									onChange={e => {
+										formik.setFieldValue('logo', null);
+										formik.setFieldValue('typeFile', e.target.value);
+									}}
+								>
+									<option value="Imagem">Imagem</option>
+									<option value="Carrousel">Carrousel</option>
+									<option value="Video">Video</option>
+								</select>
+							</div>
+						</Select>
+						{formik.values.typeFile === 'Carrousel' ? (
+							<Carrousel
+								handleChange={file => {
+									formik.setFieldValue('logo', file);
+								}}
+							/>
+						) : (
+							<Image
+								type={formik.values.typeFile}
+								value={formik.values.logo}
+								handleChange={file => {
+									formik.setFieldValue('logo', file);
+								}}
+							/>
+						)}
 					</div>
 				</div>
+
 				<div className="text">
 					<label>Legenda</label>
 					<textarea

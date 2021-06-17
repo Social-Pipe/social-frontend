@@ -17,7 +17,7 @@ export default styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 100%;
+		height: 3rem;
 		border: 2px dashed ${({ active }) => (active ? '#23B123' : '#76a9ec')};
 		border-radius: 0.5rem;
 		img,
