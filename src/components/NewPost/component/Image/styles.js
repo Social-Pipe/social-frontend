@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export default styled.div`
-	width: 2.25rem;
-	height: 1.87rem;
+	flex: 2;
+	height: 3rem;
 	cursor: pointer;
 
 	img {
@@ -12,12 +12,31 @@ export default styled.div`
 	}
 
 	div {
+		background: rgba(118, 169, 236, 0.15);
 		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		border-radius: 100%;
-		border: 2px solid #e4e4e4;
+		border: 2px dashed ${({ active }) => (active ? '#23B123' : '#76a9ec')};
+		border-radius: 0.5rem;
+		img,
+		video {
+			width: 2rem;
+			height: 2rem;
+			border-radius: 100%;
+			margin-right: 1rem;
+		}
+
+		p {
+			max-width: 10.5rem;
+			overflow: hidden;
+			color: ${({ active }) => (active ? '#23B123' : '#76a9ec')};
+			font-weight: 500;
+			margin: 0;
+			display: -webkit-box;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
+		}
 	}
 `;
