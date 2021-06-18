@@ -6,7 +6,7 @@ export default styled.div`
 	height: 100%;
 	position: relative;
 	overflow: auto;
-	max-width: 73.37rem;
+	max-width: 95.7rem;
 	max-height: 43.5rem;
 
 	.slider-list,
@@ -30,6 +30,7 @@ export default styled.div`
 		display: flex;
 		flex-direction: column;
 		padding: 1.2rem;
+		flex: 2;
 	}
 
 	.header_container {
@@ -37,18 +38,45 @@ export default styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+
 		h3 {
 			font-size: 2.44rem;
 
 			color: #3c3f4f;
 		}
-		button {
-			max-width: 15.5rem;
+
+		> div {
+			display: flex;
+			align-items: flex-end;
+			.button {
+				margin-top: 1.5rem;
+				width: 15.5rem;
+				display: flex;
+				justify-content: flex-end;
+			}
+
+			.delete_post {
+				width: 10.19rem;
+				margin-right: 1rem;
+				height: 3rem;
+				cursor: pointer;
+				background: rgba(238, 66, 102, 0.07);
+				color: #ee4266;
+				font-weight: 500;
+				border: 1px solid #ee4266;
+				border-radius: 8px;
+				box-shadow: 0 10px 15px rgba(238, 66, 102, 0.38);
+				transition: filter linear 0.2s;
+
+				:hover {
+					filter: brightness(0.9);
+				}
+			}
 		}
 	}
 
 	.image {
-		flex: 4;
+		flex: 1;
 		padding: 0;
 
 		img,
@@ -76,177 +104,110 @@ export default styled.div`
 			margin-bottom: 0.62rem;
 		}
 
-		.photo_container {
+		.date {
+			flex: 2;
 			display: flex;
-			justify-content: space-between;
-			align-items: center;
-
-			.select {
-				flex: 1;
-				margin-left: 2rem;
-				> div {
-					position: relative;
-
-					.mask {
-						align-items: center;
-						display: flex;
-						height: 3rem;
-						border-radius: 8px;
-						border: 1px solid #e4e4e4;
-						box-shadow: 0 15px 40px rgba(183, 183, 183, 0.11);
-						padding-left: 1rem;
-						align-self: stretch;
-						position: relative;
-						justify-content: space-between;
-						padding: 0 1rem;
-						z-index: 2;
-						pointer-events: none;
-						background: #fff;
-						p {
-							margin: 0;
-						}
-					}
-					select {
-						cursor: pointer;
-						position: absolute;
-						outline: none;
-						top: 0;
-						left: 0;
-						width: 100%;
-						height: 100%;
-						border-radius: 8px;
-						border: none;
-					}
-				}
-			}
-			.social_redes {
-				display: flex;
-				flex-direction: column;
-
-				> div {
-					display: flex;
-				}
-
-				button {
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					width: 2.25rem;
-					height: 2.25rem;
-					border-radius: 100%;
-					background-color: #dfdfdf;
-					border: none;
-					cursor: pointer;
-
-					&.active {
-						&.facebook,
-						&.linkedin {
-							background: #3b5998;
-						}
-
-						&.instagram {
-							background-color: #8d4b26;
-						}
-					}
-
-					:nth-child(2n) {
-						margin: 0 1rem;
-					}
-				}
-			}
+			flex-direction: column;
 
 			> button {
-				width: 15.5rem;
+				background: none;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				height: 3rem;
+				border-radius: 8px;
+				border: 1px solid #e4e4e4;
+				box-shadow: 0 15px 40px rgba(183, 183, 183, 0.11);
+				padding-left: 1rem;
+				align-self: stretch;
+
+				p {
+					color: #5d5d5d;
+					font-weight: 500;
+					margin: 0;
+					margin-left: 1rem;
+				}
 			}
 		}
-		.inputs_container {
-			display: flex;
-			margin: 2.2rem 0;
 
+		.select {
+			flex: 1;
+			margin-left: 2rem;
 			> div {
-				flex: 1;
-				justify-content: center;
-			}
+				position: relative;
 
-			.date {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-
-				> button {
-					background: none;
-					cursor: pointer;
-					display: flex;
+				.mask {
 					align-items: center;
+					display: flex;
 					height: 3rem;
 					border-radius: 8px;
 					border: 1px solid #e4e4e4;
 					box-shadow: 0 15px 40px rgba(183, 183, 183, 0.11);
 					padding-left: 1rem;
 					align-self: stretch;
-
-					p {
-						color: #5d5d5d;
-						font-weight: 500;
-						margin: 0;
-						margin-left: 1rem;
-					}
-				}
-			}
-
-			.creating {
-				display: flex;
-				flex-direction: column;
-				> div {
-					display: flex;
+					position: relative;
 					justify-content: space-between;
-
-					> div {
-						position: relative;
-						padding-left: 0.5rem;
-						svg:first-child {
-							position: absolute;
-							top: 0;
-							right: 2.4rem;
-						}
-						svg:last-child {
-							z-index: 2;
-						}
+					padding: 0 1rem;
+					z-index: 2;
+					pointer-events: none;
+					background: #fff;
+					p {
+						margin: 0;
 					}
 				}
-			}
-
-			fieldset {
-				display: flex;
-				flex-direction: column;
-				border: none;
-
-				:not(:first-child) {
-					margin-top: 1.9rem;
-				}
-				position: relative;
-
-				label {
-					color: #5d5d5d;
-					font-size: 1rem;
-					font-weight: 600;
-				}
-
-				input {
-					width: 100%;
-					margin-top: 1rem;
-					border: 1px solid #e4e4e4;
-					height: 3rem;
-					border-radius: 8px;
+				select {
+					cursor: pointer;
+					position: absolute;
 					outline: none;
-					padding-left: 1.5rem;
-					font-size: 1rem;
-					color: #5d5d5d;
-					font-weight: 500;
-					box-shadow: 0px 15px 40px rgba(183, 183, 183, 0.1);
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					border-radius: 8px;
+					border: none;
 				}
 			}
 		}
+		.social_redes {
+			display: flex;
+			flex-direction: column;
+
+			> div {
+				display: flex;
+			}
+
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.25rem;
+				height: 2.25rem;
+				border-radius: 100%;
+				background-color: #dfdfdf;
+				border: none;
+				cursor: pointer;
+
+				&.active {
+					&.facebook,
+					&.linkedin {
+						background: #3b5998;
+					}
+
+					&.instagram {
+						background-color: #8d4b26;
+					}
+				}
+
+				:nth-child(2n) {
+					margin: 0 1rem;
+				}
+			}
+		}
+
+		> button {
+			width: 15.5rem;
+		}
+
 		.text {
 			display: flex;
 			flex: 1;
@@ -288,13 +249,10 @@ export default styled.div`
 				max-width: 15.5rem;
 			}
 		}
+	}
 
-		.button {
-			margin-top: 1.5rem;
-			max-width: 15.5rem;
-			display: flex;
-			justify-content: flex-end;
-		}
+	@media (max-width: 1600px) {
+		max-width: 73.4rem;
 	}
 
 	@media (max-width: 1300px) {
@@ -302,6 +260,12 @@ export default styled.div`
 
 		.image {
 			flex: 2.5;
+		}
+	}
+
+	@media (max-width: 1100px) {
+		.header_container {
+			flex-direction: column;
 		}
 	}
 	@media (max-width: 900px) {
@@ -317,24 +281,65 @@ export default styled.div`
 	}
 
 	@media (max-width: 600px) {
-		form {
-			.inputs_container {
+		.header_container {
+			> div {
 				flex-direction: column;
+				align-items: center;
+				margin-top: 1rem;
 
-				.creating {
-					margin-bottom: 1rem;
-				}
-			}
-
-			.photo_container {
-				flex-direction: column;
-				align-items: flex-start;
-				.select {
-					margin: 0;
-					margin-top: 1rem;
+				.button {
 					width: 100%;
 				}
+				.delete_post {
+					width: 100%;
+					margin: 0;
+				}
 			}
+		}
+		form {
+			.select {
+				margin: 0;
+				margin-top: 1rem;
+				width: 100%;
+			}
+		}
+	}
+`;
+
+export const Select = styled.div`
+	flex: 1;
+	> div {
+		position: relative;
+
+		.mask {
+			align-items: center;
+			display: flex;
+			height: 3rem;
+			border-radius: 8px;
+			border: 1px solid #e4e4e4;
+			box-shadow: 0 15px 40px rgba(183, 183, 183, 0.11);
+			padding-left: 1rem;
+			align-self: stretch;
+			position: relative;
+			justify-content: space-between;
+			padding: 0 1rem;
+			z-index: 2;
+			pointer-events: none;
+			background: #fff;
+			p {
+				margin: 0;
+			}
+		}
+		select {
+			cursor: pointer;
+			position: absolute;
+			outline: none;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: 8px;
+			border: none;
 		}
 	}
 `;
@@ -365,5 +370,86 @@ export const ContainerCalendar = styled.div`
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+	}
+`;
+
+export const InputsContainer = styled.div`
+	display: flex;
+	align-items: flex-end;
+	gap: 1rem;
+
+	:not(:first-child) {
+		margin: 2.2rem 0;
+	}
+
+	.singleImage.none {
+		display: none;
+	}
+
+	> div {
+		flex: 1;
+		justify-content: center;
+
+		height: 100%;
+	}
+
+	.creating {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		> div {
+			display: flex;
+			justify-content: space-between;
+
+			> div {
+				position: relative;
+				padding-left: 0.5rem;
+				svg:first-child {
+					position: absolute;
+					top: 0;
+					right: 2.4rem;
+				}
+				svg:last-child {
+					z-index: 2;
+				}
+			}
+		}
+	}
+
+	fieldset {
+		display: flex;
+		flex-direction: column;
+		border: none;
+
+		:not(:first-child) {
+			margin-top: 1.9rem;
+		}
+		position: relative;
+
+		label {
+			color: #5d5d5d;
+			font-size: 1rem;
+			font-weight: 600;
+		}
+
+		input {
+			width: 100%;
+			margin-top: 1rem;
+			border: 1px solid #e4e4e4;
+			height: 3rem;
+			border-radius: 8px;
+			outline: none;
+			padding-left: 1.5rem;
+			font-size: 1rem;
+			color: #5d5d5d;
+			font-weight: 500;
+			box-shadow: 0px 15px 40px rgba(183, 183, 183, 0.1);
+		}
+	}
+
+	@media (max-width: 600px) {
+		align-items: normal;
+		flex-direction: column;
 	}
 `;

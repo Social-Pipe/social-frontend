@@ -9,10 +9,14 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
+import CarrouselEdit from './component/Carrousel';
 import Image from './component/Image';
-import Container, { ContainerCalendar } from './styles';
+import Container, {
+	ContainerCalendar,
+	Select,
+	InputsContainer,
+} from './styles';
 
-import productTest from '../../assets/images/productTest.png';
 import api from '../../config/api';
 import { Context } from '../../services/context';
 import newPostSchema from '../../validations/newPostSchema';
@@ -26,13 +30,24 @@ const initialValues = {
 	showForClient: true,
 	description: '',
 	logo: null,
+	currentLogo: null,
 	dateFormat: '',
 	logoFormat: null,
+	carrouselImages: null,
+	video: null,
 	type: 'SINGLE',
+	typeFile: 'Imagem',
 };
 
-const EditPost = ({ saveClient, clientInfo, editValues }) => {
+function deleteFile(id) {
+	const logoResult = api.delete(`postfiles/${id}/`);
+	return logoResult;
+}
+
+const EditPost = ({ saveClient, deletePost, editValues }) => {
 	const [value, onChange] = useState(new Date());
+	const [imagesDeleteId, setImagesDeleteId] = useState([]);
+	const [newFiles, setNewFiles] = useState([]);
 	const [showDate, setShowDate] = useState(false);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
@@ -41,15 +56,14 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 		async onSubmit(values) {
 			setLoading(true);
 			try {
-				let { type } = editValues;
-				if (values.logo[0]?.type?.split('/')[0]) {
-					if (values.logo.length + editValues.files.length > 1) {
-						type = 'GALLERY';
-					}
-					if (values.logo[0]?.type?.split('/')[0] === 'video') {
-						type = 'VIDEO';
-					}
+				let type = 'SINGLE';
+				if (values.typeFile === 'Carrousel') {
+					type = 'GALLERY';
 				}
+				if (values.typeFile === 'Video') {
+					type = 'VIDEO';
+				}
+
 				await api.patch(`posts/${editValues.id}/`, {
 					publish: values.showForClient,
 					instagram: values.instagram,
@@ -59,23 +73,26 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 					caption: values.description,
 					type,
 				});
-				if (values.logo[0]?.type?.split('/')[0]) {
-					const files = editValues.files.map(logo => {
-						const logoResult = api.delete(`postfiles/${logo.id}/`);
-						return logoResult;
-					});
-					await Promise.all(files);
+				let deletePosts = [];
+				if (values.typeFile === 'Carrousel' && imagesDeleteId.length > 0) {
+					deletePosts = imagesDeleteId.map(deleteFile);
 				}
-				if (values.logo.length > 1 && values.logo[0]?.type?.split('/')[0]) {
-					const files = values.logo.map(logo => {
+				if (values.typeFile === 'Video') {
+					deletePosts = values.currentLogo.map(file => deleteFile(file.id));
+				}
+				if (deletePosts.length > 0) {
+					await Promise.all(deletePosts);
+					setImagesDeleteId([]);
+				}
+				if (values.typeFile === 'Carrousel') {
+					const files = newFiles.map(logo => {
 						const formData = new FormData();
 						formData.append('file', logo);
 						formData.append('post', editValues.id);
-						const logoResult = api.post('postfiles/', formData);
-						return logoResult;
+						return api.post('postfiles/', formData);
 					});
 					await Promise.all(files);
-				} else if (values.logo[0]?.type?.split('/')[0]) {
+				} else if (!values.logo[0]?.file) {
 					const formData = new FormData();
 					formData.append('file', values.logo[0]);
 					formData.append('post', editValues.id);
@@ -87,7 +104,6 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 			} catch (e) {
 				setLoading(false);
 				handleShowPopUp('error', 'Erro, tente novamente');
-				console.log(e);
 			}
 		},
 		validationSchema: newPostSchema,
@@ -95,7 +111,23 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 
 	useEffect(() => {
 		if (editValues.postingDate) {
-			console.log(editValues);
+			let typeFile = 'Imagem';
+			let video = null;
+			let logo = null;
+			let carrouselImages = null;
+			if (editValues.type === 'GALLERY') {
+				typeFile = 'Carrousel';
+				logo = editValues.files;
+				carrouselImages = editValues.files;
+			}
+			if (editValues.type === 'SINGLE') {
+				logo = editValues.files;
+				carrouselImages = editValues.files;
+			}
+			if (editValues.type === 'VIDEO') {
+				typeFile = 'Video';
+				video = editValues.files;
+			}
 			formik.setValues({
 				linkedin: editValues.linkedin,
 				facebook: editValues.facebook,
@@ -104,11 +136,16 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 				dateFormat: editValues.dateFormat,
 				date: new Date(editValues.postingDate),
 				description: editValues.caption,
-				logo: editValues.files,
+				logo,
+				currentLogo: editValues.files,
 				type: editValues.type,
+				typeFile,
+				video,
+				carrouselImages,
 			});
 		}
 	}, [editValues]);
+
 	return (
 		<Container>
 			<ContainerCalendar show={showDate}>
@@ -120,7 +157,6 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 							if (!valueDate) {
 								return;
 							}
-							console.log(valueDate);
 							const dateFormat = format(valueDate, "d 'de' MMMM 'de' yyyy", {
 								locale: ptBr,
 							});
@@ -141,9 +177,9 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 						<video autoPlay>
 							<source
 								src={
-									formik.values.logo &&
-									formik.values.logo[0] &&
-									formik.values.logo[0].file
+									formik.values.currentLogo &&
+									formik.values.currentLogo[0] &&
+									formik.values.currentLogo[0].file
 								}
 							/>
 						</video>
@@ -158,9 +194,9 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 					(!formik.values.logoFormat ? (
 						<img
 							src={
-								formik.values.logo &&
-								formik.values.logo[0] &&
-								formik.values.logo[0].file
+								formik.values.currentLogo &&
+								formik.values.currentLogo[0] &&
+								formik.values.currentLogo[0].file
 							}
 							alt="produto"
 						/>
@@ -198,9 +234,32 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 			<div>
 				<div className="header_container">
 					<h3>Editar Post</h3>
+					<div>
+						<button
+							onClick={() => deletePost(editValues.id)}
+							type="button"
+							className="delete_post"
+						>
+							Apagar post
+						</button>
+						<div className="button">
+							<Button
+								loading={loading}
+								type="button"
+								onClick={() => {
+									if (loading) {
+										return;
+									}
+									formik.handleSubmit();
+								}}
+							>
+								Salvar edição do post
+							</Button>
+						</div>
+					</div>
 				</div>
 				<form>
-					<div className="photo_container">
+					<InputsContainer>
 						<div className="social_redes">
 							<p>Redes Sociais</p>
 							<div>
@@ -237,53 +296,6 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 								>
 									<FaLinkedinIn size={24} color="#fff" />
 								</button>
-							</div>
-						</div>
-						<div className="select">
-							<p>Mostrar para o cliente?</p>
-							<div>
-								<div className="mask">
-									<p>{formik.values.showForClient ? 'Sim' : 'Não'}</p>
-									<MdKeyboardArrowDown size={32} color="#717171" />
-								</div>
-								<select
-									onChange={e => {
-										if (e.target.value === 'true') {
-											formik.setFieldValue('showForClient', true);
-											return;
-										}
-										formik.setFieldValue('showForClient', false);
-									}}
-								>
-									<option value="true">sim</option>
-									<option value="false">nao</option>
-								</select>
-							</div>
-						</div>
-						{/* <Button onClick={saveClient} type="button">
-						Salvar novo cliente
-					</Button> */}
-					</div>
-					<div className="inputs_container">
-						<div className="creating">
-							<p>Criativo</p>
-							<div>
-								<Image
-									value={formik.values.logo}
-									handleChange={(file, fileUrl) => {
-										let type = 'SINGLE';
-										if (file.length > 1) {
-											type = 'GALLERY';
-										}
-										if (file[0].type.split('/')[0] === 'video') {
-											type = 'VIDEO';
-										}
-
-										formik.setFieldValue('type', type);
-										formik.setFieldValue('logo', file);
-										formik.setFieldValue('logoFormat', fileUrl);
-									}}
-								/>
 							</div>
 						</div>
 						<div className="date">
@@ -582,7 +594,76 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 								<p>{formik.values.dateFormat}</p>
 							</button>
 						</div>
-					</div>
+						<Select>
+							<p>Mostrar para o cliente?</p>
+							<div>
+								<div className="mask">
+									<p>{formik.values.showForClient ? 'Sim' : 'Não'}</p>
+									<MdKeyboardArrowDown size={32} color="#717171" />
+								</div>
+								<select
+									onChange={e => {
+										if (e.target.value === 'true') {
+											formik.setFieldValue('showForClient', true);
+											return;
+										}
+										formik.setFieldValue('showForClient', false);
+									}}
+								>
+									<option value="true">sim</option>
+									<option value="false">nao</option>
+								</select>
+							</div>
+						</Select>
+					</InputsContainer>
+					<InputsContainer>
+						<Select>
+							<p>Criativo</p>
+							<div>
+								<div className="mask">
+									<p>{formik.values.typeFile}</p>
+									<MdKeyboardArrowDown size={32} color="#717171" />
+								</div>
+								<select
+									value={formik.values.typeFile}
+									onChange={e => {
+										formik.setFieldValue('typeFile', e.currentTarget.value);
+									}}
+								>
+									<option value="Imagem">Imagem</option>
+									<option value="Carrousel">Carrousel</option>
+									<option value="Video">Video</option>
+								</select>
+							</div>
+						</Select>
+						{formik.values.typeFile === 'Carrousel' ? (
+							<CarrouselEdit
+								handleDelete={id => {
+									setImagesDeleteId(props => [...props, id]);
+								}}
+								value={formik.values.carrouselImages}
+								handleChange={file => {
+									setNewFiles(props => [...props, ...file]);
+								}}
+							/>
+						) : (
+							<Image
+								type={formik.values.typeFile}
+								value={
+									formik.values.typeFile === 'Imagem'
+										? formik.values.logo
+										: formik.values.video
+								}
+								handleChange={(file, type) => {
+									if (type === 'Imagem') {
+										formik.setFieldValue('logo', file);
+										return;
+									}
+									formik.setFieldValue('video', file);
+								}}
+							/>
+						)}
+					</InputsContainer>
 					<div className="text">
 						<label>Legenda</label>
 						<textarea
@@ -590,21 +671,6 @@ const EditPost = ({ saveClient, clientInfo, editValues }) => {
 							onChange={formik.handleChange}
 							value={formik.values.description}
 						/>
-					</div>
-
-					<div className="button">
-						<Button
-							loading={loading}
-							type="button"
-							onClick={() => {
-								if (loading) {
-									return;
-								}
-								formik.handleSubmit();
-							}}
-						>
-							Salvar alterações
-						</Button>
 					</div>
 				</form>
 			</div>
