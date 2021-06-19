@@ -1,7 +1,5 @@
-import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
-import jwtDecode from 'jwt-decode';
 import Carrousel from 'nuka-carousel';
 import { useState, useEffect, useCallback } from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
@@ -9,10 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import Container, { Feed, Button } from './styles';
 
-import logoTest from '../../assets/images/Coca.png';
-import logoTproductTestest from '../../assets/images/productTest.png';
 import Authenticate from '../../components/Authenticate';
-import NewPost from '../../components/NewPost';
 import RatingPost from '../../components/RatingPost';
 import Row from '../../components/Row';
 import api from '../../config/api';
@@ -25,9 +20,13 @@ const ProductDetail = () => {
 		show: false,
 		value: {},
 	});
-	const [filter, setFilter] = useState('facebook');
+	const [filter, setFilter] = useState([]);
 	const [posts, setPosts] = useState([]);
+	const [postsFilter, setPostsFilter] = useState([]);
 	const [token, setToken] = useState('');
+	const [instagram, setInstagram] = useState(false);
+	const [linkedin, setLinkedin] = useState(false);
+	const [facebook, setFacebook] = useState(false);
 	const params = useParams();
 	const [user, setUser] = useState({});
 
@@ -69,13 +68,36 @@ const ProductDetail = () => {
 						),
 					};
 				});
-				setPosts(postsFormat);
+				const postsFilters = postsFormat.filter(
+					postFilter => postFilter.publish
+				);
+				setPosts(postsFilters);
 			} catch (e) {
 				console.log(e);
 			}
 		}
 		fetchData();
 	}, []);
+
+	useEffect(() => {
+		if (instagram || linkedin || facebook) {
+			const postFilters = posts.filter(post => {
+				if (post.instagram && instagram) {
+					return true;
+				}
+				if (post.linkedin && linkedin) {
+					return true;
+				}
+				if (post.facebook && facebook) {
+					return true;
+				}
+				return false;
+			});
+			setPostsFilter(postFilters);
+			return;
+		}
+		setPostsFilter(posts);
+	}, [posts, instagram, facebook, linkedin]);
 
 	useEffect(() => {
 		if (token) {
@@ -125,22 +147,28 @@ const ProductDetail = () => {
 					<div>
 						<button
 							type="button"
-							onClick={() => setFilter('facebook')}
-							className={`facebook ${filter === 'facebook' ? 'active' : ''}`}
+							onClick={() => {
+								setFacebook(!facebook);
+							}}
+							className={`facebook ${facebook ? 'active' : ''}`}
 						>
 							<FaFacebookF size={24} color="#fff" />
 						</button>
 						<button
 							type="button"
-							onClick={() => setFilter('instagram')}
-							className={`instagram ${filter === 'instagram' ? 'active' : ''}`}
+							onClick={() => {
+								setInstagram(!instagram);
+							}}
+							className={`instagram ${instagram ? 'active' : ''}`}
 						>
 							<FaInstagram size={24} color="#fff" />
 						</button>
 						<button
 							type="button"
-							onClick={() => setFilter('linkedin')}
-							className={`linkedin ${filter === 'linkedin' ? 'active' : ''}`}
+							onClick={() => {
+								setLinkedin(!linkedin);
+							}}
+							className={`linkedin ${linkedin ? 'active' : ''}`}
 						>
 							<FaLinkedinIn size={24} color="#fff" />
 						</button>
@@ -164,7 +192,7 @@ const ProductDetail = () => {
 				</div>
 				{page === 0 ? (
 					<Feed>
-						{posts.map(postMap => (
+						{postsFilter.map(postMap => (
 							<Button
 								status={postMap.status}
 								type="button"
@@ -225,7 +253,7 @@ const ProductDetail = () => {
 					</Feed>
 				) : (
 					<div className="products">
-						{posts.map(postMap => (
+						{postsFilter.map(postMap => (
 							<button
 								key={postMap.id}
 								type="button"
