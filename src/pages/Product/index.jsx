@@ -2,7 +2,7 @@ import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import { useEffect, useState, useContext, useCallback } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Container, { Header } from './styles';
 
@@ -16,11 +16,14 @@ import Modal from '../../Container/Modal';
 import { Context } from '../../services/context';
 
 const Product = () => {
+	const history = useHistory();
 	const [showModalDeleteItem, setShowModalDeleteItem] = useState(false);
 	const [showModalEdit, setShowModalEdit] = useState(false);
 	const [showModalNewPost, setShowModalNewPost] = useState(false);
-	const [client, setClient] = useState();
+	const [client, setClient] = useState({});
 	const [posts, setPosts] = useState([]);
+	const [postsArchived, setPostsArchived] = useState([]);
+	const [arquiveds, setArquiveds] = useState(false);
 	const [editValues, setEditValues] = useState({});
 	const [deleteItem, setDeleteItem] = useState({
 		show: false,
@@ -28,9 +31,13 @@ const Product = () => {
 		name: '',
 	});
 	const params = useParams();
-	const { handleShowPopUp, handleShowModal, clients, user } = useContext(
-		Context
-	);
+	const {
+		handleShowPopUp,
+		handleShowModal,
+		clients,
+		fetchMoreClients,
+		user,
+	} = useContext(Context);
 
 	const fetchPosts = useCallback(() => {
 		async function fetchData() {
@@ -83,7 +90,12 @@ const Product = () => {
 						),
 					};
 				});
-				setPosts(postsFormat);
+				const postsFormatNotArchived = postsFormat.filter(
+					post => !post.archive
+				);
+				const postsFormatArchived = postsFormat.filter(post => post.archive);
+				setPosts(postsFormatNotArchived);
+				setPostsArchived(postsFormatArchived);
 			} catch (e) {
 				console.log(e);
 			}
@@ -108,7 +120,12 @@ const Product = () => {
 			>
 				<DeleteItem
 					item={deleteItem}
-					handleDeleteItem={id => {
+					handleDeleteItem={(id, type) => {
+						if (type === 'client') {
+							fetchMoreClients();
+							history.replace('/dashboard');
+							return;
+						}
 						setDeleteItem(props => ({
 							...props,
 							show: false,
@@ -129,6 +146,10 @@ const Product = () => {
 				handleOutClick={() => setShowModalEdit(false)}
 			>
 				<EditPost
+					deletePost={id => {
+						setShowModalEdit(false);
+						setDeleteItem({ id, name: 'post', show: true, type: 'client' });
+					}}
 					editValues={editValues}
 					saveClient={() => {
 						fetchPosts();
@@ -176,7 +197,14 @@ const Product = () => {
 				<button
 					type="button"
 					onClick={() => {
-						handleShowModal({ show: true, edit: true, client });
+						const newClient = {
+							...client,
+							deleteItem: (id, name) => {
+								handleShowModal({ show: false, edit: false });
+								setDeleteItem({ id, name, show: true, type: 'client' });
+							},
+						};
+						handleShowModal({ show: true, edit: true, client: newClient });
 					}}
 				>
 					<BsFillGearFill size={24} color="#fff" />
@@ -187,36 +215,92 @@ const Product = () => {
 					<Button type="button" onClick={() => setShowModalNewPost(true)}>
 						Novo post
 					</Button>
-					<button type="button" className="secondary">
+					<button
+						type="button"
+						className={`secondary ${arquiveds ? 'active' : ''}`}
+						onClick={() => {
+							setArquiveds(!arquiveds);
+						}}
+					>
 						Mostrar arquivados
 					</button>
 				</div>
 				<div className="products">
-					{posts.map(post => (
-						<Row
-							key={post.id}
-							image={post.files}
-							date={post.dateFormat}
-							type={post.type}
-							status={post.status}
-							statusText={post.statusText}
-							hdResponsive
-							deleteItem={() => {
-								setDeleteItem({ id: post.id, name: 'post', show: true });
-							}}
-							editItem={() => {
-								setShowModalEdit(true);
-								setEditValues({
-									...post,
-								});
-							}}
-							ratingItem={() => {
-								setEditValues({
-									...post,
-								});
-							}}
-						/>
-					))}
+					{!arquiveds ? (
+						<>
+							{posts.map(post => (
+								<Row
+									key={post.id}
+									image={post.files}
+									date={post.dateFormat}
+									type={post.type}
+									status={post.status}
+									statusText={post.statusText}
+									hdResponsive
+									deleteItem={() => {
+										setDeleteItem({ id: post.id, name: 'post', show: true });
+									}}
+									editItem={() => {
+										setShowModalEdit(true);
+										setEditValues({
+											...post,
+										});
+									}}
+									ratingItem={async () => {
+										try {
+											await api.patch(`/posts/${post.id}`, {
+												archive: true,
+											});
+											handleShowPopUp('sucess', 'Post  arquivado');
+										} catch {
+											handleShowPopUp('error', 'Post não arquivado');
+										}
+									}}
+								/>
+							))}
+						</>
+					) : (
+						<>
+							{postsArchived.map(post => (
+								<Row
+									key={post.id}
+									image={post.files}
+									date={post.dateFormat}
+									type={post.type}
+									status={post.status}
+									statusText={post.statusText}
+									hdResponsive
+									deleteItem={() => {
+										setDeleteItem({ id: post.id, name: 'post', show: true });
+									}}
+									editItem={() => {
+										setShowModalEdit(true);
+										setEditValues({
+											...post,
+										});
+									}}
+									ratingItem={async () => {
+										try {
+											await api.patch(`/posts/${post.id}/`, {
+												archive: !post.archive,
+											});
+											handleShowPopUp(
+												'sucess',
+												`Post ${!post.arquive ? 'arquivado' : 'Desarquivado'}`
+											);
+										} catch {
+											handleShowPopUp(
+												'error',
+												`Post não ${
+													!post.arquive ? 'arquivado' : 'Desarquivado'
+												}`
+											);
+										}
+									}}
+								/>
+							))}
+						</>
+					)}
 				</div>
 			</div>
 			<span>Aprovando postagens desde 2021</span>

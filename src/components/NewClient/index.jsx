@@ -10,6 +10,7 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import editOrNewClientSchema from '../../validations/editOrNewClientSchema';
 import Button from '../Button';
+import DeleteItem from '../DeleteItem';
 import PhotoContainer from '../PhotoContainer';
 
 const initialValues = {
@@ -30,6 +31,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 		onSubmit: async (values, { resetForm }) => {
 			setLoading(true);
 			const formData = new FormData();
+			console.log(editClient);
 			formData.append('name', values.name);
 			formData.append('instagram', values.instagram);
 			formData.append('facebook', values.facebook);
@@ -41,7 +43,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			}
 			try {
 				if (editClient.edit) {
-					await api.patch(`clients/${editClient.client.id}/`, formData);
+					await api.patch(`clients/${editClient.client.accessHash}/`, formData);
 				} else {
 					await api.post('clients/', formData);
 				}
@@ -88,18 +90,32 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 			<header className="header_container">
 				{editClient.edit ? <h3>Editar cliente</h3> : <h3>Novo cliente</h3>}
 				{editClient.edit && (
-					<Button
-						loading={loading}
-						onClick={() => {
-							if (loading) {
-								return;
+					<>
+						<button
+							className="secondary"
+							type="button"
+							onClick={() =>
+								editClient.client.deleteItem(
+									editClient.client.accessHash,
+									editClient.client.name
+								)
 							}
-							formik.handleSubmit();
-						}}
-						type="button"
-					>
-						Salvar alterações
-					</Button>
+						>
+							Apagar cliente
+						</button>
+						<Button
+							loading={loading}
+							onClick={() => {
+								if (loading) {
+									return;
+								}
+								formik.handleSubmit();
+							}}
+							type="button"
+						>
+							Salvar alterações
+						</Button>
+					</>
 				)}
 			</header>
 			<form>
@@ -108,10 +124,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 						<p>Logo da empresa</p>
 						<div>
 							{editClient?.client?.logo && !formik.values.logo && (
-								<img
-									src={`${process.env.REACT_APP_DJANGO_MEDIA_URL}/${editClient.client.logo}`}
-									alt="logo"
-								/>
+								<img src={`${editClient.client.logo}`} alt="logo" />
 							)}
 							<PhotoContainer
 								value={formik.values.logo}

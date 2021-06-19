@@ -23,10 +23,14 @@ const DeleteItem = ({ handleDeleteItem, handleNotDeleteItem, item }) => {
 						}
 						try {
 							setLoading(true);
-							await api.delete(`posts/${item.id}/`);
+							if (item.type === 'client') {
+								await api.delete(`clients/${item.id}/`);
+							} else {
+								await api.delete(`posts/${item.id}/`);
+							}
 
-							handleShowPopUp('sucess', 'Link copiado!');
-							handleDeleteItem(item.id);
+							handleShowPopUp('sucess', `${item.name} Deletado`);
+							handleDeleteItem(item.id, item.type);
 							setLoading(false);
 						} catch {
 							handleShowPopUp('error', 'Tente Novamente');

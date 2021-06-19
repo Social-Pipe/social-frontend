@@ -28,6 +28,25 @@ export default styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+
+		.secondary {
+			cursor: pointer;
+			width: auto;
+			text-decoration: none;
+			background: none;
+			border: none;
+			font-weight: 500;
+			font-size: 1rem;
+			color: #ee4266;
+			margin-left: 2rem;
+			height: 3rem;
+			width: 100%;
+
+			&.active {
+				border: 1px solid #ee4266;
+				border-radius: 8px;
+			}
+		}
 		h3 {
 			font-size: 2.44rem;
 

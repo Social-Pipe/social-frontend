@@ -4,6 +4,7 @@ export default styled.div`
 	padding: 2.8rem 5.87rem;
 
 	p {
+		text-align: center;
 		font-size: 2.5rem;
 		font-weight: 600;
 		color: #3c3f4f;
