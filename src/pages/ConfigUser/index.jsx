@@ -37,6 +37,7 @@ const ConfigUser = () => {
 	const { user, addUser, handleShowPopUp } = useContext(Context);
 	const [states, setStates] = useState([]);
 	const [loading, setLoading] = useState(false);
+
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values) {
@@ -53,23 +54,30 @@ const ConfigUser = () => {
 				name: values.name,
 				cpf: values.cpf.match(/\d+/g).join(''),
 				phone: values.phone.match(/\d+/g).join(''),
-				payment: {
-					address: {
-						cep: values.cep.match(/\d+/g).join(''),
-						street: values.adress,
-						number: values.number,
-						city: values.city,
-						stateUf: values.sigla,
-						neighborhood: values.bairro,
+				payment: [
+					{
+						address: [
+							{
+								cep: values.cep.match(/\d+/g).join(''),
+								street: values.adress,
+								number: values.number,
+								city: values.city,
+								stateUf: values.sigla,
+								neighborhood: values.bairro,
+							},
+						],
+						cardId: user.payment.cardId,
 					},
-					cardId: user.payment.cardId,
-				},
+				],
 			};
 			if (values.password) {
 				variables.password = values.password;
 			}
 			try {
-				const response = await api.put(`users/${content.user_id}/`, variables);
+				const response = await api.patch(
+					`users/${content.user_id}/`,
+					variables
+				);
 				addUser(response.data);
 				handleShowPopUp('sucess', 'Usuário Editadas!');
 			} catch {
@@ -386,12 +394,12 @@ const ConfigUser = () => {
 							</div>
 						</div>
 						<div className="container_buttons">
-							<Link to="configPayment" className="edit">
+							<Link to="pagamentoConfiguracao" className="edit">
 								Alterar informação de pagamento
 							</Link>
-							<button type="button" className="desactive">
+							<Link to="desativarConta" className="desactive">
 								Desativar conta
-							</button>
+							</Link>
 						</div>
 					</Info>
 				</div>

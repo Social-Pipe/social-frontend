@@ -1,20 +1,62 @@
+import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
 import { BsX } from 'react-icons/bs';
 import { TiPencil } from 'react-icons/ti';
 
-import Container from './styles';
+import Container, { Status } from './styles';
 
 import likeIcon from '../../assets/icons/likeIcon.svg';
-import productTest from '../../assets/images/productTest.png';
 
-const Row = ({ buttons, hdResponsive, deleteItem, editItem, ratingItem }) => (
+const Row = ({
+	buttons,
+	hdResponsive,
+	deleteItem,
+	editItem,
+	ratingItem,
+	date,
+	statusText,
+	status,
+	image,
+	type,
+}) => (
 	<Container hdResponsive={hdResponsive}>
 		<div>
-			<img src={productTest} alt="produto" />
-			<p>Qui, 25 de novembro às 07h30</p>
+			{type === 'VIDEO' && (
+				<video autoPlay>
+					<source src={image && image[0] && image[0].file} />
+				</video>
+			)}
+			{type === 'SINGLE' && (
+				<img src={image && image[0] && image[0].file} alt="produto" />
+			)}
+			{type === 'GALLERY' && (
+				<Carrousel
+					autoplay
+					style={{
+						width: '4rem',
+						height: '4rem',
+						marginRight: '2.25rem',
+					}}
+					defaultControlsConfig={{
+						nextButtonStyle: { display: 'none' },
+						prevButtonStyle: { display: 'none' },
+						pagingDotsStyle: { display: 'none' },
+					}}
+				>
+					{image.map(img => (
+						<img key={img.id} src={img && img.file} alt="produto" />
+					))}
+				</Carrousel>
+			)}
+			<p>{date}</p>
 		</div>
 		<div className="buttons">
-			<span>Aprovado pelo cliente</span>
+			<Status status={status}>
+				{status === 'CANCELED' && <span>Reprovado</span>}
+				{status === 'ATTENTION' && <span>Alteração</span>}
+				{status === 'APPROVED' && <span>Aprovado</span>}
+				{status === 'NONE' && <span>Sem status</span>}
+			</Status>
 			{buttons && (
 				<div>
 					<button onClick={deleteItem} className="cancel" type="button">

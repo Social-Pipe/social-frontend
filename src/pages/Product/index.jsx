@@ -1,6 +1,8 @@
-import { useEffect, useState, useContext } from 'react';
+import { format, parseISO } from 'date-fns';
+import ptBr from 'date-fns/locale/pt-BR';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Container, { Header } from './styles';
 
@@ -8,58 +10,154 @@ import Button from '../../components/Button';
 import DeleteItem from '../../components/DeleteItem';
 import EditPost from '../../components/EditPost';
 import NewPost from '../../components/NewPost';
-import RatingPost from '../../components/RatingPost';
 import Row from '../../components/Row';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import { Context } from '../../services/context';
 
 const Product = () => {
+	const history = useHistory();
 	const [showModalDeleteItem, setShowModalDeleteItem] = useState(false);
 	const [showModalEdit, setShowModalEdit] = useState(false);
-	const [showModalRating, setShowModalRating] = useState(false);
 	const [showModalNewPost, setShowModalNewPost] = useState(false);
-	const [client, setClient] = useState();
+	const [client, setClient] = useState({});
+	const [posts, setPosts] = useState([]);
+	const [postsArchived, setPostsArchived] = useState([]);
+	const [arquiveds, setArquiveds] = useState(false);
+	const [editValues, setEditValues] = useState({});
+	const [deleteItem, setDeleteItem] = useState({
+		show: false,
+		id: -1,
+		name: '',
+	});
 	const params = useParams();
-	const { handleShowPopUp, handleShowModal } = useContext(Context);
+	const {
+		handleShowPopUp,
+		handleShowModal,
+		clients,
+		fetchMoreClients,
+		user,
+	} = useContext(Context);
+
+	const fetchPosts = useCallback(() => {
+		async function fetchData() {
+			const newClient = clients.find(
+				clientI => clientI.id === Number(params.id)
+			);
+			setClient(newClient);
+
+			try {
+				if (!newClient?.accessHash) {
+					return;
+				}
+				const response = await api.get(
+					`clients/${newClient.accessHash}/posts/`
+				);
+				const postsFormat = response.data.map(post => {
+					let statusText = 'Aprovado pelo cliente';
+
+					if (post.status === 'CANCELED') statusText = 'Reprovado';
+					if (post.status === 'NONE') statusText = 'Sem status';
+					if (post.status === 'ATTENTION') statusText = 'Atenção';
+
+					const newComments = post.comments.map(comment => ({
+						...comment,
+						dataFormat: format(
+							parseISO(comment.createdAt),
+							"eeeeee, 'de' MMMM 'às' HH:mm",
+							{
+								locale: ptBr,
+							}
+						),
+					}));
+
+					const files = post.files.map(file => ({
+						...file,
+						file: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${file.file}`,
+					}));
+
+					return {
+						...post,
+						statusText,
+						files,
+						comments: newComments,
+						dateFormat: format(
+							parseISO(post.postingDate),
+							"eeeeee, 'de' MMMM 'às' HH:mm",
+							{
+								locale: ptBr,
+							}
+						),
+					};
+				});
+				const postsFormatNotArchived = postsFormat.filter(
+					post => !post.archive
+				);
+				const postsFormatArchived = postsFormat.filter(post => post.archive);
+				setPosts(postsFormatNotArchived);
+				setPostsArchived(postsFormatArchived);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+		fetchData();
+	}, [clients, params]);
 
 	useEffect(() => {
-		async function fetchData() {
-			const response = await api.get(`clients/${params.id}/`);
-			setClient(response?.data || {});
-		}
-
-		if (params?.id) {
-			fetchData();
-		}
-	}, [params]);
+		fetchPosts();
+	}, [fetchPosts]);
 
 	return (
 		<Container>
 			<Modal
-				showModal={showModalDeleteItem}
-				handleOutClick={() => setShowModalDeleteItem(false)}
+				showModal={deleteItem.show}
+				handleOutClick={() =>
+					setDeleteItem(props => ({
+						...props,
+						show: false,
+					}))
+				}
 			>
 				<DeleteItem
-					handleDeleteItem={() => setShowModalDeleteItem(false)}
-					handleNotDeleteItem={() => setShowModalDeleteItem(false)}
+					item={deleteItem}
+					handleDeleteItem={(id, type) => {
+						if (type === 'client') {
+							fetchMoreClients();
+							history.replace('/dashboard');
+							return;
+						}
+						setDeleteItem(props => ({
+							...props,
+							show: false,
+						}));
+						const newPosts = posts.filter(value => value.id !== id);
+						setPosts(newPosts);
+					}}
+					handleNotDeleteItem={() =>
+						setDeleteItem(props => ({
+							...props,
+							show: false,
+						}))
+					}
 				/>
-			</Modal>
-			<Modal
-				background={false}
-				showModal={showModalRating}
-				handleOutClick={() => setShowModalRating(false)}
-			>
-				<RatingPost />
 			</Modal>
 			<Modal
 				showModal={showModalEdit}
 				handleOutClick={() => setShowModalEdit(false)}
 			>
 				<EditPost
-					saveClient={() => setShowModalEdit(false)}
+					deletePost={id => {
+						setShowModalEdit(false);
+						setDeleteItem({ id, name: 'post', show: true, type: 'client' });
+					}}
+					editValues={editValues}
+					saveClient={() => {
+						fetchPosts();
+						setShowModalEdit(false);
+					}}
 					editClient
 					handleClose={() => setShowModalEdit(false)}
+					clientInfo={client}
 				/>
 			</Modal>
 			<Modal
@@ -67,6 +165,7 @@ const Product = () => {
 				handleOutClick={() => setShowModalNewPost(false)}
 			>
 				<NewPost
+					clientInfo={client}
 					saveClient={() => setShowModalNewPost(false)}
 					editClient
 					handleClose={() => setShowModalNewPost(false)}
@@ -98,7 +197,14 @@ const Product = () => {
 				<button
 					type="button"
 					onClick={() => {
-						handleShowModal({ show: true, edit: true, client: params.id });
+						const newClient = {
+							...client,
+							deleteItem: (id, name) => {
+								handleShowModal({ show: false, edit: false });
+								setDeleteItem({ id, name, show: true, type: 'client' });
+							},
+						};
+						handleShowModal({ show: true, edit: true, client: newClient });
 					}}
 				>
 					<BsFillGearFill size={24} color="#fff" />
@@ -109,25 +215,92 @@ const Product = () => {
 					<Button type="button" onClick={() => setShowModalNewPost(true)}>
 						Novo post
 					</Button>
-					<Link className="secondary" to="/dashboard/products/id/archive">
+					<button
+						type="button"
+						className={`secondary ${arquiveds ? 'active' : ''}`}
+						onClick={() => {
+							setArquiveds(!arquiveds);
+						}}
+					>
 						Mostrar arquivados
-					</Link>
+					</button>
 				</div>
 				<div className="products">
-					<Row
-						hdResponsive
-						deleteItem={() => setShowModalDeleteItem(true)}
-						editItem={() => setShowModalEdit(true)}
-						ratingItem={() => setShowModalRating(true)}
-					/>
-					<Row
-						hdResponsive
-						deleteItem={() => setShowModalDeleteItem(true)}
-						ratingItem
-					/>
-					<Row hdResponsive deleteItem={() => setShowModalDeleteItem(true)} />
-					<Row hdResponsive deleteItem={() => setShowModalDeleteItem(true)} />
-					<Row hdResponsive deleteItem={() => setShowModalDeleteItem(true)} />
+					{!arquiveds ? (
+						<>
+							{posts.map(post => (
+								<Row
+									key={post.id}
+									image={post.files}
+									date={post.dateFormat}
+									type={post.type}
+									status={post.status}
+									statusText={post.statusText}
+									hdResponsive
+									deleteItem={() => {
+										setDeleteItem({ id: post.id, name: 'post', show: true });
+									}}
+									editItem={() => {
+										setShowModalEdit(true);
+										setEditValues({
+											...post,
+										});
+									}}
+									ratingItem={async () => {
+										try {
+											await api.patch(`/posts/${post.id}`, {
+												archive: true,
+											});
+											handleShowPopUp('sucess', 'Post  arquivado');
+										} catch {
+											handleShowPopUp('error', 'Post não arquivado');
+										}
+									}}
+								/>
+							))}
+						</>
+					) : (
+						<>
+							{postsArchived.map(post => (
+								<Row
+									key={post.id}
+									image={post.files}
+									date={post.dateFormat}
+									type={post.type}
+									status={post.status}
+									statusText={post.statusText}
+									hdResponsive
+									deleteItem={() => {
+										setDeleteItem({ id: post.id, name: 'post', show: true });
+									}}
+									editItem={() => {
+										setShowModalEdit(true);
+										setEditValues({
+											...post,
+										});
+									}}
+									ratingItem={async () => {
+										try {
+											await api.patch(`/posts/${post.id}/`, {
+												archive: !post.archive,
+											});
+											handleShowPopUp(
+												'sucess',
+												`Post ${!post.arquive ? 'arquivado' : 'Desarquivado'}`
+											);
+										} catch {
+											handleShowPopUp(
+												'error',
+												`Post não ${
+													!post.arquive ? 'arquivado' : 'Desarquivado'
+												}`
+											);
+										}
+									}}
+								/>
+							))}
+						</>
+					)}
 				</div>
 			</div>
 			<span>Aprovando postagens desde 2021</span>

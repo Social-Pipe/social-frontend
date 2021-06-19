@@ -19,7 +19,9 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal, addUser } = useContext(Context);
+	const { showModal, handleShowModal, addUser, fetchMoreClients } = useContext(
+		Context
+	);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
@@ -29,14 +31,21 @@ const DashBoardRoutes = () => {
 			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
 			if (!tokenStorage?.acessToken) {
 				setLoading(false);
-				history.replace('/');
+				history.replace('/login');
 				return;
 			}
 
 			const content = jwtDecode(tokenStorage?.acessToken);
-			const user = await api.get(`users/${content.user_id}/`);
-			addUser(user.data);
-			setLoading(false);
+			try {
+				const user = await api.get(`users/${content.user_id}/`);
+				addUser(user.data);
+				setLoading(false);
+				fetchMoreClients();
+			} catch {
+				window.localStorage.clear();
+				history.replace('/login');
+				setLoading(false);
+			}
 		}
 		fetchData();
 	}, []);
@@ -47,20 +56,24 @@ const DashBoardRoutes = () => {
 				<>
 					<Header />
 					<Switch>
-						<Route exact path={`${route.path}/config`} component={ConfigUser} />
 						<Route
 							exact
-							path={`${route.path}/configPayment`}
+							path={`${route.path}/configuracao`}
+							component={ConfigUser}
+						/>
+						<Route
+							exact
+							path={`${route.path}/pagamentoConfiguracao`}
 							component={ChangeConfigPayment}
 						/>
 						<Route
 							exact
-							path={`${route.path}/desactiveAccount`}
+							path={`${route.path}/desativarConta`}
 							component={DesactiveAccount}
 						/>
 						<Route
 							exact
-							path={`${route.path}/products/:id/archive`}
+							path={`${route.path}/cliente/:id/arquivo`}
 							component={ProductDetail}
 						/>
 
@@ -77,9 +90,10 @@ const DashBoardRoutes = () => {
 											edit: showModal.edit,
 											client: showModal?.client,
 										}}
-										saveClient={() =>
-											handleShowModal(props => ({ ...props, show: false }))
-										}
+										saveClient={() => {
+											fetchMoreClients();
+											handleShowModal(props => ({ ...props, show: false }));
+										}}
 										handleClose={() =>
 											handleShowModal(props => ({ ...props, show: false }))
 										}
@@ -90,7 +104,7 @@ const DashBoardRoutes = () => {
 									<Route exact path={`${route.path}`} component={DashBoard} />
 									<Route
 										exact
-										path={`${route.path}/product/:id/post`}
+										path={`${route.path}/cliente/:id/post`}
 										component={Product}
 									/>
 								</Switch>

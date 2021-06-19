@@ -21,6 +21,7 @@ export default styled.main`
 			}
 
 			.secondary {
+				cursor: pointer;
 				width: auto;
 				text-decoration: none;
 				background: none;
@@ -29,6 +30,13 @@ export default styled.main`
 				font-size: 1rem;
 				color: #ee4266;
 				margin-left: 2rem;
+				height: 3rem;
+				width: 100%;
+
+				&.active {
+					border: 1px solid #ee4266;
+					border-radius: 8px;
+				}
 			}
 		}
 

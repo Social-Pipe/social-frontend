@@ -10,6 +10,7 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import editOrNewClientSchema from '../../validations/editOrNewClientSchema';
 import Button from '../Button';
+import DeleteItem from '../DeleteItem';
 import PhotoContainer from '../PhotoContainer';
 
 const initialValues = {
@@ -24,20 +25,25 @@ const initialValues = {
 
 const NewClient = ({ saveClient, editClient, handleClose }) => {
 	const [loading, setLoading] = useState(false);
-	const { handleShowPopUp } = useContext(Context);
+	const { handleShowPopUp, showModal } = useContext(Context);
 	const formik = useFormik({
 		initialValues,
 		onSubmit: async (values, { resetForm }) => {
 			setLoading(true);
 			const formData = new FormData();
+			console.log(editClient);
 			formData.append('name', values.name);
 			formData.append('instagram', values.instagram);
 			formData.append('facebook', values.facebook);
 			formData.append('linkedin', values.linkedin);
-			formData.append('logo', values.logo);
+			formData.append('linkedin', values.linkedin);
+			formData.append('password ', values.password);
+			if (formik.values.logo) {
+				formData.append('logo', values.logo);
+			}
 			try {
 				if (editClient.edit) {
-					await api.put(`clients/${editClient.client}/`, formData);
+					await api.patch(`clients/${editClient.client.accessHash}/`, formData);
 				} else {
 					await api.post('clients/', formData);
 				}
@@ -53,39 +59,78 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 	});
 
 	useEffect(() => {
+		if (!showModal.show) {
+			formik.resetForm(initialValues);
+		}
+	}, [showModal]);
+
+	useEffect(() => {
+		if (!editClient.edit || !showModal.show) {
+			return;
+		}
 		formik.setFieldValue('edit', editClient.edit);
+		formik.setFieldValue('name', editClient.client.name);
+		formik.setFieldValue('facebook', editClient.client.facebook);
+		formik.setFieldValue('instagram', editClient.client.instagram);
+		formik.setFieldValue('linkedin', editClient.client.linkedin);
 	}, [editClient]);
 
 	return (
 		<Container>
-			<button type="button" className="close_button" onClick={handleClose}>
+			<button
+				type="button"
+				className="close_button"
+				onClick={() => {
+					formik.resetForm();
+					handleClose();
+				}}
+			>
 				<IoMdClose size={24} color="#fff" />
 			</button>
 			<header className="header_container">
 				{editClient.edit ? <h3>Editar cliente</h3> : <h3>Novo cliente</h3>}
 				{editClient.edit && (
-					<Button
-						loading={loading}
-						onClick={() => {
-							if (loading) {
-								return;
+					<>
+						<button
+							className="secondary"
+							type="button"
+							onClick={() =>
+								editClient.client.deleteItem(
+									editClient.client.accessHash,
+									editClient.client.name
+								)
 							}
-							formik.handleSubmit();
-						}}
-						type="button"
-					>
-						Salvar alterações
-					</Button>
+						>
+							Apagar cliente
+						</button>
+						<Button
+							loading={loading}
+							onClick={() => {
+								if (loading) {
+									return;
+								}
+								formik.handleSubmit();
+							}}
+							type="button"
+						>
+							Salvar alterações
+						</Button>
+					</>
 				)}
 			</header>
 			<form>
 				<div>
 					<div className="photo_container">
 						<p>Logo da empresa</p>
-						<PhotoContainer
-							value={formik.values.logo}
-							handleChange={file => formik.setFieldValue('logo', file)}
-						/>
+						<div>
+							{editClient?.client?.logo && !formik.values.logo && (
+								<img src={`${editClient.client.logo}`} alt="logo" />
+							)}
+							<PhotoContainer
+								value={formik.values.logo}
+								handleChange={file => formik.setFieldValue('logo', file)}
+							/>
+						</div>
 					</div>
 					<div className="inputs_container">
 						<fieldset>
@@ -176,12 +221,18 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 
 NewClient.propTypes = {
 	saveClient: PropTypes.func.isRequired,
-	editClient: PropTypes.bool,
+	editClient: PropTypes.exact({
+		edit: PropTypes.bool,
+		client: PropTypes.object,
+	}),
 	handleClose: PropTypes.func.isRequired,
 };
 
 NewClient.defaultProps = {
-	editClient: false,
+	editClient: {
+		edit: false,
+		client: {},
+	},
 };
 
 export default NewClient;

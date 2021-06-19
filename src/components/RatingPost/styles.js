@@ -8,6 +8,11 @@ export default styled.div`
 
 	max-width: 73.37rem;
 	position: relative;
+
+	.slider-list,
+	.slider-list .slider-slide {
+		height: 100% !important;
+	}
 	.rating {
 		display: flex;
 		max-height: 43.5rem;
@@ -38,7 +43,8 @@ export default styled.div`
 		/* overflow: auto; */
 	}
 
-	img {
+	img,
+	video {
 		object-fit: cover;
 		width: 100%;
 		height: 100%;

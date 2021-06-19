@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default styled.div`
 	width: 100%;
@@ -16,7 +16,8 @@ export default styled.div`
 		display: flex;
 		align-items: center;
 
-		img {
+		img,
+		video {
 			width: 4rem;
 			height: 4rem;
 			object-fit: cover;
@@ -36,17 +37,6 @@ export default styled.div`
 			> div {
 				display: flex;
 				align-items: center;
-			}
-
-			span {
-				font-size: 1rem;
-				margin: 0;
-				background-color: #73fe69;
-				padding: 0.5rem 1.75rem;
-				color: #fff;
-				opacity: 1;
-				border-radius: 8px;
-				margin-right: 1.75rem;
 			}
 
 			button {
@@ -114,12 +104,6 @@ export default styled.div`
 				width: 100%;
 				height: 10rem;
 			}
-
-			&.buttons {
-				span {
-					margin: 1rem 0;
-				}
-			}
 		}
 	}
 
@@ -132,5 +116,45 @@ export default styled.div`
 				}
 			}
 		}
+	}
+`;
+
+export const Status = styled.span`
+	font-size: 1rem;
+	padding: 0.5rem 1.75rem;
+	color: #fff;
+	margin: 0;
+	opacity: 1;
+	border-radius: 8px;
+	margin-right: 1.75rem;
+
+	${({ status }) => {
+		switch (status) {
+			case 'NONE':
+				return css`
+					color: #474747;
+					background: #f5f5f5;
+				`;
+			case 'APPROVED':
+				return css`
+					background-color: #73fe69;
+				`;
+			case 'ATTENTION':
+				return css`
+					background-color: #fee569;
+				`;
+			case 'CANCELED':
+				return css`
+					background-color: #fe6969;
+				`;
+			default:
+				return css`
+					background-color: #fee569;
+				`;
+		}
+	}}
+
+	@media (max-width: 500px) {
+		margin: 1rem 0;
 	}
 `;

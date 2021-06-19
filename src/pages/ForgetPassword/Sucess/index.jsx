@@ -11,7 +11,7 @@ const Sucess = () => (
 		</p>
 		<div className="container_buttons">
 			<div className="container_forget">
-				<Link to="/">Voltar para a tela de login</Link>
+				<Link to="/login">Voltar para a tela de login</Link>
 			</div>
 			<div className="container_forget" />
 		</div>

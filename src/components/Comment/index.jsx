@@ -1,12 +1,13 @@
 import Container from './styles';
 
-const Comment = () => (
+const Comment = ({ comment }) => (
 	<Container>
 		<header>
-			<h4>Cliente</h4>
-			<span>Seg, 12 de novembro às 21h35</span>
+			{comment.writer === 'USER' && <h4>Usuário</h4>}
+			{comment.writer === 'CLIENT' && <h4>Cliente</h4>}
+			<span>{comment.dataFormat}</span>
 		</header>
-		<p>{'Muito legal gostei muito do post! <3'}</p>
+		<p>{comment.message}</p>
 	</Container>
 );
 

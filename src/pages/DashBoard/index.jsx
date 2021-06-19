@@ -29,7 +29,7 @@ const DashBoard = () => {
 				{clients.map(client => (
 					<Card
 						handleButton={id => {
-							history.push(`/dashboard/product/${id}/post`);
+							history.push(`/dashboard/cliente/${id}/post`);
 						}}
 						key={client.id}
 						name={client.name}

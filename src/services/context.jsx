@@ -12,10 +12,15 @@ export const Context = createContext({
 		text: 'Alterações salvas com sucesso!',
 	},
 	handleShowPopUp() {},
-	showModal: false,
+	showModal: {
+		show: false,
+		edit: false,
+		client: {},
+	},
 	handleShowModal() {},
 	clients: [],
 	user: {},
+	fetchMoreClients() {},
 	addUser() {},
 });
 
@@ -25,6 +30,7 @@ const ContextProvider = ({ children }) => {
 	const [showPopUp, setShowPopUp] = useState(false);
 	const [showModal, setShowModal] = useState({
 		show: false,
+		client: {},
 		edit: false,
 	});
 	const [clients, setClients] = useState([]);
@@ -39,11 +45,12 @@ const ContextProvider = ({ children }) => {
 		setSmart(false);
 	}, []);
 
-	useEffect(() => {
-		const fetchClients = async () => {
+	const fetchClients = useCallback(() => {
+		const fetchData = async () => {
 			try {
 				const { data } = await api.get('clients/');
-				const clientsResult = data.map(client => ({
+				const clientsResult = data.results.map(client => ({
+					...client,
 					id: client.id,
 					logo: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${client.logo}`,
 					name: client.name,
@@ -51,7 +58,7 @@ const ContextProvider = ({ children }) => {
 				setClients([...clientsResult]);
 			} catch {}
 		};
-		fetchClients();
+		fetchData();
 	}, []);
 
 	useEffect(() => {
@@ -107,6 +114,7 @@ const ContextProvider = ({ children }) => {
 				clients,
 				user,
 				addUser,
+				fetchMoreClients: fetchClients,
 			}}
 		>
 			{children}

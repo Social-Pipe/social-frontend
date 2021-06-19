@@ -13,7 +13,7 @@ const Header = () => {
 	const route = useLocation();
 
 	useEffect(() => {
-		const routesWithMenu = ['product', 'dashboard'];
+		const routesWithMenu = ['post', 'dashboard'];
 		const array = route.pathname.split('/');
 		let existRoute = false;
 		let routes =
@@ -24,8 +24,8 @@ const Header = () => {
 		if (!existRoute) {
 			routes =
 				array[array.length - 1] !== ''
-					? array[array.length - 3]
-					: array[array.length - 4];
+					? array[array.length - 2]
+					: array[array.length - 3];
 		}
 		setExistMenuRoute(routesWithMenu.includes(routes));
 	}, [route.pathname]);

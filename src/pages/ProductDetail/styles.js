@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default styled.main`
 	display: flex;
@@ -125,6 +125,16 @@ export default styled.main`
 
 		.products {
 			margin-top: 2rem;
+			button {
+				background: none;
+				width: 100%;
+				border: none;
+				cursor: pointer;
+				margin-bottom: 2rem;
+				> div {
+					margin: 0;
+				}
+			}
 		}
 	}
 
@@ -186,37 +196,9 @@ export const Feed = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	> div {
-		width: 23.37rem;
-		height: 23.37rem;
-		position: relative;
-		margin-right: 2rem;
-		margin-bottom: 2rem;
-
-		img {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			z-index: -1;
-		}
-
-		span {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #fe6969;
-			box-shadow: 0 3px 6px rgba(254, 105, 105, 0.77);
-			width: 5rem;
-			height: 0.69rem;
-			font-size: 0.375rem;
-			color: #fff;
-			border-radius: 100px;
-			margin-top: 0.75rem;
-			margin-left: 1rem;
-		}
+	.slider-list,
+	.slider-list .slider-slide {
+		height: 100% !important;
 	}
 
 	@media (max-width: 1000px) {
@@ -244,5 +226,91 @@ export const Feed = styled.div`
 		> div {
 			height: 10rem;
 		}
+	}
+`;
+
+export const Button = styled.button`
+	cursor: pointer;
+	display: flex;
+	width: 23.37rem;
+	height: 23.37rem;
+	position: relative;
+	margin-right: 2rem;
+	margin-bottom: 2rem;
+	z-index: 2;
+
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -1;
+	}
+
+	span {
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #fe6969;
+		box-shadow: 0 3px 6px rgba(254, 105, 105, 0.77);
+		width: 5rem;
+		height: 0.69rem;
+		font-size: 0.375rem;
+		color: #fff;
+		border-radius: 100px;
+		margin-top: 0.75rem;
+		margin-left: 1rem;
+
+		${({ status }) => {
+			switch (status) {
+				case 'NONE':
+					return css`
+						color: #474747;
+						background: #f5f5f5;
+						box-shadow: 0 3px 6px rgba(138, 138, 138, 0.43);
+					`;
+				case 'APPROVED':
+					return css`
+						background: #73fe69;
+						box-shadow: 0 3px 6px rgba(115, 254, 105, 0.77);
+					`;
+				case 'ATTENTION':
+					return css`
+						background: #fee569;
+						box-shadow: 0 3px 6px rgba(254, 229, 105, 0.77);
+					`;
+				case 'CANCELED ':
+					return css`
+						background: #fe6969;
+						box-shadow: 0 3px 6px rgba(254, 105, 105, 0.77);
+					`;
+
+				default:
+					break;
+			}
+		}}
+	}
+
+	@media (max-width: 1000px) {
+		width: 17.5rem;
+		height: 17.5rem;
+	}
+	@media (max-width: 1000px) {
+		width: 17.5rem;
+		height: 17.5rem;
+	}
+
+	@media (max-width: 800px) {
+		max-width: 23.37rem;
+		height: 23.37rem;
+		width: 100%;
+		margin-right: 0;
+	}
+
+	@media (max-width: 600px) {
+		height: 10rem;
 	}
 `;

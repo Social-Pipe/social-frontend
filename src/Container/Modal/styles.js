@@ -25,5 +25,6 @@ export default styled.div`
 		background: ${({ background }) => (background ? '#fff' : 'none')};
 		z-index: 2;
 		border-radius: 8px;
+		overflow-x: hidden;
 	}
 `;

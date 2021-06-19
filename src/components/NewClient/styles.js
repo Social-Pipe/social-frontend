@@ -28,6 +28,25 @@ export default styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+
+		.secondary {
+			cursor: pointer;
+			width: auto;
+			text-decoration: none;
+			background: none;
+			border: none;
+			font-weight: 500;
+			font-size: 1rem;
+			color: #ee4266;
+			margin-left: 2rem;
+			height: 3rem;
+			width: 100%;
+
+			&.active {
+				border: 1px solid #ee4266;
+				border-radius: 8px;
+			}
+		}
 		h3 {
 			font-size: 2.44rem;
 
@@ -57,6 +76,20 @@ export default styled.div`
 						margin-bottom: 0.5rem;
 						color: #5d5d5d;
 						font-weight: 500;
+					}
+
+					> div {
+						position: relative;
+						img {
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 8.94rem;
+							height: 8.94rem;
+							pointer-events: none;
+							border-radius: 100%;
+							object-fit: cover;
+						}
 					}
 				}
 				.inputs_container {

@@ -38,7 +38,7 @@ const Aside = () => {
 						<button
 							type="button"
 							onClick={() =>
-								history.push(`/dashboard/product/${client.id}/post`)
+								history.push(`/dashboard/cliente/${client.id}/post`)
 							}
 							className={client.id === clientActiveId ? 'active' : ''}
 							key={client.id}
@@ -48,7 +48,7 @@ const Aside = () => {
 					))}
 				</div>
 				<div>
-					<Link to="/dashboard/config" className="comment">
+					<Link to="/dashboard/configuracao" className="comment">
 						<div>
 							<span>Você está logado como</span>
 							<p>{user?.name || 'Usuário'} </p>
@@ -61,7 +61,7 @@ const Aside = () => {
 						onClick={() => {
 							window.localStorage.clear();
 
-							history.replace('/');
+							history.replace('/login');
 						}}
 					>
 						Sair
