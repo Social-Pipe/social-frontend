@@ -5,15 +5,9 @@ import { useDropzone } from 'react-dropzone';
 import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
-import Container from './styles';
+import Container, { ImageContainer } from './styles';
 
-function CarrouselContainer({
-	handleChange,
-	handleDelete,
-	value,
-	type,
-	...rest
-}) {
+function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState([]);
 	const [selectedFile, setSelectedFile] = useState([]);
 	const [slidesShow, setSlidesShow] = useState(4);
@@ -26,10 +20,7 @@ function CarrouselContainer({
 
 		setSelectedFileUrl(props => {
 			const filesUrl = acceptedFiles
-				.map(acceptedFile => ({
-					file: URL.createObjectURL(acceptedFile),
-					id: null,
-				}))
+				.map(acceptedFile => URL.createObjectURL(acceptedFile))
 				.slice(0, 10 - props.length);
 			const newFilesArray = [...props, ...filesUrl];
 			if (newFilesArray.length > 10) {
@@ -37,28 +28,31 @@ function CarrouselContainer({
 			}
 			return newFilesArray;
 		});
+
 		setSelectedFile(props => {
 			const filesUrl = acceptedFiles.slice(0, 10 - props.length);
 			const newFilesArray = [...props, ...filesUrl];
 			if (newFilesArray.length > 10) {
 				return props;
 			}
+
+			addItem(newFilesArray);
 			return newFilesArray;
 		});
 	}, []);
 
 	useEffect(() => {
-		if (selectedFile.length > 0) {
-			handleChange(selectedFile);
+		if (items[0]) {
+			const itemUrls = items.map(item => {
+				if (typeof item === 'string') {
+					return item;
+				}
+				return URL.createObjectURL(item);
+			});
+			setSelectedFileUrl(itemUrls);
 		}
-	}, [selectedFile]);
+	}, [items]);
 
-	useEffect(() => {
-		if (!value) {
-			return;
-		}
-		setSelectedFileUrl(value);
-	}, [value]);
 	const { getRootProps, getInputProps } = useDropzone({
 		onDrop,
 		accept: 'image/*',
@@ -90,12 +84,8 @@ function CarrouselContainer({
 				<div className="carrousel-container">
 					<Carrousel
 						onResize={() => {
-							if (window.innerWidth <= 400) {
-								setSlidesShow(1);
-								return;
-							}
 							if (window.innerWidth <= 600) {
-								setSlidesShow(3);
+								setSlidesShow(1);
 								return;
 							}
 							setSlidesShow(4);
@@ -126,22 +116,22 @@ function CarrouselContainer({
 						)}
 					>
 						{selectedFileUrl.map((file, index) => (
-							<div key={file} className="carrousel-image" type="button">
+							<ImageContainer key={file}>
 								<button
 									type="button"
 									onClick={() => {
 										const newFilesUrl = [...selectedFileUrl];
 										const newFiles = [...selectedFile];
+										const fileDeleted = newFiles[index];
+										const fileDeletedUrl = newFilesUrl[index];
 										newFiles.splice(index, 1);
 										newFilesUrl.splice(index, 1);
-										setSelectedFileUrl(newFiles);
+										setSelectedFile(newFiles);
 										setSelectedFileUrl(newFilesUrl);
-										if (file.id !== null) {
-											handleDelete(file.id);
-										}
+										deleteItem(fileDeleted, index, fileDeletedUrl);
 									}}
 								>
-									<img src={file.file} alt="imagem" />
+									<img src={file} alt="imagem" />
 									<span>
 										<AiOutlineClose size={32} color="#fff" />
 									</span>
@@ -149,7 +139,7 @@ function CarrouselContainer({
 								<div>
 									<p>{index + 1}</p>
 								</div>
-							</div>
+							</ImageContainer>
 						))}
 					</Carrousel>
 				</div>
@@ -157,5 +147,17 @@ function CarrouselContainer({
 		</Container>
 	);
 }
+
+CarrouselContainer.propTypes = {
+	addItem: PropTypes.func,
+	deleteItem: PropTypes.func,
+	items: PropTypes.array,
+};
+
+CarrouselContainer.defaultProps = {
+	addItem() {},
+	deleteItem() {},
+	items: [],
+};
 
 export default CarrouselContainer;

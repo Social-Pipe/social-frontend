@@ -1,11 +1,10 @@
 import styled, { css } from 'styled-components';
 
 export default styled.div`
-	flex: 3 !important;
+	flex: 2 !important;
 	cursor: pointer;
 	display: flex;
 	margin-left: 1rem;
-
 	img {
 		width: 100%;
 		height: 100%;
@@ -14,8 +13,8 @@ export default styled.div`
 
 	.carrousel-container {
 		width: 100%;
-		height: 100%;
 		margin-left: 1.5rem;
+		height: 7.5rem;
 
 		.slider-control-centerleft {
 			left: -20px !important;
@@ -28,60 +27,6 @@ export default styled.div`
 			background: none;
 			border: none;
 			cursor: pointer;
-		}
-		.carrousel-image {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			button {
-				position: relative;
-				width: 4.37rem;
-				height: 4.37rem;
-				img {
-					width: 100%;
-					height: 100%;
-					border-radius: 100%;
-				}
-
-				span {
-					display: flex;
-					background: rgba(0, 0, 0, 0.5);
-					border-radius: 100%;
-					align-items: center;
-					justify-content: center;
-					position: absolute;
-					top: 0;
-					opacity: 0;
-					transition: opacity linear 0.2s;
-					left: 0;
-					width: 100%;
-					height: 100%;
-				}
-
-				:hover {
-					span {
-						opacity: 1;
-					}
-				}
-			}
-
-			> div {
-				border: none;
-				display: flex;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				width: 1.75rem;
-				height: 1.75rem;
-				border-radius: 8px;
-				border: 1px solid #e4e4e4;
-				margin-top: 1rem;
-
-				p {
-					font-weight: 500;
-					color: #5d5d5d;
-				}
-			}
 		}
 	}
 
@@ -130,5 +75,61 @@ export default styled.div`
 
 	@media (max-width: 900px) {
 		margin-left: 0;
+	}
+`;
+
+export const ImageContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	button {
+		position: relative;
+		width: 4.37rem;
+		height: 4.37rem;
+		img {
+			width: 100%;
+			height: 100%;
+			border-radius: 100%;
+		}
+
+		span {
+			display: flex;
+			background: rgba(0, 0, 0, 0.5);
+			border-radius: 100%;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			top: 0;
+			opacity: 0;
+			transition: opacity linear 0.2s;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		:hover {
+			span {
+				opacity: 1;
+			}
+		}
+	}
+
+	> div {
+		border: none;
+		display: flex;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: 8px;
+		border: 1px solid #e4e4e4;
+		margin-top: 1rem;
+
+		p {
+			font-weight: 500;
+			color: #5d5d5d;
+			margin: 0;
+		}
 	}
 `;

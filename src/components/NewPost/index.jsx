@@ -8,7 +8,6 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
-import Carrousel from './component/Carrousel';
 import Image from './component/Image';
 import Container, { ContainerCalendar, Select, InputContainer } from './styles';
 
@@ -16,6 +15,7 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import newPostSchema from '../../validations/newPostSchema';
 import Button from '../Button';
+import Carrousel from '../Carrousel';
 
 const initialValues = {
 	facebook: false,
@@ -83,6 +83,10 @@ const NewPost = ({ saveClient, clientInfo }) => {
 				saveClient();
 			} catch (e) {
 				setLoading(false);
+				if (!e.status) {
+					handleShowPopUp('error', 'Erro de Conexão');
+					return;
+				}
 				handleShowPopUp('error', 'Erro, tente novamente');
 			}
 		},
@@ -514,8 +518,13 @@ const NewPost = ({ saveClient, clientInfo }) => {
 						</Select>
 						{formik.values.typeFile === 'Carrousel' ? (
 							<Carrousel
-								handleChange={file => {
+								addItem={file => {
 									formik.setFieldValue('logo', file);
+								}}
+								deleteItem={(_, index) => {
+									const items = [...formik.values.logo];
+									items.splice(index, 1);
+									formik.setFieldValue('logo', items);
 								}}
 							/>
 						) : (

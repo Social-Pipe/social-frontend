@@ -9,7 +9,6 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
-import CarrouselEdit from './component/Carrousel';
 import Image from './component/Image';
 import Container, {
 	ContainerCalendar,
@@ -21,6 +20,7 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import newPostSchema from '../../validations/newPostSchema';
 import Button from '../Button';
+import CarrouselEdit from '../Carrousel';
 
 const initialValues = {
 	facebook: false,
@@ -118,11 +118,11 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			if (editValues.type === 'GALLERY') {
 				typeFile = 'Carrousel';
 				logo = editValues.files;
-				carrouselImages = editValues.files;
+				carrouselImages = editValues.files.map(file => file.file);
 			}
 			if (editValues.type === 'SINGLE') {
 				logo = editValues.files;
-				carrouselImages = editValues.files;
+				carrouselImages = editValues.files.map(file => file.file);
 			}
 			if (editValues.type === 'VIDEO') {
 				typeFile = 'Video';
@@ -638,13 +638,24 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 						</Select>
 						{formik.values.typeFile === 'Carrousel' ? (
 							<CarrouselEdit
-								handleDelete={id => {
-									setImagesDeleteId(props => [...props, id]);
-								}}
-								value={formik.values.carrouselImages}
-								handleChange={file => {
+								addItem={file => {
 									setNewFiles(props => [...props, ...file]);
 								}}
+								deleteItem={(file, index, fileUrl) => {
+									const items = [...formik.values.logo];
+									items.splice(index, 1);
+									formik.setFieldValue('logo', items);
+									const currentFile = formik.values.currentLogo.find(
+										img => img?.file === fileUrl
+									);
+									console.log(formik.values.currentLogo);
+									console.log(fileUrl);
+									console.log(currentFile);
+									if (currentFile) {
+										setImagesDeleteId(props => [...props, currentFile.id]);
+									}
+								}}
+								items={formik.values.carrouselImages}
 							/>
 						) : (
 							<Image

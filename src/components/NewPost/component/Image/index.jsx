@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { BiPlusMedical } from 'react-icons/bi';
 
 import Container from './styles';
 
-function MyDropzone({ handleChange, value, type, ...rest }) {
+function ImageContainer({ handleChange, value, type, ...rest }) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState({
 		file: '',
 		name: '',
@@ -59,8 +58,8 @@ function MyDropzone({ handleChange, value, type, ...rest }) {
 	);
 }
 
-MyDropzone.propTypes = {
+ImageContainer.propTypes = {
 	handleChange: PropTypes.func.isRequired,
 };
 
-export default MyDropzone;
+export default ImageContainer;
