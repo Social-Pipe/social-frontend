@@ -54,17 +54,21 @@ const ConfigUser = () => {
 				name: values.name,
 				cpf: values.cpf.match(/\d+/g).join(''),
 				phone: values.phone.match(/\d+/g).join(''),
-				payment: {
-					address: {
-						cep: values.cep.match(/\d+/g).join(''),
-						street: values.adress,
-						number: values.number,
-						city: values.city,
-						stateUf: values.sigla,
-						neighborhood: values.bairro,
+				payment: [
+					{
+						address: [
+							{
+								cep: values.cep.match(/\d+/g).join(''),
+								street: values.adress,
+								number: values.number,
+								city: values.city,
+								stateUf: values.sigla,
+								neighborhood: values.bairro,
+							},
+						],
+						cardId: user.payment.cardId,
 					},
-					cardId: user.payment.cardId,
-				},
+				],
 			};
 			if (values.password) {
 				variables.password = values.password;

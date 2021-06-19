@@ -38,7 +38,7 @@ const ChangeConfigPayment = () => {
 			};
 			try {
 				const client = await pagarme.client.connect({
-					api_key: 'ak_test_Wa4vKvUZGvchQYclsvaXxbnI1jtcOy',
+					api_key: process.env.REACT_APP_KEY_PAGARME,
 				});
 				const cardId = await client.cards.create(cardValues);
 
@@ -52,10 +52,12 @@ const ChangeConfigPayment = () => {
 				const content = jwtDecode(tokenStorage?.acessToken);
 				await api.patch(`users/${content.user_id}/`, {
 					...user,
-					payment: {
-						...user.payment,
-						cardId: cardId.id,
-					},
+					payment: [
+						{
+							...user.payment,
+							cardId: cardId.id,
+						},
+					],
 				});
 				handleShowPopUp('sucess', 'Informações Atualizadas!');
 			} catch {

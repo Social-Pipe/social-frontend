@@ -58,7 +58,7 @@ const Register = () => {
 					card_cvv: values.cardCode,
 				};
 				const client = await pagarme.client.connect({
-					api_key: 'ak_test_Wa4vKvUZGvchQYclsvaXxbnI1jtcOy',
+					api_key: process.env.REACT_APP_KEY_PAGARME,
 				});
 				const cardId = await client.cards.create(cardValues);
 
@@ -66,23 +66,21 @@ const Register = () => {
 					email: values.email,
 					password: values.password,
 					name: values.name,
-					payment: {
-						address: {
-							cep: values.cep.match(/\d+/g).join(''),
-							street: values.adress,
-							number: values.number,
-							city: values.city,
-							state_uf: values.sigla,
-							neighborhood: values.district,
+					payment: [
+						{
+							address: [
+								{
+									cep: values.cep.match(/\d+/g).join(''),
+									street: values.adress,
+									number: values.number,
+									city: values.city,
+									stateUf: values.sigla,
+									neighborhood: values.district,
+								},
+							],
+							cardId: cardId.id,
 						},
-						card_id: cardId.id,
-					},
-					client: {
-						name: values.companyName,
-						instagram: values.instagram,
-						facebook: values.facebook,
-						linkedin: values.linkedin,
-					},
+					],
 				};
 				if (values.phone) {
 					request.phone = values.phone.match(/\d+/g).join('');
