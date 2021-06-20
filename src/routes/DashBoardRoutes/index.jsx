@@ -10,7 +10,7 @@ import NewClient from '../../components/NewClient';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
-import Client from '../../pages/Client';
+import ClientConfig from '../../pages/ClientConfig';
 import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
 import DesactiveAccount from '../../pages/DesactiveAccount';
@@ -99,7 +99,7 @@ const DashBoardRoutes = () => {
 									<Route
 										exact
 										path={`${route.path}/cliente/:id/post`}
-										component={Client}
+										component={ClientConfig}
 									/>
 								</Switch>
 							</ContainerProduct>
