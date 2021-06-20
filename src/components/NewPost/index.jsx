@@ -9,7 +9,12 @@ import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import Image from './component/Image';
-import Container, { ContainerCalendar, Select, InputContainer } from './styles';
+import Container, {
+	ContainerCalendar,
+	Select,
+	InputContainer,
+	Form,
+} from './styles';
 
 import api from '../../config/api';
 import { Context } from '../../services/context';
@@ -141,7 +146,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 					Salvar novo Post
 				</Button>
 			</div>
-			<form onSubmit={formik.handleSubmit}>
+			<Form onSubmit={formik.handleSubmit}>
 				<InputContainer>
 					<div className="social_redes">
 						<p>Redes Sociais</p>
@@ -547,7 +552,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 						onChange={formik.handleChange}
 					/>
 				</div>
-			</form>
+			</Form>
 		</Container>
 	);
 };

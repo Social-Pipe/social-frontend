@@ -14,6 +14,7 @@ import Container, {
 	ContainerCalendar,
 	Select,
 	InputsContainer,
+	Form,
 } from './styles';
 
 import api from '../../config/api';
@@ -258,7 +259,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 						</div>
 					</div>
 				</div>
-				<form>
+				<Form>
 					<InputsContainer>
 						<div className="social_redes">
 							<p>Redes Sociais</p>
@@ -683,7 +684,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							value={formik.values.description}
 						/>
 					</div>
-				</form>
+				</Form>
 			</div>
 		</Container>
 	);
