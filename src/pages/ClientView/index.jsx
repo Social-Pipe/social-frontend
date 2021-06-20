@@ -13,7 +13,7 @@ import Row from '../../components/Row';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
 
-const ProductDetail = () => {
+const ClientView = () => {
 	const [showModal, setShowModal] = useState(true);
 	const [page, setPage] = useState(0);
 	const [showModalRating, setShowModalRating] = useState({
@@ -282,4 +282,4 @@ const ProductDetail = () => {
 	);
 };
 
-export default ProductDetail;
+export default ClientView;

@@ -15,7 +15,7 @@ import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import { Context } from '../../services/context';
 
-const Product = () => {
+const ClientConfig = () => {
 	const history = useHistory();
 	const [showModalDeleteItem, setShowModalDeleteItem] = useState(false);
 	const [showModalEdit, setShowModalEdit] = useState(false);
@@ -308,4 +308,4 @@ const Product = () => {
 	);
 };
 
-export default Product;
+export default ClientConfig;

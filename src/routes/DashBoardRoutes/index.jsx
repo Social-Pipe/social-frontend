@@ -10,11 +10,10 @@ import NewClient from '../../components/NewClient';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
+import Client from '../../pages/Client';
 import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
 import DesactiveAccount from '../../pages/DesactiveAccount';
-import Product from '../../pages/Product';
-import ProductDetail from '../../pages/ProductDetail';
 import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
@@ -71,11 +70,6 @@ const DashBoardRoutes = () => {
 							path={`${route.path}/desativarConta`}
 							component={DesactiveAccount}
 						/>
-						<Route
-							exact
-							path={`${route.path}/cliente/:id/arquivo`}
-							component={ProductDetail}
-						/>
 
 						<Route path={`${route.path}`}>
 							<ContainerProduct>
@@ -105,7 +99,7 @@ const DashBoardRoutes = () => {
 									<Route
 										exact
 										path={`${route.path}/cliente/:id/post`}
-										component={Product}
+										component={Client}
 									/>
 								</Switch>
 							</ContainerProduct>
