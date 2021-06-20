@@ -22,6 +22,10 @@ const Login = () => {
 		initialValues,
 		validationSchema: loginSchema,
 		onSubmit: async values => {
+			if (loading) {
+				return;
+			}
+
 			try {
 				setLoading(true);
 				const { data } = await api.post('token/', {
@@ -77,17 +81,7 @@ const Login = () => {
 							/>
 						</fieldset>
 						<div className="container_buttons">
-							<Button
-								type="button"
-								onClick={() => {
-									if (loading) {
-										return;
-									}
-									formik.handleSubmit();
-								}}
-								loading={loading}
-								className="button"
-							>
+							<Button type="submit" loading={loading} className="button">
 								Fazer login
 							</Button>
 							<div className="container_forget">
