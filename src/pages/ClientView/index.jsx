@@ -20,7 +20,6 @@ const ClientView = () => {
 		show: false,
 		value: {},
 	});
-	const [filter, setFilter] = useState([]);
 	const [posts, setPosts] = useState([]);
 	const [postsFilter, setPostsFilter] = useState([]);
 	const [token, setToken] = useState('');
@@ -51,6 +50,17 @@ const ClientView = () => {
 					if (postMap.status === 'NONE' || postMap.status === 'ATTENTION')
 						statusText = 'Atenção';
 
+					const newComment = postMap.comments.map(commentMap => ({
+						...commentMap,
+						dataFormat: format(
+							parseISO(commentMap.createdAt),
+							"eeeeee, 'de' MMMM 'às' HH:mm",
+							{
+								locale: ptBr,
+							}
+						),
+					}));
+
 					const files = postMap.files.map(file => ({
 						...file,
 						file: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${file.file}`,
@@ -59,6 +69,7 @@ const ClientView = () => {
 						...postMap,
 						statusText,
 						files,
+						comments: newComment,
 						dataFormat: format(
 							parseISO(postMap.postingDate),
 							"eeeeee, 'de' MMMM 'às' HH:mm",

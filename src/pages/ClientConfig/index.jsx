@@ -10,6 +10,7 @@ import Button from '../../components/Button';
 import DeleteItem from '../../components/DeleteItem';
 import EditPost from '../../components/EditPost';
 import NewPost from '../../components/NewPost';
+import RatingPost from '../../components/RatingPost';
 import Row from '../../components/Row';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
@@ -17,7 +18,6 @@ import { Context } from '../../services/context';
 
 const ClientConfig = () => {
 	const history = useHistory();
-	const [showModalDeleteItem, setShowModalDeleteItem] = useState(false);
 	const [showModalEdit, setShowModalEdit] = useState(false);
 	const [showModalNewPost, setShowModalNewPost] = useState(false);
 	const [client, setClient] = useState({});
@@ -25,6 +25,10 @@ const ClientConfig = () => {
 	const [postsArchived, setPostsArchived] = useState([]);
 	const [arquiveds, setArquiveds] = useState(false);
 	const [editValues, setEditValues] = useState({});
+	const [showModalRating, setShowModalRating] = useState({
+		show: false,
+		value: {},
+	});
 	const [deleteItem, setDeleteItem] = useState({
 		show: false,
 		id: -1,
@@ -36,6 +40,7 @@ const ClientConfig = () => {
 		handleShowModal,
 		clients,
 		fetchMoreClients,
+		user,
 	} = useContext(Context);
 
 	const fetchPosts = useCallback(() => {
@@ -109,6 +114,27 @@ const ClientConfig = () => {
 	return (
 		<Container>
 			<Modal
+				background={false}
+				showModal={showModalRating.show}
+				handleOutClick={() => setShowModalRating({ show: false, value: {} })}
+			>
+				<RatingPost
+					user={user}
+					values={showModalRating.value}
+					clientToken=""
+					closeModal={() => setShowModalRating({ show: false, value: {} })}
+					updatePosts={(id, object) => {
+						const newPosts = posts.map(value => {
+							if (value.id === id) {
+								return object;
+							}
+							return value;
+						});
+						setPosts(newPosts);
+					}}
+				/>
+			</Modal>
+			<Modal
 				showModal={deleteItem.show}
 				handleOutClick={() =>
 					setDeleteItem(props => ({
@@ -147,7 +173,7 @@ const ClientConfig = () => {
 				<EditPost
 					deletePost={id => {
 						setShowModalEdit(false);
-						setDeleteItem({ id, name: 'post', show: true, type: 'client' });
+						setDeleteItem({ id, name: 'post', show: true, type: 'post' });
 					}}
 					editValues={editValues}
 					saveClient={() => {
@@ -229,6 +255,12 @@ const ClientConfig = () => {
 						<>
 							{posts.map(post => (
 								<Row
+									openPost={() => {
+										setShowModalRating({
+											show: true,
+											value: post,
+										});
+									}}
 									key={post.id}
 									image={post.files}
 									date={post.dateFormat}
@@ -262,6 +294,12 @@ const ClientConfig = () => {
 						<>
 							{postsArchived.map(post => (
 								<Row
+									openPost={() => {
+										setShowModalRating({
+											show: true,
+											value: post,
+										});
+									}}
 									key={post.id}
 									image={post.files}
 									date={post.dateFormat}

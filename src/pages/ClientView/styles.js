@@ -239,7 +239,8 @@ export const Button = styled.button`
 	margin-bottom: 2rem;
 	z-index: 2;
 
-	img {
+	img,
+	video {
 		position: absolute;
 		top: 0;
 		left: 0;
