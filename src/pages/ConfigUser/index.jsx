@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { format, parseISO } from 'date-fns';
+import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
 import jwtDecode from 'jwt-decode';
 import { useContext, useEffect, useState } from 'react';
@@ -6,7 +8,7 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { RiArrowLeftSLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
-import Container, { FieldSet, Info, Form } from './styles';
+import Container, { FieldSet, Info, Form, Payment } from './styles';
 
 import Button from '../../components/Button';
 import api from '../../config/api';
@@ -33,10 +35,27 @@ const initialValues = {
 	sigla: '',
 };
 
+const typesOfTransactions = {
+	PAID: 'Pago',
+	CANCELED: 'Cancelado',
+	AUTHORIZED: 'Autorizada',
+	PROCESSING: 'Processando',
+	REFUNDED: 'Estornada',
+	WAITING_PAYMENT: 'Aguardando pagamento',
+	PENDING_REFUND: 'Agurdando confirmação do estorno',
+	REFUSED: 'Recusada',
+	CHARGEDBACK: 'Transação sofreu chargeback',
+	ANALYZING: 'Analise Manual',
+	PENDING_REVIEW: 'Transação pendente de revisão manual',
+};
+
 const ConfigUser = () => {
 	const { user, addUser, handleShowPopUp } = useContext(Context);
 	const [states, setStates] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [payments, setPayments] = useState({
+		payments: [],
+	});
 
 	const formik = useFormik({
 		initialValues,
@@ -111,25 +130,71 @@ const ConfigUser = () => {
 				cpf = newValue;
 			});
 
-			maskCep(user.payment.address.cep, newValue => {
+			maskCep(user.payment[0].address[0].cep, newValue => {
 				cep = newValue;
 			});
 
 			formik.setValues({
-				adress: user.payment.address.street,
-				bairro: user.payment.address.neighborhood,
+				adress: user.payment[0].address[0].street,
+				bairro: user.payment[0].address[0].neighborhood,
 				cep,
-				city: user.payment.address.city,
+				city: user.payment[0].address[0].city,
 				cpf,
 				email: user.email,
 				name: user.name,
-				number: user.payment.address.number,
+				number: user.payment[0].address[0].number,
 				phone,
-				sigla: user.payment.address.stateUf,
+				sigla: user.payment[0].address[0].stateUf,
 			});
 		}
 
 		getStates();
+	}, []);
+
+	useEffect(() => {
+		async function fetchData() {
+			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
+
+			if (!tokenStorage?.acessToken) {
+				return;
+			}
+
+			const content = jwtDecode(tokenStorage?.acessToken);
+			try {
+				const response = await api.get(
+					`users/${content.user_id}/transactions/`
+				);
+				let paymentTotal = 0;
+
+				const paymentsRefactorre = response.data.map(payment => {
+					paymentTotal += Number(payment.price);
+					const status = typesOfTransactions[payment.status];
+
+					return {
+						...payment,
+						price: `R$ ${payment.price.replace('.', ',')}`,
+						dataFormat: format(
+							parseISO(payment.createdAt),
+							"'em' MMMM 'de' yyyy",
+							{
+								locale: ptBr,
+							}
+						),
+						statusFormat: status,
+					};
+				});
+				const totalFormat = `R$ ${paymentTotal
+					.toFixed(2)
+					.toString()
+					.replace('.', ',')}`;
+				setPayments({
+					total: paymentTotal,
+					payments: paymentsRefactorre,
+					totalFormat,
+				});
+			} catch {}
+		}
+		fetchData();
 	}, []);
 	useEffect(() => {
 		if (!formik.values.sigla) {
@@ -368,30 +433,18 @@ const ConfigUser = () => {
 					</Form>
 					<Info>
 						<h3>Valor atual de assinatura</h3>
-						<p className="price">R$ 9,90</p>
+						<p className="price">{payments.totalFormat}</p>
 						<h3>Histórico de Pagamentos</h3>
 						<div className="history">
-							<div>
-								<p>
-									<strong>R$ 9,90</strong> em Abril de 2021
-								</p>
-								<span />
-								<div>Pago</div>
-							</div>
-							<div>
-								<p>
-									<strong>R$ 9,90</strong> em Abril de 2021
-								</p>
-								<span />
-								<div>Pago</div>
-							</div>
-							<div>
-								<p>
-									<strong>R$ 9,90</strong> em Abril de 2021
-								</p>
-								<span />
-								<div>Pago</div>
-							</div>
+							{payments.payments.map(payment => (
+								<Payment status={payment.status} key={payment.pagarmeId}>
+									<p>
+										<strong>{payment.price}</strong> {payment.dataFormat}
+									</p>
+									<span />
+									<div>{payment.statusFormat}</div>
+								</Payment>
+							))}
 						</div>
 						<div className="container_buttons">
 							<Link to="pagamentoConfiguracao" className="edit">
