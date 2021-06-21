@@ -9,7 +9,12 @@ import { IoMdClose } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import Image from './component/Image';
-import Container, { ContainerCalendar, Select, InputContainer } from './styles';
+import Container, {
+	ContainerCalendar,
+	Select,
+	InputContainer,
+	Form,
+} from './styles';
 
 import api from '../../config/api';
 import { Context } from '../../services/context';
@@ -29,13 +34,16 @@ const initialValues = {
 	typeFile: 'Imagem',
 };
 
-const NewPost = ({ saveClient, clientInfo }) => {
+const NewPost = ({ savePost, clientInfo }) => {
 	const [showDate, setShowDate] = useState(false);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values, { resetForm }) {
+			if (loading) {
+				return;
+			}
 			setLoading(true);
 			try {
 				let type = 'SINGLE';
@@ -80,7 +88,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 					locale: ptBr,
 				});
 				resetForm({ ...initialValues, dateFormat, date });
-				saveClient();
+				savePost();
 			} catch (e) {
 				setLoading(false);
 				if (!e.status) {
@@ -123,25 +131,19 @@ const NewPost = ({ saveClient, clientInfo }) => {
 					/>
 				</div>
 			</ContainerCalendar>
-			<button type="button" className="close_button" onClick={saveClient}>
+			<button type="button" className="close_button" onClick={savePost}>
 				<IoMdClose size={24} color="#fff" />
 			</button>
 			<div className="header_container">
 				<h2>Novo post</h2>
-				<Button
-					loading={loading}
-					onClick={() => {
-						if (loading) {
-							return;
-						}
-						formik.handleSubmit();
-					}}
-					type="button"
-				>
+				<Button loading={loading} onClick={formik.handleSubmit} type="button">
 					Salvar novo Post
 				</Button>
 			</div>
-			<form onSubmit={formik.handleSubmit}>
+			<Form onSubmit={formik.handleSubmit}>
+				<button type="submit" style={{ display: 'none' }}>
+					submit
+				</button>
 				<InputContainer>
 					<div className="social_redes">
 						<p>Redes Sociais</p>
@@ -547,9 +549,14 @@ const NewPost = ({ saveClient, clientInfo }) => {
 						onChange={formik.handleChange}
 					/>
 				</div>
-			</form>
+			</Form>
 		</Container>
 	);
+};
+
+NewPost.propTypes = {
+	savePost: PropTypes.func.isRequired,
+	clientInfo: PropTypes.object.isRequired,
 };
 
 export default NewPost;

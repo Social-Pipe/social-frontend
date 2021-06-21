@@ -260,17 +260,7 @@ const PaymentForm = ({ formik, loading }) => {
 						</fieldset>
 					</div>
 					<ContainerButtons className="container_buttons">
-						<Button
-							type="button"
-							onClick={() => {
-								if (loading) {
-									return;
-								}
-								formik.handleSubmit();
-							}}
-							className="button"
-							loading={loading}
-						>
+						<Button type="onSubmit" className="button" loading={loading}>
 							Finalizar cadastro
 						</Button>
 						<div className="container_forget" />

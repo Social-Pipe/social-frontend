@@ -10,7 +10,7 @@ import LoginRoutes from './LoginRoutes';
 
 import Header from '../components/Header';
 import SucessPopUp from '../components/SucessPopUp';
-import ProductDetail from '../pages/ProductDetail';
+import ClientView from '../pages/ClientView';
 
 const Routes = () => (
 	<Router>
@@ -20,7 +20,7 @@ const Routes = () => (
 			<Route path="/login" component={LoginRoutes} />
 			<Route exact path="/:id">
 				<Header />
-				<ProductDetail />
+				<ClientView />
 			</Route>
 			<Route exact path="/">
 				<Redirect to="/login" />

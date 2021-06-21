@@ -49,6 +49,9 @@ const Register = () => {
 		initialValues,
 		validationSchema: registerSchema,
 		onSubmit: async values => {
+			if (loading) {
+				return;
+			}
 			try {
 				setLoading(true);
 				const cardValues = {

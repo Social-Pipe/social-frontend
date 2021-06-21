@@ -14,13 +14,13 @@ const Row = ({
 	editItem,
 	ratingItem,
 	date,
-	statusText,
 	status,
 	image,
 	type,
+	openPost,
 }) => (
 	<Container hdResponsive={hdResponsive}>
-		<div>
+		<button type="button" onClick={openPost}>
 			{type === 'VIDEO' && (
 				<video autoPlay>
 					<source src={image && image[0] && image[0].file} />
@@ -32,11 +32,6 @@ const Row = ({
 			{type === 'GALLERY' && (
 				<Carrousel
 					autoplay
-					style={{
-						width: '4rem',
-						height: '4rem',
-						marginRight: '2.25rem',
-					}}
 					defaultControlsConfig={{
 						nextButtonStyle: { display: 'none' },
 						prevButtonStyle: { display: 'none' },
@@ -49,7 +44,7 @@ const Row = ({
 				</Carrousel>
 			)}
 			<p>{date}</p>
-		</div>
+		</button>
 		<div className="buttons">
 			<Status status={status}>
 				{status === 'CANCELED' && <span>Reprovado</span>}
@@ -76,13 +71,16 @@ const Row = ({
 
 Row.propTypes = {
 	buttons: PropTypes.bool,
-	hdResponsive: PropTypes.bool.isRequired,
+	hdResponsive: PropTypes.bool,
 	editItem: PropTypes.func.isRequired,
 	deleteItem: PropTypes.func.isRequired,
 	ratingItem: PropTypes.func.isRequired,
+	openPost: PropTypes.func,
 };
 
 Row.defaultProps = {
 	buttons: true,
+	hdResponsive: false,
+	openPost() {},
 };
 export default Row;

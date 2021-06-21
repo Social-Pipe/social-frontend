@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Container from './styles';
 
 const Comment = ({ comment }) => (
@@ -10,5 +12,9 @@ const Comment = ({ comment }) => (
 		<p>{comment.message}</p>
 	</Container>
 );
+
+Comment.propTypes = {
+	comment: PropTypes.object.isRequired,
+};
 
 export default Comment;

@@ -113,7 +113,7 @@ export default styled.aside`
 
 	.clients {
 		padding: 0;
-		flex: 2;
+		flex: 4;
 		padding-top: 1.25rem;
 		overflow: auto;
 		display: flex;

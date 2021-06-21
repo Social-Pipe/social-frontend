@@ -22,6 +22,8 @@ export const Context = createContext({
 	user: {},
 	fetchMoreClients() {},
 	addUser() {},
+	showModalPayment: false,
+	handleShowModalPayment() {},
 });
 
 const ContextProvider = ({ children }) => {
@@ -33,6 +35,7 @@ const ContextProvider = ({ children }) => {
 		client: {},
 		edit: false,
 	});
+	const [showModalPayment, setShowModalPayment] = useState(false);
 	const [clients, setClients] = useState([]);
 	const [user, setUser] = useState({});
 
@@ -71,6 +74,9 @@ const ContextProvider = ({ children }) => {
 			verifyWidthAndSetNumberSlides(window.innerWidth);
 		});
 	}, []);
+	function handleShowModalPayment() {
+		setShowModalPayment(!showModalPayment);
+	}
 
 	function toggleOpenMenu() {
 		setMenuOpen(props => !props);
@@ -115,6 +121,8 @@ const ContextProvider = ({ children }) => {
 				user,
 				addUser,
 				fetchMoreClients: fetchClients,
+				handleShowModalPayment,
+				showModalPayment,
 			}}
 		>
 			{children}

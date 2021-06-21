@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default styled.main`
 	display: flex;
@@ -45,7 +45,7 @@ export default styled.main`
 		}
 	}
 
-	span {
+	> span {
 		display: block;
 		font-size: 1.25rem;
 		color: #707070;
@@ -308,34 +308,6 @@ export const Info = styled.div`
 	.history {
 		margin-top: 2.75rem;
 		margin-bottom: 3.75rem;
-
-		> div {
-			display: flex;
-			align-items: center;
-			margin-bottom: 1.25rem;
-
-			p {
-				color: #5d5d5d;
-			}
-			strong {
-				font-weight: bold;
-			}
-
-			span {
-				flex: 1;
-				border: 1px solid #e1e1e1;
-				margin: 0 1rem;
-			}
-
-			div {
-				padding: 0.6rem;
-				background-color: #30a22c;
-				color: #fff;
-				border-radius: 8px;
-				font-weight: bold;
-				font-size: 0.62rem;
-			}
-		}
 	}
 
 	.container_buttons {
@@ -383,5 +355,48 @@ export const Info = styled.div`
 				}
 			}
 		}
+	}
+`;
+
+export const Payment = styled.div`
+	display: flex;
+	align-items: center;
+	margin-bottom: 1.25rem;
+
+	p {
+		color: #5d5d5d;
+	}
+	strong {
+		font-weight: bold;
+	}
+
+	span {
+		flex: 1;
+		border: 1px solid #e1e1e1;
+		margin: 0 1rem;
+	}
+
+	div {
+		padding: 0.6rem;
+		color: #fff;
+		border-radius: 8px;
+		font-weight: bold;
+		font-size: 0.62rem;
+		${({ status }) => {
+			switch (status) {
+				case 'PAID':
+					return css`
+						background-color: #30a22c;
+					`;
+				case 'CANCELED':
+					return css`
+						background-color: #fe6969;
+					`;
+				default:
+					return css`
+						background-color: #fee569;
+					`;
+			}
+		}}
 	}
 `;
