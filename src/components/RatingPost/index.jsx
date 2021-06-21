@@ -21,7 +21,6 @@ const RatingPost = ({
 	updatePosts,
 }) => {
 	const [comment, setComment] = useState('');
-	const [comments, SetComments] = useState([]);
 	const { handleShowPopUp } = useContext(Context);
 	const [post, setPost] = useState({});
 
@@ -47,8 +46,10 @@ const RatingPost = ({
 				}),
 			};
 
-			const newComments = [...comments, newComment];
-			setPost(postProps => ({ ...postProps, comments: newComments }));
+			setPost(postProps => ({
+				...postProps,
+				comments: [...postProps.comments, newComment],
+			}));
 			setComment('');
 		} catch {
 			handleShowPopUp('error', 'Erro,tente novamente');
@@ -62,7 +63,7 @@ const RatingPost = ({
 	}, [values]);
 
 	async function changeStatus(status) {
-		if (post.status === status) {
+		if (post.status === status || !clientToken) {
 			return;
 		}
 		try {
@@ -107,7 +108,7 @@ const RatingPost = ({
 			setPost(newPost);
 			updatePosts(data.id, newPost);
 		} catch (e) {
-			console.log(e);
+			handleShowPopUp('error', 'Erro,tente novamente');
 		}
 	}
 

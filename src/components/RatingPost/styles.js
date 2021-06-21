@@ -17,6 +17,7 @@ export default styled.div`
 		display: flex;
 		max-height: 43.5rem;
 		width: 100%;
+		overflow: auto;
 		background-color: #fff;
 
 		> div {
@@ -27,6 +28,7 @@ export default styled.div`
 			padding: 2.5rem 3rem;
 
 			&.image {
+				min-height: 20rem;
 				flex: 3;
 				padding: 0;
 				overflow: hidden;
@@ -40,7 +42,7 @@ export default styled.div`
 		flex: 1;
 		font-weight: 600;
 		margin-top: 1.5rem;
-		/* overflow: auto; */
+		word-break: break-all;
 	}
 
 	img,
