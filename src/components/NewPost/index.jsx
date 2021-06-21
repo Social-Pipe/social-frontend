@@ -556,7 +556,13 @@ const NewPost = ({ savePost, clientInfo }) => {
 
 NewPost.propTypes = {
 	savePost: PropTypes.func.isRequired,
-	clientInfo: PropTypes.object.isRequired,
+	clientInfo: PropTypes.object,
+};
+
+NewPost.defaultProps = {
+	clientInfo: {
+		accessHash: '',
+	},
 };
 
 export default NewPost;

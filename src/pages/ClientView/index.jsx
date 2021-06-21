@@ -124,7 +124,6 @@ const ClientView = () => {
 				handleOutClick={() => setShowModalRating({ show: false, value: {} })}
 			>
 				<RatingPost
-					user=""
 					values={showModalRating.value}
 					clientToken={token}
 					closeModal={() => setShowModalRating({ show: false, value: {} })}

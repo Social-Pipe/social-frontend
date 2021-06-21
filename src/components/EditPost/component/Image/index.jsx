@@ -79,8 +79,12 @@ function Image({ handleChange, value, type, ...rest }) {
 
 Image.propTypes = {
 	handleChange: PropTypes.func.isRequired,
-	value: PropTypes.string.isRequired,
+	value: PropTypes.string,
 	type: PropTypes.string.isRequired,
+};
+
+Image.defaultProps = {
+	value: '',
 };
 
 export default Image;

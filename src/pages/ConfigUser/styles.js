@@ -392,6 +392,42 @@ export const Payment = styled.div`
 					return css`
 						background-color: #fe6969;
 					`;
+				case 'AUTHORIZED':
+					return css`
+						background-color: #fee569;
+					`;
+				case 'PROCESSING':
+					return css`
+						background-color: #fee569;
+					`;
+				case 'REFUNDED':
+					return css`
+						background-color: #fe6969;
+					`;
+				case 'WAITING_PAYMENT':
+					return css`
+						background-color: #fee569;
+					`;
+				case 'PENDING_REFUND':
+					return css`
+						background-color: #fee569;
+					`;
+				case 'REFUSED':
+					return css`
+						background-color: #fe6969;
+					`;
+				case 'CHARGEDBACK':
+					return css`
+						background-color: #fe6969;
+					`;
+				case 'ANALYZING':
+					return css`
+						background-color: #fee569;
+					`;
+				case 'PENDING_REVIEW':
+					return css`
+						background-color: #fee569;
+					`;
 				default:
 					return css`
 						background-color: #fee569;

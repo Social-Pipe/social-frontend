@@ -85,7 +85,7 @@ const ConfigUser = () => {
 								neighborhood: values.bairro,
 							},
 						],
-						cardId: user.payment.cardId,
+						cardId: user.payment[0].cardId,
 					},
 				],
 			};
@@ -406,8 +406,13 @@ const ConfigUser = () => {
 											name="phoneContact"
 											placeholder="00000-0000"
 											onChange={e =>
-												maskPhone(e.target.value, newValue =>
-													formik.setFieldValue('phoneContact', newValue)
+												maskPhone(
+													e.target.value,
+													newValue =>
+														formik.setFieldValue('phoneContact', newValue),
+													{
+														ddd: false,
+													}
 												)
 											}
 											value={formik.values.phoneContact}
