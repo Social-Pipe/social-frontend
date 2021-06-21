@@ -127,7 +127,6 @@ const Register = () => {
 			return;
 		}
 		async function fetchData() {
-			console.log('antes');
 			const cep = formik.values.cep.match(/\d+/g).join('');
 			if (cep.length < 8) {
 				return;

@@ -117,7 +117,6 @@ const ConfigUser = () => {
 			if (cep.length < 8) {
 				return;
 			}
-			console.log('depois');
 			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
 			formik.setValues({
 				adress: data.logradouro || user.payment[0].address[0].street,
