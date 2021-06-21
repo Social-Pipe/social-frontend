@@ -21,4 +21,31 @@ export default styled.div`
 		margin-top: 2.5rem;
 		max-width: 15.5rem;
 	}
+
+	@media (max-width: 800px) {
+		max-width: 35.75rem;
+		padding: 3rem;
+
+		p {
+			font-size: 1.4rem;
+			max-width: 22.5rem;
+		}
+	}
+	@media (max-width: 500px) {
+		max-width: 35.75rem;
+		padding: 1rem;
+
+		p {
+			font-size: 1rem;
+			max-width: 15.5rem;
+		}
+	}
+	@media (max-width: 350px) {
+		max-width: 35.75rem;
+		padding: 1rem;
+
+		p {
+			max-width: 10rem;
+		}
+	}
 `;

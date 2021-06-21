@@ -7,6 +7,7 @@ import ContainerDashBoard, { ContainerProduct } from './styles';
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
 import NewClient from '../../components/NewClient';
+import NotPaymentAccept from '../../components/NotPaymentAccept';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
@@ -18,9 +19,14 @@ import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const { showModal, handleShowModal, addUser, fetchMoreClients } = useContext(
-		Context
-	);
+	const {
+		showModal,
+		handleShowModal,
+		addUser,
+		fetchMoreClients,
+		showModalPayment,
+		handleShowModalPayment,
+	} = useContext(Context);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
@@ -74,6 +80,17 @@ const DashBoardRoutes = () => {
 						<Route path={`${route.path}`}>
 							<ContainerProduct>
 								<Modal
+									showModal={showModalPayment}
+									handleOutClick={() => handleShowModalPayment(true)}
+								>
+									<NotPaymentAccept
+										handleButton={() => {
+											history.replace('/dashboard/pagamentoConfiguracao');
+											handleShowModalPayment(false);
+										}}
+									/>
+								</Modal>
+								<Modal
 									showModal={showModal.show}
 									handleOutClick={() =>
 										handleShowModal(props => ({ ...props, show: false }))
@@ -83,6 +100,9 @@ const DashBoardRoutes = () => {
 										editClient={{
 											edit: showModal.edit,
 											client: showModal?.client,
+										}}
+										erroClient={() => {
+											handleShowModalPayment(true);
 										}}
 										saveClient={() => {
 											fetchMoreClients();
