@@ -1,6 +1,7 @@
 import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import Carrousel from 'nuka-carousel';
+import PropTypes from 'prop-types';
 import { useEffect, useState, useContext } from 'react';
 import { BsX } from 'react-icons/bs';
 import { ImCheckmark } from 'react-icons/im';
@@ -218,6 +219,20 @@ const RatingPost = ({
 			<p className="content_text">{post?.caption}</p>
 		</Container>
 	);
+};
+
+RatingPost.propTypes = {
+	closeModal: PropTypes.func.isRequired,
+	values: PropTypes.object,
+	user: PropTypes.object.isRequired,
+	clientToken: PropTypes.object.isRequired,
+	updatePosts: PropTypes.object.isRequired,
+};
+
+RatingPost.defaultProps = {
+	values: {
+		comments: [],
+	},
 };
 
 export default RatingPost;

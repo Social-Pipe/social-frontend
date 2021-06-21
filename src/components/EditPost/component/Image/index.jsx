@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 
 import Container from './styles';
 
-function MyDropzone({ handleChange, value, type, ...rest }) {
+function Image({ handleChange, value, type, ...rest }) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState({
 		file: '',
 		name: '',
@@ -77,8 +77,10 @@ function MyDropzone({ handleChange, value, type, ...rest }) {
 	);
 }
 
-MyDropzone.propTypes = {
+Image.propTypes = {
 	handleChange: PropTypes.func.isRequired,
+	value: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
 };
 
-export default MyDropzone;
+export default Image;

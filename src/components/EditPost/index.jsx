@@ -8,9 +8,7 @@ import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import {
 	IoMdClose,
-	IoIosArrowDropright,
 	IoIosArrowDroprightCircle,
-	IoIosArrowDropleft,
 	IoIosArrowDropleftCircle,
 } from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
@@ -88,7 +86,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 				if (values.typeFile === 'Carrousel' && imagesDeleteId.length > 0) {
 					deletePosts = imagesDeleteId.map(deleteFile);
 				}
-				if (values.typeFile === 'Video') {
+				if (values.typeFile === 'Video' || values.typeFile === 'Imagem') {
 					deletePosts = values.currentLogo.map(file => deleteFile(file.id));
 				}
 				if (deletePosts.length > 0) {
@@ -264,13 +262,10 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							pagingDotsStyle: { display: 'none' },
 						}}
 					>
-						{formik.values.logo && !formik.values.logoFormat
-							? formik.values.logo.map(img => (
-									<img key={img.id} src={img && img.file} alt="produto" />
-							  ))
-							: formik.values.logoFormat.map(img => (
-									<img key={img.id} src={img && img} alt="produto" />
-							  ))}
+						{formik.values.currentLogo &&
+							formik.values.currentLogo.map(img => (
+								<img key={img.id} src={img && img.file} alt="produto" />
+							))}
 					</Carrousel>
 				)}
 			</div>
@@ -689,9 +684,6 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 									const currentFile = formik.values.currentLogo.find(
 										img => img?.file === fileUrl
 									);
-									console.log(formik.values.currentLogo);
-									console.log(fileUrl);
-									console.log(currentFile);
 									if (currentFile) {
 										setImagesDeleteId(props => [...props, currentFile.id]);
 									}
@@ -728,6 +720,12 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			</div>
 		</Container>
 	);
+};
+
+EditPost.propTypes = {
+	saveClient: PropTypes.func.isRequired,
+	deletePost: PropTypes.func.isRequired,
+	editValues: PropTypes.object.isRequired,
 };
 
 export default EditPost;

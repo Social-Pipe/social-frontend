@@ -56,6 +56,7 @@ const Authenticate = ({ handleButton, hash }) => {
 
 Authenticate.propTypes = {
 	handleButton: PropTypes.func.isRequired,
+	hash: PropTypes.string.isRequired,
 };
 
 export default Authenticate;

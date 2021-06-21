@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
@@ -33,7 +34,7 @@ const initialValues = {
 	typeFile: 'Imagem',
 };
 
-const NewPost = ({ saveClient, clientInfo }) => {
+const NewPost = ({ savePost, clientInfo }) => {
 	const [showDate, setShowDate] = useState(false);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
@@ -87,7 +88,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 					locale: ptBr,
 				});
 				resetForm({ ...initialValues, dateFormat, date });
-				saveClient();
+				savePost();
 			} catch (e) {
 				setLoading(false);
 				if (!e.status) {
@@ -130,7 +131,7 @@ const NewPost = ({ saveClient, clientInfo }) => {
 					/>
 				</div>
 			</ContainerCalendar>
-			<button type="button" className="close_button" onClick={saveClient}>
+			<button type="button" className="close_button" onClick={savePost}>
 				<IoMdClose size={24} color="#fff" />
 			</button>
 			<div className="header_container">
@@ -551,6 +552,11 @@ const NewPost = ({ saveClient, clientInfo }) => {
 			</Form>
 		</Container>
 	);
+};
+
+NewPost.propTypes = {
+	savePost: PropTypes.func.isRequired,
+	clientInfo: PropTypes.object.isRequired,
 };
 
 export default NewPost;

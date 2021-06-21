@@ -71,7 +71,7 @@ const Row = ({
 
 Row.propTypes = {
 	buttons: PropTypes.bool,
-	hdResponsive: PropTypes.bool.isRequired,
+	hdResponsive: PropTypes.bool,
 	editItem: PropTypes.func.isRequired,
 	deleteItem: PropTypes.func.isRequired,
 	ratingItem: PropTypes.func.isRequired,
@@ -80,6 +80,7 @@ Row.propTypes = {
 
 Row.defaultProps = {
 	buttons: true,
+	hdResponsive: false,
 	openPost() {},
 };
 export default Row;

@@ -60,6 +60,8 @@ function ImageContainer({ handleChange, value, type, ...rest }) {
 
 ImageContainer.propTypes = {
 	handleChange: PropTypes.func.isRequired,
+	value: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
 };
 
 export default ImageContainer;

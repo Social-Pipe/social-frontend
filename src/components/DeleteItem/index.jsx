@@ -59,6 +59,11 @@ const DeleteItem = ({ handleDeleteItem, handleNotDeleteItem, item }) => {
 DeleteItem.propTypes = {
 	handleDeleteItem: PropTypes.func.isRequired,
 	handleNotDeleteItem: PropTypes.func.isRequired,
+	item: PropTypes.exact({
+		name: PropTypes.string,
+		id: PropTypes.number,
+		type: PropTypes.string,
+	}).isRequired,
 };
 
 export default DeleteItem;
