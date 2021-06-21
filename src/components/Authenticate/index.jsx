@@ -12,6 +12,24 @@ const Authenticate = ({ handleButton, hash }) => {
 	const [password, setPassword] = useState('');
 	const { handleShowPopUp } = useContext(Context);
 
+	async function autentic() {
+		if (loading) {
+			return;
+		}
+		try {
+			setLoading(true);
+			const response = await api.post('token/client', {
+				accessHash: hash,
+				password,
+			});
+			setLoading(false);
+			handleButton(response.data);
+		} catch {
+			setLoading(false);
+			handleShowPopUp('error', 'Erro, Tente Novamente');
+		}
+	}
+
 	return (
 		<Container>
 			<h3>Insira a senha</h3>
@@ -23,30 +41,13 @@ const Authenticate = ({ handleButton, hash }) => {
 				type="password"
 				value={password}
 				onChange={e => setPassword(e.target.value)}
-			/>
-			<Button
-				loading={loading}
-				onClick={async () => {
-					if (loading) {
-						return;
-					}
-					try {
-						setLoading(true);
-						console.log(password);
-						const response = await api.post('token/client', {
-							accessHash: hash,
-							password,
-						});
-						setLoading(false);
-						console.log(response);
-						handleButton(response.data);
-					} catch (e) {
-						setLoading(false);
-						handleShowPopUp('error', 'Erro, Tente Novamente');
-						console.log(e);
+				onKeyPress={key => {
+					if (key.key === 'Enter' && password) {
+						autentic();
 					}
 				}}
-			>
+			/>
+			<Button loading={loading} onClick={autentic}>
 				Autenticar
 			</Button>
 		</Container>
