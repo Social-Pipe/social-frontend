@@ -38,6 +38,18 @@ const PaymentForm = ({ formik, loading }) => {
 	}, [formik.values.state]);
 
 	useEffect(() => {
+		if (!formik.values.sigla) {
+			return;
+		}
+		const uf = states.find(state => state.sigla === formik.values.sigla);
+		if (!uf) {
+			return;
+		}
+
+		formik.setFieldValue('state', uf.nome);
+	}, [formik.values.sigla, states]);
+
+	useEffect(() => {
 		async function getStates() {
 			const { data } = await axios.get(
 				'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
@@ -137,7 +149,7 @@ const PaymentForm = ({ formik, loading }) => {
 							/>
 						</fieldset>
 					</div>
-					<div className="contact">
+					{/* <div className="contact">
 						<h3>Informações de contato</h3>
 						<div className="row ">
 							<fieldset>
@@ -171,7 +183,7 @@ const PaymentForm = ({ formik, loading }) => {
 								/>
 							</fieldset>
 						</div>
-					</div>
+					</div> */}
 					<div className="payment">
 						<h3>Informações finais</h3>
 						<fieldset>

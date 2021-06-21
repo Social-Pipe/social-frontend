@@ -109,6 +109,39 @@ const ConfigUser = () => {
 	});
 
 	useEffect(() => {
+		if (!formik.values.cep) {
+			return;
+		}
+		async function fetchData() {
+			const cep = formik.values.cep.match(/\d+/g).join('');
+			if (cep.length < 8) {
+				return;
+			}
+			console.log('depois');
+			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+			formik.setValues({
+				adress: data.logradouro || user.payment[0].address[0].street,
+				bairro: data.bairro || user.payment[0].address[0].neighborhood,
+				city: data.localidade || user.payment[0].address[0].city,
+				sigla: data.uf || user.payment[0].address[0].stateUf,
+			});
+		}
+		fetchData();
+	}, [formik.values.cep]);
+
+	useEffect(() => {
+		if (!formik.values.sigla) {
+			return;
+		}
+		const uf = states.find(state => state.sigla === formik.values.sigla);
+		if (!uf) {
+			return;
+		}
+
+		formik.setFieldValue('state', uf.nome);
+	}, [formik.values.sigla, states]);
+
+	useEffect(() => {
 		async function getStates() {
 			const { data } = await axios.get(
 				'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
@@ -383,7 +416,7 @@ const ConfigUser = () => {
 									</FieldSet>
 								</div>
 							</div>
-							<div className="contact">
+							{/* <div className="contact">
 								<h3>Informações de contato</h3>
 								<div className="row ">
 									<FieldSet>
@@ -419,7 +452,7 @@ const ConfigUser = () => {
 										/>
 									</FieldSet>
 								</div>
-							</div>
+							</div> */}
 						</div>
 						<Button
 							type="button"
