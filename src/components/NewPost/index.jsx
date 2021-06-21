@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
-import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
@@ -41,6 +40,9 @@ const NewPost = ({ saveClient, clientInfo }) => {
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values, { resetForm }) {
+			if (loading) {
+				return;
+			}
 			setLoading(true);
 			try {
 				let type = 'SINGLE';
@@ -133,20 +135,14 @@ const NewPost = ({ saveClient, clientInfo }) => {
 			</button>
 			<div className="header_container">
 				<h2>Novo post</h2>
-				<Button
-					loading={loading}
-					onClick={() => {
-						if (loading) {
-							return;
-						}
-						formik.handleSubmit();
-					}}
-					type="button"
-				>
+				<Button loading={loading} onClick={formik.handleSubmit} type="button">
 					Salvar novo Post
 				</Button>
 			</div>
 			<Form onSubmit={formik.handleSubmit}>
+				<button type="submit" style={{ display: 'none' }}>
+					submit
+				</button>
 				<InputContainer>
 					<div className="social_redes">
 						<p>Redes Sociais</p>
