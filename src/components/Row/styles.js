@@ -12,7 +12,15 @@ export default styled.div`
 	justify-content: space-between;
 	margin-bottom: 2rem;
 
-	> div {
+	> button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		width: 100%;
+	}
+
+	> div,
+	> button {
 		display: flex;
 		align-items: center;
 
@@ -20,7 +28,7 @@ export default styled.div`
 			width: 4rem !important;
 			height: 4rem;
 			object-fit: cover;
-			margin-right: 2.25rem;
+			margin-right: 2.25rem !important;
 		}
 
 		img,
@@ -93,6 +101,10 @@ export default styled.div`
 		flex-direction: ${({ hdResponsive }) => (hdResponsive ? 'column' : 'row')};
 		justify-content: space-between;
 		padding: 1rem 2.2rem;
+		> button {
+			justify-content: ${({ hdResponsive }) =>
+				hdResponsive ? 'center' : 'normal'};
+		}
 
 		> div {
 			width: ${({ hdResponsive }) => (hdResponsive ? '100%' : 'auto')};
@@ -102,11 +114,13 @@ export default styled.div`
 
 	@media (max-width: 500px) {
 		flex-direction: column;
-		> div {
+
+		> div,
+		> button {
 			flex-direction: column;
 			width: 100%;
 			.slider {
-				margin: 0;
+				margin: 0 !important;
 				margin-bottom: 0.5rem;
 				width: 100% !important;
 				height: 10rem;
@@ -138,6 +152,7 @@ export const Status = styled.span`
 	padding: 0.5rem 1.75rem;
 	color: #fff;
 	margin: 0;
+	width: 10rem;
 	opacity: 1;
 	border-radius: 8px;
 	margin-right: 1.75rem;

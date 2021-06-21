@@ -17,9 +17,10 @@ const Row = ({
 	status,
 	image,
 	type,
+	openPost,
 }) => (
 	<Container hdResponsive={hdResponsive}>
-		<div>
+		<button type="button" onClick={openPost}>
 			{type === 'VIDEO' && (
 				<video autoPlay>
 					<source src={image && image[0] && image[0].file} />
@@ -43,7 +44,7 @@ const Row = ({
 				</Carrousel>
 			)}
 			<p>{date}</p>
-		</div>
+		</button>
 		<div className="buttons">
 			<Status status={status}>
 				{status === 'CANCELED' && <span>Reprovado</span>}
@@ -74,9 +75,11 @@ Row.propTypes = {
 	editItem: PropTypes.func.isRequired,
 	deleteItem: PropTypes.func.isRequired,
 	ratingItem: PropTypes.func.isRequired,
+	openPost: PropTypes.func,
 };
 
 Row.defaultProps = {
 	buttons: true,
+	openPost() {},
 };
 export default Row;
