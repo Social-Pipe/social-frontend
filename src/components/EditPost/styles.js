@@ -13,7 +13,13 @@ export default styled.div`
 	.slider-list .slider-slide {
 		height: 100% !important;
 	}
-
+	.slider {
+		button {
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+	}
 	img {
 		object-fit: cover;
 	}

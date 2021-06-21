@@ -6,7 +6,13 @@ import PropTypes from 'prop-types';
 import { useContext, useState, useEffect } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io';
+import {
+	IoMdClose,
+	IoIosArrowDropright,
+	IoIosArrowDroprightCircle,
+	IoIosArrowDropleft,
+	IoIosArrowDropleftCircle,
+} from 'react-icons/io';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import Image from './component/Image';
@@ -50,11 +56,15 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 	const [imagesDeleteId, setImagesDeleteId] = useState([]);
 	const [newFiles, setNewFiles] = useState([]);
 	const [showDate, setShowDate] = useState(false);
+	const [currentSlide, setCurrentSlide] = useState(0);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values) {
+			if (loading) {
+				return;
+			}
 			setLoading(true);
 			try {
 				let type = 'SINGLE';
@@ -216,9 +226,41 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							height: '100%',
 						}}
 						height="100%"
+						afterSlide={i => {
+							setCurrentSlide(i);
+						}}
+						renderCenterLeftControls={props => (
+							<button
+								onClick={() => {
+									props.previousSlide();
+								}}
+								className={`${currentSlide === 0 ? 'desactive' : ''}`}
+								type="button"
+							>
+								<IoIosArrowDropleftCircle
+									size={30}
+									color={`${currentSlide === 0 ? '#EBEBEB' : '#717171'}`}
+								/>
+							</button>
+						)}
+						renderCenterRightControls={props => (
+							<button
+								type="button"
+								onClick={() => {
+									props.nextSlide();
+								}}
+							>
+								<IoIosArrowDroprightCircle
+									size={30}
+									color={`${
+										currentSlide === (formik?.values?.logo.length || 0) - 1
+											? '#EBEBEB'
+											: '#717171'
+									}`}
+								/>
+							</button>
+						)}
 						defaultControlsConfig={{
-							nextButtonStyle: { display: 'none' },
-							prevButtonStyle: { display: 'none' },
 							pagingDotsStyle: { display: 'none' },
 						}}
 					>
@@ -247,12 +289,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							<Button
 								loading={loading}
 								type="button"
-								onClick={() => {
-									if (loading) {
-										return;
-									}
-									formik.handleSubmit();
-								}}
+								onClick={formik.handleSubmit}
 							>
 								Salvar edição do post
 							</Button>
@@ -260,6 +297,9 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 					</div>
 				</div>
 				<Form>
+					<button type="submit" style={{ display: 'none' }}>
+						submit
+					</button>
 					<InputsContainer>
 						<div className="social_redes">
 							<p>Redes Sociais</p>
