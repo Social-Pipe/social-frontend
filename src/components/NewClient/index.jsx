@@ -22,7 +22,7 @@ const initialValues = {
 	edit: false,
 };
 
-const NewClient = ({ saveClient, editClient, handleClose }) => {
+const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 	const [loading, setLoading] = useState(false);
 	const { handleShowPopUp, showModal } = useContext(Context);
 	const formik = useFormik({
@@ -52,7 +52,13 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 				resetForm();
 				saveClient();
 			} catch (e) {
-				handleShowPopUp('error', 'Erro ao cadastrar  cliente');
+				if (!e.status) {
+					handleShowPopUp('error', 'Erro de Conexão');
+					setLoading(false);
+					return;
+				}
+				erroClient(e);
+				handleShowPopUp('error', 'Erro ao cadastrar cliente');
 			}
 			setLoading(false);
 		},
@@ -225,6 +231,7 @@ NewClient.propTypes = {
 		client: PropTypes.object,
 	}),
 	handleClose: PropTypes.func.isRequired,
+	erroClient: PropTypes.func.isRequired,
 };
 
 NewClient.defaultProps = {
