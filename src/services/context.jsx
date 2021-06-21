@@ -35,7 +35,7 @@ const ContextProvider = ({ children }) => {
 		client: {},
 		edit: false,
 	});
-	const [showModalPayment, setShowModalPayment] = useState(true);
+	const [showModalPayment, setShowModalPayment] = useState(false);
 	const [clients, setClients] = useState([]);
 	const [user, setUser] = useState({});
 
