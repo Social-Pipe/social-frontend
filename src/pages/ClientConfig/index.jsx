@@ -36,7 +36,6 @@ const ClientConfig = () => {
 		handleShowModal,
 		clients,
 		fetchMoreClients,
-		user,
 	} = useContext(Context);
 
 	const fetchPosts = useCallback(() => {
@@ -248,7 +247,7 @@ const ClientConfig = () => {
 									}}
 									ratingItem={async () => {
 										try {
-											await api.patch(`/posts/${post.id}`, {
+											await api.patch(`/posts/${post.id}/`, {
 												archive: true,
 											});
 											handleShowPopUp('sucess', 'Post  arquivado');
