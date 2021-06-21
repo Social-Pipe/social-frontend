@@ -10,7 +10,6 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import editOrNewClientSchema from '../../validations/editOrNewClientSchema';
 import Button from '../Button';
-import DeleteItem from '../DeleteItem';
 import PhotoContainer from '../PhotoContainer';
 
 const initialValues = {
@@ -29,9 +28,11 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 	const formik = useFormik({
 		initialValues,
 		onSubmit: async (values, { resetForm }) => {
+			if (loading) {
+				return;
+			}
 			setLoading(true);
 			const formData = new FormData();
-			console.log(editClient);
 			formData.append('name', values.name);
 			formData.append('instagram', values.instagram);
 			formData.append('facebook', values.facebook);
@@ -105,12 +106,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 						</button>
 						<Button
 							loading={loading}
-							onClick={() => {
-								if (loading) {
-									return;
-								}
-								formik.handleSubmit();
-							}}
+							onClick={formik.handleSubmit}
 							type="button"
 						>
 							Salvar alterações
@@ -118,7 +114,7 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 					</>
 				)}
 			</header>
-			<form>
+			<form onSubmit={formik.handleSubmit}>
 				<div>
 					<div className="photo_container">
 						<p>Logo da empresa</p>
@@ -214,6 +210,9 @@ const NewClient = ({ saveClient, editClient, handleClose }) => {
 						</Button>
 					</footer>
 				)}
+				<button type="submit" style={{ display: 'none' }}>
+					submit
+				</button>
 			</form>
 		</Container>
 	);
