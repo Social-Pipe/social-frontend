@@ -14,7 +14,6 @@ const Row = ({
 	editItem,
 	ratingItem,
 	date,
-	statusText,
 	status,
 	image,
 	type,
@@ -32,11 +31,6 @@ const Row = ({
 			{type === 'GALLERY' && (
 				<Carrousel
 					autoplay
-					style={{
-						width: '4rem',
-						height: '4rem',
-						marginRight: '2.25rem',
-					}}
 					defaultControlsConfig={{
 						nextButtonStyle: { display: 'none' },
 						prevButtonStyle: { display: 'none' },
