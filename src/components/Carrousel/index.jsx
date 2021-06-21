@@ -1,6 +1,6 @@
 import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -11,6 +11,8 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState([]);
 	const [selectedFile, setSelectedFile] = useState([]);
 	const [slidesShow, setSlidesShow] = useState(4);
+	const [currentSlide, setCurrentSlide] = useState(0);
+	const carrouselRef = useRef(null);
 	const onDrop = useCallback(acceptedFiles => {
 		const file = acceptedFiles[0];
 
@@ -41,6 +43,31 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 		});
 	}, []);
 
+	const resizeCarrousel = useCallback(() => {
+		if (!carrouselRef?.current?.frame?.clientWidth) {
+			return;
+		}
+		if (carrouselRef.current.frame.clientWidth <= 160) {
+			setSlidesShow(1);
+			return;
+		}
+		if (carrouselRef.current.frame.clientWidth <= 230) {
+			setSlidesShow(2);
+			return;
+		}
+
+		if (carrouselRef.current.frame.clientWidth <= 300) {
+			setSlidesShow(3);
+			return;
+		}
+
+		setSlidesShow(4);
+	}, [carrouselRef?.current]);
+
+	useEffect(() => {
+		resizeCarrousel();
+	}, [resizeCarrousel]);
+
 	useEffect(() => {
 		if (items[0]) {
 			const itemUrls = items.map(item => {
@@ -57,14 +84,6 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 		onDrop,
 		accept: 'image/*',
 	});
-
-	useEffect(() => {
-		if (window.innerWidth <= 600) {
-			setSlidesShow(1);
-			return;
-		}
-		setSlidesShow(4);
-	}, []);
 
 	return (
 		<Container existImage={selectedFileUrl.length === 0} {...rest}>
@@ -83,21 +102,23 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 			{selectedFileUrl.length > 0 && (
 				<div className="carrousel-container">
 					<Carrousel
-						onResize={() => {
-							if (window.innerWidth <= 600) {
-								setSlidesShow(1);
-								return;
-							}
-							setSlidesShow(4);
+						ref={carrouselRef}
+						onResize={resizeCarrousel}
+						afterSlide={i => {
+							setCurrentSlide(i);
 						}}
 						renderCenterLeftControls={props => (
 							<button
 								onClick={() => {
 									props.previousSlide();
 								}}
+								className={`${currentSlide === 0 ? 'desactive' : ''}`}
 								type="button"
 							>
-								<IoIosArrowBack size={30} color="#717171" />
+								<IoIosArrowBack
+									size={30}
+									color={`${currentSlide === 0 ? '#EBEBEB' : '#717171'}`}
+								/>
 							</button>
 						)}
 						slidesToShow={slidesShow}
@@ -111,7 +132,14 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 									props.nextSlide();
 								}}
 							>
-								<IoIosArrowForward size={30} color="#717171" />
+								<IoIosArrowForward
+									size={30}
+									color={`${
+										currentSlide === selectedFileUrl.length - 1
+											? '#EBEBEB'
+											: '#717171'
+									}`}
+								/>
 							</button>
 						)}
 					>
