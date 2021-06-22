@@ -12,18 +12,10 @@ import maskCardNumber from '../../../utils/maskCardNumber';
 import maskCep from '../../../utils/maskCep';
 import maskCpf from '../../../utils/maskCpf';
 import maskDate from '../../../utils/maskDate';
-import maskPhone from '../../../utils/maskPhone';
 import { ContainerButtons, FormContainer } from '../styles';
 
 const PaymentForm = ({ formik, loading }) => {
 	const [states, setStates] = useState([]);
-	function handleDDD(e) {
-		const valueNumber = e.target.value.match(/\d+/g)?.join('');
-		if (valueNumber?.length > 2) {
-			return;
-		}
-		formik.setFieldValue('ddd', valueNumber || '');
-	}
 
 	useEffect(() => {
 		if (!formik.values.state) {
