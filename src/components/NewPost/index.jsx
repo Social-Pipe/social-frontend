@@ -91,7 +91,7 @@ const NewPost = ({ savePost, clientInfo }) => {
 				savePost();
 			} catch (e) {
 				setLoading(false);
-				if (e.response.url.split('/')[0] === 'postfiles') {
+				if (e?.response?.url?.split('/')[0] === 'postfiles') {
 					handleShowPopUp('error', 'Erro em Upload de arquivos');
 					return;
 				}
