@@ -1,6 +1,4 @@
-# social-frontend
-
-Frontend do projeto ClintSite
+Frontend do projeto Postbaker
 
 ## Components
 
