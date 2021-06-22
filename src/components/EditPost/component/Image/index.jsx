@@ -11,7 +11,6 @@ function Image({ handleChange, value, type, ...rest }) {
 	});
 	const onDrop = useCallback(acceptedFiles => {
 		const file = acceptedFiles[0];
-		console.log(selectedFileUrl);
 
 		if (!file) {
 			return;

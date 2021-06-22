@@ -240,14 +240,6 @@ const ConfigUser = () => {
 		formik.setFieldValue('state', uf.nome);
 	}, [formik.values.sigla]);
 
-	function handleDDD(e) {
-		const valueNumber = e.target.value.match(/\d+/g)?.join('');
-		if (valueNumber?.length > 2) {
-			return;
-		}
-		formik.setFieldValue('ddd', valueNumber || '');
-	}
-
 	useEffect(() => {
 		formik.setFieldValue('state', 'rio de janeiro');
 	}, []);

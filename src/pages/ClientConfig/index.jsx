@@ -40,7 +40,6 @@ const ClientConfig = () => {
 		handleShowModal,
 		clients,
 		fetchMoreClients,
-		user,
 	} = useContext(Context);
 
 	const fetchPosts = useCallback(() => {
@@ -100,9 +99,7 @@ const ClientConfig = () => {
 				const postsFormatArchived = postsFormat.filter(post => post.archive);
 				setPosts(postsFormatNotArchived);
 				setPostsArchived(postsFormatArchived);
-			} catch (e) {
-				console.log(e);
-			}
+			} catch {}
 		}
 		fetchData();
 	}, [clients, params]);

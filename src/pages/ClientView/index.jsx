@@ -83,9 +83,7 @@ const ClientView = () => {
 					postFilter => postFilter.publish
 				);
 				setPosts(postsFilters);
-			} catch (e) {
-				console.log(e);
-			}
+			} catch {}
 		}
 		fetchData();
 	}, []);
