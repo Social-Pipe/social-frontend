@@ -58,7 +58,6 @@ const Login = () => {
 						<fieldset>
 							<label htmlFor="email">Email</label>
 							<input
-								placeholder="usuário@teste.coms"
 								type="email"
 								id="email"
 								name="email"
@@ -69,7 +68,6 @@ const Login = () => {
 						<fieldset>
 							<label htmlFor="password">Senha</label>
 							<input
-								placeholder="***********"
 								type="password"
 								id="password"
 								autoComplete="current-password"
