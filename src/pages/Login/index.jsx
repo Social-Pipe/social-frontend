@@ -50,9 +50,7 @@ const Login = () => {
 
 	return (
 		<Container>
-			<div className="container_register">
-				<Link to="/login/cadastrar">PÁGINA DE CADASTRO</Link>
-			</div>
+			<div className="container_register" />
 			<div className="content">
 				<div className="container_form">
 					<h1>Faça o login na sua conta</h1>
