@@ -17,7 +17,6 @@ const InfosForm = ({ onPressButton, formik }) => (
 			<fieldset>
 				<label htmlFor="name">Nome</label>
 				<input
-					placeholder="Usuário Teste"
 					type="text"
 					id="name"
 					name="name"
@@ -30,7 +29,6 @@ const InfosForm = ({ onPressButton, formik }) => (
 			<fieldset>
 				<label htmlFor="email">Email</label>
 				<input
-					placeholder="usuário@teste.com"
 					type="email"
 					id="email"
 					name="email"
@@ -43,7 +41,6 @@ const InfosForm = ({ onPressButton, formik }) => (
 				<label htmlFor="phone">Celular</label>
 				<input
 					type="tel"
-					placeholder="(21) 00000-0000"
 					id="phone"
 					name="phone"
 					autoComplete="tel-national"
