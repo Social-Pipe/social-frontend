@@ -7,9 +7,13 @@ export default Yup.object().shape({
 	phone: Yup.string().matches(
 		/(\(\d{2}\)\s\d{5}-\d{4})|(\(\d{2}\)\s\d{4}-\d{4})/g
 	),
-	password: Yup.string().required(),
+	password: Yup.string()
+		.test('len', 'Must be exactly 8 characters', val => val?.length >= 8)
+		.required(),
 	checkbox: Yup.bool().required(),
-	passwordAccess: Yup.string().required(),
+	passwordAccess: Yup.string()
+		.test('len', 'Must be exactly 8 characters', val => val?.length >= 8)
+		.required(),
 	companyName: Yup.string().required(),
 	cardNumber: Yup.string().matches(/\d{4}\s\d{4}\s\d{4}\s\d{4}/g),
 	cardCode: Yup.string().max(3).required(),
