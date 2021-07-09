@@ -41,7 +41,10 @@ const Login = () => {
 				);
 				history.replace('/dashboard');
 			} catch (e) {
-				handleShowPopUp('error', 'Erro no login');
+				handleShowPopUp(
+					'error',
+					'Usuário ou senha estão incorretos. Caso tenha esquecido acesse "Esqueci minha senha"'
+				);
 			} finally {
 				setLoading(false);
 			}
