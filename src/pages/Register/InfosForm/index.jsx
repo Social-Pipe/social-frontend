@@ -10,8 +10,8 @@ const InfosForm = ({ onPressButton, formik }) => (
 	<Container>
 		<h1>Insira as informações para o seu cadastro</h1>
 		<p>
-			Preencha o campo abaixo com o seu email cadastrado aqui na Social Pipe
-			para recuperar a sua senha.
+			Preencha o campo abaixo com o seu email cadastrado aqui no Post Baker para
+			recuperar a sua senha.
 		</p>
 		<FormContainer>
 			<fieldset>
