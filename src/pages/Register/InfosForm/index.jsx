@@ -79,7 +79,10 @@ const InfosForm = ({ onPressButton, formik }) => (
 				/>
 				<span />
 				<label>
-					Ao se cadastrar, declaro ter lido e aceito os termos de uso
+					Ao se cadastrar, declaro ter lido e aceito os{' '}
+					<a href="https://postbaker.com.br/politica-privacidade">
+						termos de uso
+					</a>
 				</label>
 			</fieldset>
 			<ContainerButtons className="container_buttons">
