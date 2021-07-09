@@ -132,7 +132,11 @@ const Register = () => {
 				return;
 			}
 			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+			if (data?.erro) {
+				return;
+			}
 			formik.setValues({
+				...formik.values,
 				adress: data.logradouro,
 				district: data.bairro,
 				city: data.localidade,
@@ -150,7 +154,10 @@ const Register = () => {
 		}
 
 		ArrayFieldsNames.forEach(field => {
-			if (!formik.touched[field] && formik.errors[field]) {
+			if (
+				(!formik.touched[field] && !formik.values[field]) ||
+				formik.errors[field]
+			) {
 				notTouched = true;
 			}
 		});
@@ -213,7 +220,7 @@ const Register = () => {
 										'password',
 										'companyName',
 										'passwordAccess',
-										'file',
+										'logo',
 									],
 									2
 								);
