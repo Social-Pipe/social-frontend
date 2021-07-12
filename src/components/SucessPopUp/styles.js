@@ -4,6 +4,7 @@ export default styled.span`
 	display: flex;
 	align-items: center;
 	padding-left: 3rem;
+	padding-right: 3rem;
 	width: 100%;
 	max-width: 32.13rem;
 	height: 4.69rem;

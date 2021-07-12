@@ -12,18 +12,10 @@ import maskCardNumber from '../../../utils/maskCardNumber';
 import maskCep from '../../../utils/maskCep';
 import maskCpf from '../../../utils/maskCpf';
 import maskDate from '../../../utils/maskDate';
-import maskPhone from '../../../utils/maskPhone';
 import { ContainerButtons, FormContainer } from '../styles';
 
 const PaymentForm = ({ formik, loading }) => {
 	const [states, setStates] = useState([]);
-	function handleDDD(e) {
-		const valueNumber = e.target.value.match(/\d+/g)?.join('');
-		if (valueNumber?.length > 2) {
-			return;
-		}
-		formik.setFieldValue('ddd', valueNumber || '');
-	}
 
 	useEffect(() => {
 		if (!formik.values.state) {
@@ -36,6 +28,18 @@ const PaymentForm = ({ formik, loading }) => {
 
 		formik.setFieldValue('sigla', uf.sigla);
 	}, [formik.values.state]);
+
+	useEffect(() => {
+		if (!formik.values.sigla) {
+			return;
+		}
+		const uf = states.find(state => state.sigla === formik.values.sigla);
+		if (!uf) {
+			return;
+		}
+
+		formik.setFieldValue('state', uf.nome);
+	}, [formik.values.sigla, states]);
 
 	useEffect(() => {
 		async function getStates() {
@@ -137,7 +141,7 @@ const PaymentForm = ({ formik, loading }) => {
 							/>
 						</fieldset>
 					</div>
-					<div className="contact">
+					{/* <div className="contact">
 						<h3>Informações de contato</h3>
 						<div className="row ">
 							<fieldset>
@@ -171,7 +175,7 @@ const PaymentForm = ({ formik, loading }) => {
 								/>
 							</fieldset>
 						</div>
-					</div>
+					</div> */}
 					<div className="payment">
 						<h3>Informações finais</h3>
 						<fieldset>

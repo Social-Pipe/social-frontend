@@ -91,6 +91,10 @@ const NewPost = ({ savePost, clientInfo }) => {
 				savePost();
 			} catch (e) {
 				setLoading(false);
+				if (e?.response?.url?.split('/')[0] === 'postfiles') {
+					handleShowPopUp('error', 'Erro em Upload de arquivos');
+					return;
+				}
 				if (!e.status) {
 					handleShowPopUp('error', 'Erro de Conexão');
 					return;
@@ -556,7 +560,13 @@ const NewPost = ({ savePost, clientInfo }) => {
 
 NewPost.propTypes = {
 	savePost: PropTypes.func.isRequired,
-	clientInfo: PropTypes.object.isRequired,
+	clientInfo: PropTypes.object,
+};
+
+NewPost.defaultProps = {
+	clientInfo: {
+		accessHash: '',
+	},
 };
 
 export default NewPost;

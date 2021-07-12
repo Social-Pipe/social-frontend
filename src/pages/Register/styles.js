@@ -252,6 +252,13 @@ export const FormContainer = styled.div`
 		&.checkbox {
 			flex-direction: row;
 			align-items: center;
+
+			a {
+				color: #5d5d5d;
+				font-size: 1rem;
+				font-weight: 700;
+				text-decoration: none;
+			}
 			input[type='radio'] {
 				max-width: 1rem;
 				max-height: 1rem;

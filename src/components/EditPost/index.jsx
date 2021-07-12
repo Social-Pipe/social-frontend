@@ -50,7 +50,7 @@ function deleteFile(id) {
 }
 
 const EditPost = ({ saveClient, deletePost, editValues }) => {
-	const [value, onChange] = useState(new Date());
+	const [value] = useState(new Date());
 	const [imagesDeleteId, setImagesDeleteId] = useState([]);
 	const [newFiles, setNewFiles] = useState([]);
 	const [showDate, setShowDate] = useState(false);

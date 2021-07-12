@@ -10,14 +10,13 @@ const InfosForm = ({ onPressButton, formik }) => (
 	<Container>
 		<h1>Insira as informações para o seu cadastro</h1>
 		<p>
-			Preencha o campo abaixo com o seu email cadastrado aqui na Social Pipe
-			para recuperar a sua senha.
+			Preencha o campo abaixo com o seu email cadastrado aqui no Post Baker para
+			recuperar a sua senha.
 		</p>
 		<FormContainer>
 			<fieldset>
 				<label htmlFor="name">Nome</label>
 				<input
-					placeholder="Usuário Teste"
 					type="text"
 					id="name"
 					name="name"
@@ -30,7 +29,6 @@ const InfosForm = ({ onPressButton, formik }) => (
 			<fieldset>
 				<label htmlFor="email">Email</label>
 				<input
-					placeholder="usuário@teste.com"
 					type="email"
 					id="email"
 					name="email"
@@ -43,7 +41,6 @@ const InfosForm = ({ onPressButton, formik }) => (
 				<label htmlFor="phone">Celular</label>
 				<input
 					type="tel"
-					placeholder="(21) 00000-0000"
 					id="phone"
 					name="phone"
 					autoComplete="tel-national"
@@ -79,7 +76,10 @@ const InfosForm = ({ onPressButton, formik }) => (
 				/>
 				<span />
 				<label>
-					Ao se cadastrar, declaro ter lido e aceito os termos de uso
+					Ao se cadastrar, declaro ter lido e aceito os{' '}
+					<a href="https://postbaker.com.br/politica-privacidade">
+						termos de uso
+					</a>
 				</label>
 			</fieldset>
 			<ContainerButtons className="container_buttons">

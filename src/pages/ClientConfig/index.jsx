@@ -40,7 +40,6 @@ const ClientConfig = () => {
 		handleShowModal,
 		clients,
 		fetchMoreClients,
-		user,
 	} = useContext(Context);
 
 	const fetchPosts = useCallback(() => {
@@ -100,9 +99,7 @@ const ClientConfig = () => {
 				const postsFormatArchived = postsFormat.filter(post => post.archive);
 				setPosts(postsFormatNotArchived);
 				setPostsArchived(postsFormatArchived);
-			} catch (e) {
-				console.log(e);
-			}
+			} catch {}
 		}
 		fetchData();
 	}, [clients, params]);
@@ -119,7 +116,7 @@ const ClientConfig = () => {
 				handleOutClick={() => setShowModalRating({ show: false, value: {} })}
 			>
 				<RatingPost
-					user={user}
+					user
 					values={showModalRating.value}
 					clientToken=""
 					closeModal={() => setShowModalRating({ show: false, value: {} })}
@@ -144,7 +141,10 @@ const ClientConfig = () => {
 				}
 			>
 				<DeleteItem
-					item={deleteItem}
+					item={{
+						name: deleteItem.name,
+						id: deleteItem.id,
+					}}
 					handleDeleteItem={(id, type) => {
 						if (type === 'client') {
 							fetchMoreClients();
@@ -153,7 +153,6 @@ const ClientConfig = () => {
 						}
 						setDeleteItem(props => ({
 							...props,
-							show: false,
 						}));
 						const newPosts = posts.filter(value => value.id !== id);
 						setPosts(newPosts);
@@ -191,7 +190,7 @@ const ClientConfig = () => {
 			>
 				<NewPost
 					clientInfo={client}
-					saveClient={() => setShowModalNewPost(false)}
+					savePost={() => setShowModalNewPost(false)}
 					editClient
 					handleClose={() => setShowModalNewPost(false)}
 				/>
