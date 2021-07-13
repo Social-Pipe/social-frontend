@@ -44,7 +44,11 @@ function MyDropzone({ handleChange, value, error }) {
 
 MyDropzone.propTypes = {
 	handleChange: PropTypes.func.isRequired,
-	error: PropTypes.bool.isRequired,
+	error: PropTypes.bool,
+};
+
+MyDropzone.defaultProps = {
+	error: false,
 };
 
 export default MyDropzone;
