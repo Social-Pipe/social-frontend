@@ -19,6 +19,6 @@ export default styled.div`
 		justify-content: center;
 		height: 100%;
 		border-radius: 100%;
-		border: 2px solid #e4e4e4;
+		border: 2px solid ${({ error }) => (error ? '#fe6969' : '#e4e4e4')};
 	}
 `;

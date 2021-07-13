@@ -5,7 +5,7 @@ import { BiPlusMedical } from 'react-icons/bi';
 
 import Container from './styles';
 
-function MyDropzone({ handleChange, value }) {
+function MyDropzone({ handleChange, value, error }) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState('');
 	const onDrop = useCallback(acceptedFiles => {
 		const file = acceptedFiles[0];
@@ -29,13 +29,13 @@ function MyDropzone({ handleChange, value }) {
 	}, [value]);
 
 	return (
-		<Container {...getRootProps()}>
+		<Container error={error} {...getRootProps()}>
 			<input {...getInputProps()} />
 			{selectedFileUrl ? (
 				<img src={selectedFileUrl} alt="company" />
 			) : (
 				<div>
-					<BiPlusMedical size={20} color="#B1B1B1" />
+					<BiPlusMedical size={20} color={error ? '#fe6969' : '#B1B1B1'} />
 				</div>
 			)}
 		</Container>
@@ -44,6 +44,7 @@ function MyDropzone({ handleChange, value }) {
 
 MyDropzone.propTypes = {
 	handleChange: PropTypes.func.isRequired,
+	error: PropTypes.bool.isRequired,
 };
 
 export default MyDropzone;

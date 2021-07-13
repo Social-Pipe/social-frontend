@@ -76,9 +76,15 @@ const PaymentForm = ({ formik, loading }) => {
 									formik.setFieldValue('cep', newValue)
 								)
 							}
+							className={
+								!!formik.errors?.cep && formik.touched.cep ? 'error' : ''
+							}
 							autoComplete="postal-code"
 							value={formik.values.cep}
 						/>
+						{!!formik.errors?.cep && formik.touched.cep && (
+							<span>Campo Obrigatório</span>
+						)}
 					</fieldset>
 					<fieldset>
 						<label htmlFor="Adress">Endereço</label>
@@ -88,7 +94,13 @@ const PaymentForm = ({ formik, loading }) => {
 							name="adress"
 							onChange={formik.handleChange}
 							value={formik.values.adress}
+							className={
+								!!formik.errors?.adress && formik.touched.adress ? 'error' : ''
+							}
 						/>
+						{!!formik.errors?.adress && formik.touched.adress && (
+							<span>Campo Obrigatório</span>
+						)}
 					</fieldset>
 					<div className="row">
 						<fieldset>
@@ -97,14 +109,28 @@ const PaymentForm = ({ formik, loading }) => {
 								id="Num"
 								name="number"
 								onChange={formik.handleChange}
+								className={
+									!!formik.errors?.number && formik.touched.number
+										? 'error'
+										: ''
+								}
 								value={formik.values.number}
 							/>
+							{!!formik.errors?.number && formik.touched.number && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 
 						<div className="select">
 							<label>Estado</label>
 							<div>
-								<div className="mask">
+								<div
+									className={`mask ${
+										!!formik.errors?.state && formik.touched.state
+											? 'error'
+											: ''
+									}`}
+								>
 									<p>{formik.values.state}</p>
 									<MdKeyboardArrowDown size={32} color="#717171" />
 								</div>
@@ -119,6 +145,9 @@ const PaymentForm = ({ formik, loading }) => {
 									))}
 								</select>
 							</div>
+							{!!formik.errors?.state && formik.touched.state && (
+								<span>Campo Obrigatório</span>
+							)}
 						</div>
 					</div>
 					<div className="row">
@@ -127,18 +156,32 @@ const PaymentForm = ({ formik, loading }) => {
 							<input
 								id="city"
 								name="city"
+								className={
+									!!formik.errors?.city && formik.touched.city ? 'error' : ''
+								}
 								onChange={formik.handleChange}
 								value={formik.values.city}
 							/>
+							{!!formik.errors?.city && formik.touched.city && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 						<fieldset>
 							<label htmlFor="Bairro">Bairro</label>
 							<input
 								id="Bairro"
 								name="district"
+								className={
+									!!formik.errors?.district && formik.touched.district
+										? 'error'
+										: ''
+								}
 								onChange={formik.handleChange}
 								value={formik.values.district}
 							/>
+							{!!formik.errors?.district && formik.touched.district && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 					</div>
 					{/* <div className="contact">
@@ -181,6 +224,9 @@ const PaymentForm = ({ formik, loading }) => {
 						<fieldset>
 							<label htmlFor="cpf">CPF</label>
 							<input
+								className={
+									!!formik.errors?.cpf && formik.touched.cpf ? 'error' : ''
+								}
 								placeholder="xxx.xxx-xxx-xx"
 								id="cpf"
 								name="cpf"
@@ -191,10 +237,19 @@ const PaymentForm = ({ formik, loading }) => {
 									)
 								}
 							/>
+							{!!formik.errors?.cpf && formik.touched.cpf && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 						<fieldset>
 							<label htmlFor="cardNumber">Número do cartão</label>
-							<div className="card">
+							<div
+								className={`card ${
+									!!formik.errors?.cardNumber && formik.touched.cardNumber
+										? 'error'
+										: ''
+								}`}
+							>
 								<input
 									type="text"
 									placeholder="0000 0000 0000 0000"
@@ -211,6 +266,9 @@ const PaymentForm = ({ formik, loading }) => {
 								/>
 								<img src={creditCardTwo} alt="credit icon" />
 							</div>
+							{!!formik.errors?.cardNumber && formik.touched.cardNumber && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 						<fieldset>
 							<label htmlFor="cardName">Nome (exatamente como no cartão)</label>
@@ -219,17 +277,29 @@ const PaymentForm = ({ formik, loading }) => {
 								id="cardName"
 								placeholder="EX: TITO LIMA"
 								autoCapitalize="true"
-								className="cardName"
+								className={`cardName ${
+									!!formik.errors?.cardName && formik.touched.cardName
+										? 'error'
+										: ''
+								}`}
 								name="cardName"
 								onChange={formik.handleChange}
 								value={formik.values.cardName}
 							/>
+							{!!formik.errors?.cardName && formik.touched.cardName && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 						<fieldset>
 							<label htmlFor="vality">Validade</label>
 							<input
 								placeholder="Ex: 11/23"
 								id="vality"
+								className={
+									!!formik.errors?.vality && formik.touched.vality
+										? 'error'
+										: ''
+								}
 								name="vality"
 								onChange={e => {
 									maskDate(e.target.value, value =>
@@ -238,10 +308,19 @@ const PaymentForm = ({ formik, loading }) => {
 								}}
 								value={formik.values.vality}
 							/>
+							{!!formik.errors?.vality && formik.touched.vality && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 						<fieldset>
 							<label htmlFor="cardCode">Código de segurança</label>
-							<div className="card">
+							<div
+								className={`card ${
+									!!formik.errors?.cardCode && formik.touched.cardCode
+										? 'error'
+										: ''
+								}`}
+							>
 								<input
 									placeholder="123"
 									type="text"
@@ -261,6 +340,9 @@ const PaymentForm = ({ formik, loading }) => {
 								/>
 								<img src={creditCard} alt="credit-card" />
 							</div>
+							{!!formik.errors?.cardCode && formik.touched.cardCode && (
+								<span>Campo Obrigatório</span>
+							)}
 						</fieldset>
 					</div>
 					<ContainerButtons className="container_buttons">
