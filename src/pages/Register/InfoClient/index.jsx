@@ -15,6 +15,7 @@ const InfoClient = ({ onPressButton, formik }) => (
 			<PhotoContainer
 				value={formik.values.logo}
 				handleChange={file => formik.setFieldValue('logo', file)}
+				error={!!formik.errors?.logo && formik.touched.logo}
 			/>
 		</div>
 		<FormContainer>
@@ -25,22 +26,38 @@ const InfoClient = ({ onPressButton, formik }) => (
 					id="companyName"
 					autoComplete="organization"
 					name="companyName"
+					className={
+						!!formik.errors?.companyName && formik.touched.companyName
+							? 'error'
+							: ''
+					}
 					onBlur={formik.handleBlur}
 					value={formik.values.companyName}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.companyName && formik.touched.companyName && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="passwordAccess">Senha de acesso do cliente</label>
 				<input
 					type="password"
 					id="passwordAccess"
+					className={
+						!!formik.errors?.passwordAccess && formik.touched.passwordAccess
+							? 'error'
+							: ''
+					}
 					name="passwordAccess"
 					autoComplete="new-password"
 					onBlur={formik.handleBlur}
 					value={formik.values.passwordAccess}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.passwordAccess && formik.touched.passwordAccess && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<div className="social_redes">
 				<p>Redes Sociais</p>
