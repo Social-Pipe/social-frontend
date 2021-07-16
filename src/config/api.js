@@ -25,11 +25,11 @@ api.interceptors.response.use(
 	async error => {
 		const originalRequest = error.config;
 		const token = JSON.parse(localStorage.getItem('token'));
-
 		if (
 			token?.acessToken &&
-			error?.response?.status === 403 &&
-			!originalRequest._retry
+			(error?.response?.status === 403 || error?.response?.status === 401) &&
+			!originalRequest._retry &&
+			originalRequest.url !== 'token/refresh/'
 		) {
 			originalRequest._retry = true;
 

@@ -14,6 +14,16 @@ export default styled.main`
 		flex-direction: column;
 		height: 100%;
 
+		> span {
+			display: block;
+			font-size: 1.25rem;
+			color: #707070;
+			opacity: 0.3;
+			font-weight: 500;
+			align-self: center;
+			padding-bottom: 3rem;
+		}
+
 		.header {
 			display: flex;
 			align-items: center;
@@ -43,16 +53,6 @@ export default styled.main`
 			flex-direction: column;
 			padding-bottom: 4rem;
 		}
-	}
-
-	> span {
-		display: block;
-		font-size: 1.25rem;
-		color: #707070;
-		opacity: 0.3;
-		font-weight: 500;
-		align-self: center;
-		padding-bottom: 3rem;
 	}
 
 	@media (max-width: 1400px) {
