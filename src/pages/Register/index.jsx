@@ -48,6 +48,7 @@ const Register = () => {
 
 	const formik = useFormik({
 		initialValues,
+		validateOnBlur: true,
 		validationSchema: registerSchema,
 		onSubmit: async values => {
 			if (loading) {
@@ -149,11 +150,8 @@ const Register = () => {
 	async function verifyValues(ArrayFieldsNames, pageValue) {
 		let notTouched = false;
 
-		if (!formik.values.checkbox) {
-			return;
-		}
-
 		ArrayFieldsNames.forEach(field => {
+			formik.setFieldTouched(field, true);
 			if (
 				(!formik.touched[field] && !formik.values[field]) ||
 				formik.errors[field]
@@ -161,6 +159,9 @@ const Register = () => {
 				notTouched = true;
 			}
 		});
+		if (!formik.values.checkbox) {
+			return;
+		}
 
 		if (!notTouched) {
 			setPage(pageValue);

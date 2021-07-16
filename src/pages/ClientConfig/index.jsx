@@ -144,6 +144,7 @@ const ClientConfig = () => {
 					item={{
 						name: deleteItem.name,
 						id: deleteItem.id,
+						type: deleteItem.type,
 					}}
 					handleDeleteItem={(id, type) => {
 						if (type === 'client') {
@@ -153,6 +154,7 @@ const ClientConfig = () => {
 						}
 						setDeleteItem(props => ({
 							...props,
+							show: false,
 						}));
 						const newPosts = posts.filter(value => value.id !== id);
 						setPosts(newPosts);
@@ -209,7 +211,10 @@ const ClientConfig = () => {
 								if (!client?.accessHash) {
 									return;
 								}
-								await navigator.clipboard.writeText(client.accessHash);
+								const getUrl = window.location;
+								await navigator.clipboard.writeText(
+									`${getUrl.protocol}//${getUrl.host}/${client.accessHash}`
+								);
 								handleShowPopUp('sucess', 'Link copiado!');
 							}}
 							type="button"

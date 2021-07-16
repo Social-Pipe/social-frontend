@@ -17,6 +17,9 @@ const InfosForm = ({ onPressButton, formik }) => (
 			<fieldset>
 				<label htmlFor="name">Nome</label>
 				<input
+					className={
+						!!formik.errors?.name && formik.touched.name ? 'error' : ''
+					}
 					type="text"
 					id="name"
 					name="name"
@@ -25,10 +28,16 @@ const InfosForm = ({ onPressButton, formik }) => (
 					value={formik.values.name}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.name && formik.touched.name && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="email">Email</label>
 				<input
+					className={
+						!!formik.errors?.email && formik.touched.email ? 'error' : ''
+					}
 					type="email"
 					id="email"
 					name="email"
@@ -36,10 +45,16 @@ const InfosForm = ({ onPressButton, formik }) => (
 					value={formik.values.email}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.email && formik.touched.email && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="phone">Celular</label>
 				<input
+					className={
+						!!formik.errors?.phone && formik.touched.phone ? 'error' : ''
+					}
 					type="tel"
 					id="phone"
 					name="phone"
@@ -52,10 +67,16 @@ const InfosForm = ({ onPressButton, formik }) => (
 						)
 					}
 				/>
+				{!!formik.errors?.phone && formik.touched.phone && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="password">Senha</label>
 				<input
+					className={
+						!!formik.errors?.password && formik.touched.password ? 'error' : ''
+					}
 					type="password"
 					id="password"
 					placeholder="**********"
@@ -65,6 +86,9 @@ const InfosForm = ({ onPressButton, formik }) => (
 					value={formik.values.password}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.password && formik.touched.password && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset className="checkbox">
 				<input
