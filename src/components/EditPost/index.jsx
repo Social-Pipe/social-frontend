@@ -756,15 +756,6 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 								}
 								handleChange={(file, type) => {
 									if (type === 'Imagem') {
-										formik.setFieldValue('carrouselImages', [
-											...formik.values.carrouselImages,
-											...file,
-										]);
-										setNewFiles(props => [...props, ...file]);
-										if (newFiles.length >= 0) {
-											formik.setFieldValue('typeFile', 'Carrousel');
-											return;
-										}
 										formik.setFieldValue('logo', file);
 										return;
 									}
