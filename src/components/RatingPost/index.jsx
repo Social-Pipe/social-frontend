@@ -2,13 +2,13 @@ import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { BsX } from 'react-icons/bs';
 import { ImCheckmark } from 'react-icons/im';
 import { IoMdClose } from 'react-icons/io';
 import { TiPencil } from 'react-icons/ti';
 
-import Container from './styles';
+import Container, { ImageContainer, Content } from './styles';
 
 import api from '../../config/api';
 import { Context } from '../../services/context';
@@ -18,7 +18,13 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 	const [comment, setComment] = useState('');
 	const { handleShowPopUp } = useContext(Context);
 	const [post, setPost] = useState({});
+	const [sizeOfcarrousel, setSizeOfCarrousel] = useState({
+		width: 0,
+		height: 0,
+		widthLess: 0,
+	});
 
+	const ref = useRef(null);
 	async function fetchComment() {
 		try {
 			const commentResponse = await api.post(
@@ -106,14 +112,62 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 			handleShowPopUp('error', 'Erro,tente novamente');
 		}
 	}
+	useEffect(() => {
+		if (!ref?.current) {
+			return;
+		}
+		let widthLess = 0;
+		widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight;
+		if (window.innerHeight > window.innerWidth) {
+			widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight * 0.5;
+		}
+		setSizeOfCarrousel({
+			width: ref?.current?.clientWidth,
+			height: ref?.current?.offsetHeight,
+			widthLess,
+		});
+	}, [values, ref]);
+
+	useEffect(() => {
+		window.addEventListener('resize', () => {
+			let widthLess = 0;
+			widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight;
+			if (window.innerHeight > window.innerWidth) {
+				widthLess =
+					ref?.current?.clientWidth - ref?.current?.offsetHeight * 0.5;
+			}
+			setSizeOfCarrousel({
+				width: ref?.current?.clientWidth,
+				height: ref?.current?.offsetHeight,
+				widthLess,
+			});
+		});
+
+		return window.removeEventListener('resize', () => {
+			let widthLess = 0;
+			widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight;
+			if (window.innerHeight > window.innerWidth) {
+				widthLess =
+					ref?.current?.clientWidth - ref?.current?.offsetHeight * 0.5;
+			}
+			setSizeOfCarrousel({
+				width: ref?.current?.clientWidth,
+				height: ref?.current?.offsetHeight,
+				widthLess,
+			});
+		});
+	}, []);
 
 	return (
 		<Container>
-			<div className="rating">
+			<div className="rating" ref={ref}>
 				<button type="button" className="close_button" onClick={closeModal}>
 					<IoMdClose size={24} color="#fff" />
 				</button>
-				<div className="image">
+				<ImageContainer
+					height={sizeOfcarrousel.height}
+					width={sizeOfcarrousel.width}
+				>
 					{post?.type === 'VIDEO' && (
 						<video autoPlay>
 							<source
@@ -148,8 +202,8 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 								))}
 						</Carrousel>
 					)}
-				</div>
-				<div>
+				</ImageContainer>
+				<Content width={sizeOfcarrousel.widthLess}>
 					<h3>O que achou do post?</h3>
 					<form>
 						<div className="buttons">
@@ -208,7 +262,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 							}}
 						/>
 					</div>
-				</div>
+				</Content>
 			</div>
 			<p className="content_text">{post?.caption}</p>
 		</Container>
