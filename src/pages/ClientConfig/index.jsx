@@ -86,7 +86,7 @@ const ClientConfig = () => {
 						comments: newComments,
 						dateFormat: format(
 							parseISO(post.postingDate),
-							"eeeeee, 'de' MMMM 'às' HH:mm",
+							"eeeeee, dd 'de' MMMM 'às' HH:mm",
 							{
 								locale: ptBr,
 							}
