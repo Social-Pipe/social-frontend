@@ -211,7 +211,10 @@ const ClientConfig = () => {
 								if (!client?.accessHash) {
 									return;
 								}
-								await navigator.clipboard.writeText(client.accessHash);
+								const getUrl = window.location;
+								await navigator.clipboard.writeText(
+									`${getUrl.protocol}//${getUrl.host}/${client.accessHash}`
+								);
 								handleShowPopUp('sucess', 'Link copiado!');
 							}}
 							type="button"
