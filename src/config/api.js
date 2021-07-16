@@ -25,7 +25,6 @@ api.interceptors.response.use(
 	async error => {
 		const originalRequest = error.config;
 		const token = JSON.parse(localStorage.getItem('token'));
-		console.log(originalRequest);
 		if (
 			token?.acessToken &&
 			(error?.response?.status === 403 || error?.response?.status === 401) &&

@@ -144,6 +144,7 @@ const ClientConfig = () => {
 					item={{
 						name: deleteItem.name,
 						id: deleteItem.id,
+						type: deleteItem.type,
 					}}
 					handleDeleteItem={(id, type) => {
 						if (type === 'client') {
@@ -153,6 +154,7 @@ const ClientConfig = () => {
 						}
 						setDeleteItem(props => ({
 							...props,
+							show: false,
 						}));
 						const newPosts = posts.filter(value => value.id !== id);
 						setPosts(newPosts);

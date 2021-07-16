@@ -49,7 +49,7 @@ const DeleteItem = ({ handleDeleteItem, handleNotDeleteItem, item }) => {
 						handleNotDeleteItem();
 					}}
 				>
-					Não apagar cliente
+					{`Não apagar ${item.type === 'client' ? 'cliente' : 'post'}`}
 				</button>
 			</div>
 		</Container>
