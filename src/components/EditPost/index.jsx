@@ -3,7 +3,7 @@ import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
 import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import {
@@ -19,6 +19,8 @@ import Container, {
 	Select,
 	InputsContainer,
 	Form,
+	Content,
+	ImageContainer,
 } from './styles';
 
 import api from '../../config/api';
@@ -38,7 +40,7 @@ const initialValues = {
 	currentLogo: null,
 	dateFormat: '',
 	logoFormat: null,
-	carrouselImages: null,
+	carrouselImages: [],
 	video: null,
 	type: 'SINGLE',
 	typeFile: 'Imagem',
@@ -53,10 +55,16 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 	const [value] = useState(new Date());
 	const [imagesDeleteId, setImagesDeleteId] = useState([]);
 	const [newFiles, setNewFiles] = useState([]);
+	const [sizeOfcarrousel, setSizeOfCarrousel] = useState({
+		width: 0,
+		height: 0,
+		widthLess: 0,
+	});
 	const [showDate, setShowDate] = useState(false);
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
+	const ref = useRef(null);
 	const formik = useFormik({
 		initialValues,
 		async onSubmit(values) {
@@ -154,9 +162,54 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			});
 		}
 	}, [editValues]);
+	useEffect(() => {
+		if (!ref?.current) {
+			return;
+		}
+		let widthLess = 0;
+		widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight;
+		if (window.innerHeight > window.innerWidth) {
+			widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight * 0.5;
+		}
+		setSizeOfCarrousel({
+			width: ref?.current?.clientWidth,
+			height: ref?.current?.offsetHeight,
+			widthLess,
+		});
+	}, [editValues, ref]);
+
+	useEffect(() => {
+		window.addEventListener('resize', () => {
+			let widthLess = 0;
+			widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight;
+			if (window.innerHeight > window.innerWidth) {
+				widthLess =
+					ref?.current?.clientWidth - ref?.current?.offsetHeight * 0.5;
+			}
+			setSizeOfCarrousel({
+				width: ref?.current?.clientWidth,
+				height: ref?.current?.offsetHeight,
+				widthLess,
+			});
+		});
+
+		return window.removeEventListener('resize', () => {
+			let widthLess = 0;
+			widthLess = ref?.current?.clientWidth - ref?.current?.offsetHeight;
+			if (window.innerHeight > window.innerWidth) {
+				widthLess =
+					ref?.current?.clientWidth - ref?.current?.offsetHeight * 0.5;
+			}
+			setSizeOfCarrousel({
+				width: ref?.current?.clientWidth,
+				height: ref?.current?.offsetHeight,
+				widthLess,
+			});
+		});
+	}, []);
 
 	return (
-		<Container>
+		<Container ref={ref}>
 			<ContainerCalendar show={showDate}>
 				<span type="button" onClick={() => setShowDate(false)} />
 				<div>
@@ -180,7 +233,10 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			<button type="button" className="close_button" onClick={saveClient}>
 				<IoMdClose size={24} color="#fff" />
 			</button>
-			<div className="image">
+			<ImageContainer
+				height={sizeOfcarrousel.height}
+				width={sizeOfcarrousel.width}
+			>
 				{formik.values.type === 'VIDEO' &&
 					(!formik.values.logoFormat ? (
 						<video autoPlay>
@@ -268,8 +324,8 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							))}
 					</Carrousel>
 				)}
-			</div>
-			<div>
+			</ImageContainer>
+			<Content>
 				<div className="header_container">
 					<h3>Editar Post</h3>
 					<div>
@@ -700,6 +756,15 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 								}
 								handleChange={(file, type) => {
 									if (type === 'Imagem') {
+										formik.setFieldValue('carrouselImages', [
+											...formik.values.carrouselImages,
+											...file,
+										]);
+										setNewFiles(props => [...props, ...file]);
+										if (newFiles.length >= 0) {
+											formik.setFieldValue('typeFile', 'Carrousel');
+											return;
+										}
 										formik.setFieldValue('logo', file);
 										return;
 									}
@@ -717,7 +782,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 						/>
 					</div>
 				</Form>
-			</div>
+			</Content>
 		</Container>
 	);
 };
