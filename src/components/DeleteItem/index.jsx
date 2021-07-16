@@ -32,9 +32,18 @@ const DeleteItem = ({ handleDeleteItem, handleNotDeleteItem, item }) => {
 							handleShowPopUp('sucess', `${item.name} Deletado`);
 							handleDeleteItem(item.id, item.type);
 							setLoading(false);
-						} catch {
-							handleShowPopUp('error', 'Tente Novamente');
+						} catch (e) {
 							setLoading(false);
+							if (!e.response) {
+								handleShowPopUp('error', 'Verifique a sua Conexão');
+								return;
+							}
+
+							if (e.response.status === 500) {
+								handleShowPopUp('error', 'Erro de servidor');
+								return;
+							}
+							handleShowPopUp('error', 'Tente Novamente');
 						}
 					}}
 				>
