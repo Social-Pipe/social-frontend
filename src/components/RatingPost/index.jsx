@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import { useEffect, useState, useContext, useRef } from 'react';
 import { BsX } from 'react-icons/bs';
 import { ImCheckmark } from 'react-icons/im';
-import { IoMdClose } from 'react-icons/io';
+import {
+	IoMdClose,
+	IoIosArrowDroprightCircle,
+	IoIosArrowDropleftCircle,
+} from 'react-icons/io';
 import { TiPencil } from 'react-icons/ti';
 
 import Container, { ImageContainer, Content } from './styles';
@@ -23,6 +27,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 		height: 0,
 		widthLess: 0,
 	});
+	const [currentSlide, setCurrentSlide] = useState(0);
 
 	const ref = useRef(null);
 	async function fetchComment() {
@@ -190,9 +195,41 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 								height: '100%',
 							}}
 							height="100%"
+							afterSlide={i => {
+								setCurrentSlide(i);
+							}}
+							renderCenterLeftControls={props => (
+								<button
+									onClick={() => {
+										props.previousSlide();
+									}}
+									className={`${currentSlide === 0 ? 'desactive' : ''}`}
+									type="button"
+								>
+									<IoIosArrowDropleftCircle
+										size={30}
+										color={`${currentSlide === 0 ? '#EBEBEB' : '#717171'}`}
+									/>
+								</button>
+							)}
+							renderCenterRightControls={props => (
+								<button
+									type="button"
+									onClick={() => {
+										props.nextSlide();
+									}}
+								>
+									<IoIosArrowDroprightCircle
+										size={30}
+										color={`${
+											currentSlide === (post?.files.length || 0) - 1
+												? '#EBEBEB'
+												: '#717171'
+										}`}
+									/>
+								</button>
+							)}
 							defaultControlsConfig={{
-								nextButtonStyle: { display: 'none' },
-								prevButtonStyle: { display: 'none' },
 								pagingDotsStyle: { display: 'none' },
 							}}
 						>

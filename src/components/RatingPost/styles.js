@@ -1,4 +1,3 @@
-import { IoIosReturnLeft } from 'react-icons/io';
 import styled from 'styled-components';
 
 export default styled.div`
@@ -15,11 +14,18 @@ export default styled.div`
 	.slider-list .slider-slide {
 		height: 100% !important;
 	}
+	.slider {
+		button {
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+	}
 	.rating {
 		display: flex;
 		width: 100%;
 		flex: 1;
-		overflow: auto;
+		overflow: hidden;
 		background-color: #fff;
 	}
 
