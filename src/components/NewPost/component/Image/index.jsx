@@ -26,7 +26,7 @@ function ImageContainer({ handleChange, value, type, ...rest }) {
 	});
 
 	useEffect(() => {
-		if (!value) {
+		if (!value || !value[0]) {
 			setSelectedFileUrl({
 				file: '',
 				name: '',

@@ -101,8 +101,10 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 					await Promise.all(deletePosts);
 					setImagesDeleteId([]);
 				}
+				console.log('newFiles');
+				console.log(values.logo);
 				if (values.typeFile === 'Carrousel') {
-					const files = newFiles.map(logo => {
+					const files = values.logo.map(logo => {
 						const formData = new FormData();
 						formData.append('file', logo);
 						formData.append('post', editValues.id);
@@ -731,12 +733,9 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 						{formik.values.typeFile === 'Carrousel' ? (
 							<CarrouselEdit
 								addItem={file => {
-									setNewFiles(props => [...props, ...file]);
+									formik.setFieldValue('logo', file);
 								}}
 								deleteItem={(file, index, fileUrl) => {
-									const items = [...formik.values.logo];
-									items.splice(index, 1);
-									formik.setFieldValue('logo', items);
 									const currentFile = formik.values.currentLogo.find(
 										img => img?.file === fileUrl
 									);

@@ -29,7 +29,7 @@ const initialValues = {
 	date: new Date(),
 	showForClient: true,
 	description: '',
-	logo: null,
+	logo: [],
 	dateFormat: '',
 	typeFile: 'Imagem',
 };

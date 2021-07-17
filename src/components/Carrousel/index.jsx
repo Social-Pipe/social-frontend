@@ -31,11 +31,15 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 			return newFilesArray;
 		});
 		const filesUrl = acceptedFiles.slice(0, 10 - selectedFileUrl.length);
-		const newFilesArray = [...selectedFileUrl, ...filesUrl];
 
-		setSelectedFile(newFilesArray);
-		addItem(newFilesArray);
+		setSelectedFile(props => [...props, ...filesUrl]);
 	}, []);
+
+	useEffect(() => {
+		console.log('selectedFile');
+		console.log(selectedFile);
+		addItem(selectedFile);
+	}, [selectedFile]);
 
 	const resizeCarrousel = useCallback(() => {
 		if (!carrouselRef?.current?.frame?.clientWidth) {
@@ -142,15 +146,28 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 								<button
 									type="button"
 									onClick={() => {
-										const newFilesUrl = [...selectedFileUrl];
-										const newFiles = [...selectedFile];
-										const fileDeleted = newFiles[index];
-										const fileDeletedUrl = newFilesUrl[index];
-										newFiles.splice(index, 1);
-										newFilesUrl.splice(index, 1);
-										setSelectedFile(newFiles);
+										const filesUrl = [...selectedFileUrl].splice(
+											0,
+											selectedFileUrl.length - selectedFile.length
+										);
+
+										const newFilesUrl = selectedFileUrl.filter(
+											(_, indexUrl) => indexUrl !== index
+										);
+										const filesAll = [...filesUrl, ...selectedFile];
 										setSelectedFileUrl(newFilesUrl);
-										deleteItem(fileDeleted, index, fileDeletedUrl);
+										if (typeof filesAll[index] !== 'string') {
+											const filesRest = selectedFile.filter(
+												(_, indexValue) =>
+													indexValue !== index - filesUrl.length
+											);
+											setSelectedFile(filesRest);
+										}
+										deleteItem(
+											selectedFile[index - filesUrl.length],
+											index,
+											filesAll[index]
+										);
 									}}
 								>
 									<img src={file} alt="imagem" />
