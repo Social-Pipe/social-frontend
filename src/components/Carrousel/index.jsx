@@ -36,8 +36,6 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	}, []);
 
 	useEffect(() => {
-		console.log('selectedFile');
-		console.log(selectedFile);
 		addItem(selectedFile);
 	}, [selectedFile]);
 

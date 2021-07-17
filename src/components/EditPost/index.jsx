@@ -54,7 +54,6 @@ function deleteFile(id) {
 const EditPost = ({ saveClient, deletePost, editValues }) => {
 	const [value] = useState(new Date());
 	const [imagesDeleteId, setImagesDeleteId] = useState([]);
-	const [newFiles, setNewFiles] = useState([]);
 	const [sizeOfcarrousel, setSizeOfCarrousel] = useState({
 		width: 0,
 		height: 0,
@@ -101,8 +100,6 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 					await Promise.all(deletePosts);
 					setImagesDeleteId([]);
 				}
-				console.log('newFiles');
-				console.log(values.logo);
 				if (values.typeFile === 'Carrousel') {
 					const files = values.logo.map(logo => {
 						const formData = new FormData();
