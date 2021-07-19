@@ -27,6 +27,9 @@ export default styled.div`
 			border-radius: 100%;
 			margin-right: 1rem;
 		}
+		video {
+			object-fit: cover;
+		}
 
 		p {
 			max-width: 10.5rem;
