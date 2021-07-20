@@ -89,11 +89,21 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 					caption: values.description,
 					type,
 				});
+			} catch (e) {
+				setLoading(false);
+				handleShowPopUp('error', 'Erro, tente novamente');
+				return;
+			}
+
+			try {
 				let deletePosts = [];
 				if (values.typeFile === 'Carrousel' && imagesDeleteId.length > 0) {
 					deletePosts = imagesDeleteId.map(deleteFile);
 				}
-				if (values.typeFile === 'Video' || values.typeFile === 'Imagem') {
+				if (
+					(values.typeFile === 'Video' || values.typeFile === 'Imagem') &&
+					!values.logo[0]?.file
+				) {
 					deletePosts = values.currentLogo.map(file => deleteFile(file.id));
 				}
 				if (deletePosts.length > 0) {
