@@ -2,8 +2,7 @@ import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
 import Carrousel from 'nuka-carousel';
-import PropTypes from 'prop-types';
-import { useContext, useState, useEffect, useRef } from 'react';
+import { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import {
@@ -46,11 +45,6 @@ const initialValues = {
 	typeFile: 'Imagem',
 };
 
-function deleteFile(id) {
-	const logoResult = api.delete(`postfiles/${id}/`);
-	return logoResult;
-}
-
 const EditPost = ({ saveClient, deletePost, editValues }) => {
 	const [value] = useState(new Date());
 	const [imagesDeleteId, setImagesDeleteId] = useState([]);
@@ -63,6 +57,10 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
+	const [stateFile, setStateFile] = useState({
+		loading: false,
+		error: false,
+	});
 	const ref = useRef(null);
 	const formik = useFormik({
 		initialValues,
@@ -89,44 +87,8 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 					caption: values.description,
 					type,
 				});
-			} catch (e) {
-				setLoading(false);
-				handleShowPopUp('error', 'Erro, tente novamente');
-				return;
-			}
-
-			try {
-				let deletePosts = [];
-				if (values.typeFile === 'Carrousel' && imagesDeleteId.length > 0) {
-					deletePosts = imagesDeleteId.map(deleteFile);
-				}
-				if (
-					(values.typeFile === 'Video' || values.typeFile === 'Imagem') &&
-					!values.logo[0]?.file
-				) {
-					deletePosts = values.currentLogo.map(file => deleteFile(file.id));
-				}
-				if (deletePosts.length > 0) {
-					await Promise.all(deletePosts);
-					setImagesDeleteId([]);
-				}
-				if (values.typeFile === 'Carrousel') {
-					const files = values.logo.map(logo => {
-						const formData = new FormData();
-						formData.append('file', logo);
-						formData.append('post', editValues.id);
-						return api.post('postfiles/', formData);
-					});
-					await Promise.all(files);
-				} else if (!values.logo[0]?.file) {
-					const formData = new FormData();
-					formData.append('file', values.logo[0]);
-					formData.append('post', editValues.id);
-					await api.post('postfiles/', formData);
-				}
-				setLoading(false);
-				handleShowPopUp('sucess', 'Post Criado');
-				saveClient();
+				// eslint-disable-next-line no-use-before-define
+				fileUploaded();
 			} catch (e) {
 				setLoading(false);
 				handleShowPopUp('error', 'Erro, tente novamente');
@@ -134,6 +96,98 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 		},
 		validationSchema: newPostSchema,
 	});
+
+	const fileUploaded = useCallback(() => {
+		async function postFiles() {
+			setStateFile(() => ({ error: false, loading: true }));
+
+			let imagesDeleteIdFiles = [...imagesDeleteId];
+			let newimagesDeleteIdFiles = [...imagesDeleteId];
+			try {
+				let deletePosts = [];
+				if (
+					formik.values.typeFile === 'Carrousel' &&
+					imagesDeleteIdFiles.length > 0
+				) {
+					deletePosts = imagesDeleteIdFiles.map(async (id, index) => {
+						const logoResult = await api.delete(`postfiles/${id}/`);
+						newimagesDeleteIdFiles[index] = '';
+						return logoResult;
+					});
+				}
+				if (
+					(formik.values.typeFile === 'Video' ||
+						formik.values.typeFile === 'Imagem') &&
+					!formik.values.logo[0]?.file
+				) {
+					imagesDeleteIdFiles = [...formik.values.currentLogo];
+					newimagesDeleteIdFiles = [...formik.values.currentLogo];
+					deletePosts = imagesDeleteIdFiles.map(async (file, index) => {
+						const logoResult = await api.delete(`postfiles/${file.id}/`);
+						newimagesDeleteIdFiles[index] = '';
+						return logoResult;
+					});
+				}
+				if (deletePosts.length > 0) {
+					const results = await Promise.allSettled(deletePosts);
+					results.forEach(result => {
+						if (result.status === 'rejected') throw new Error();
+					});
+					setImagesDeleteId([]);
+				}
+			} catch {
+				const filesNotDelete = newimagesDeleteIdFiles.filter(
+					file => file !== ''
+				);
+				if (
+					formik.values.typeFile === 'Carrousel' &&
+					imagesDeleteIdFiles.length > 0
+				) {
+					setImagesDeleteId(filesNotDelete);
+				}
+				if (
+					(formik.values.typeFile === 'Video' ||
+						formik.values.typeFile === 'Imagem') &&
+					!formik.values.logo[0]?.file
+				) {
+					formik.setFieldValue('currentLogo', filesNotDelete);
+				}
+				setStateFile(() => ({ error: true, loading: false }));
+
+				setLoading(false);
+				handleShowPopUp('error', 'Arquivos não enviados');
+				return;
+			}
+			const filesUpload = [...formik.values.logo];
+			const newFilesUpload = [...formik.values.logo];
+			try {
+				const files = filesUpload.map(async (logo, index) => {
+					const formData = new FormData();
+					formData.append('file', logo);
+					formData.append('post', editValues.id);
+					await api.post('postfiles/', formData);
+					newFilesUpload[index] = '';
+				});
+				const resultFiles = await Promise.allSettled(files);
+				resultFiles.forEach(result => {
+					if (result.status === 'rejected') throw new Error();
+				});
+				setLoading(false);
+				setStateFile(() => ({ error: false, loading: false }));
+
+				handleShowPopUp('sucess', 'Post Criado');
+				saveClient();
+			} catch (e) {
+				setLoading(false);
+				const filesNotUploaded = newFilesUpload.filter(file => file !== '');
+				formik.setFieldValue('logo', filesNotUploaded);
+				setStateFile(() => ({ error: true, loading: false }));
+
+				handleShowPopUp('error', 'Arquivos não enviados');
+			}
+		}
+		postFiles();
+	}, [formik.values.logo, imagesDeleteId]);
 
 	useEffect(() => {
 		if (editValues.postingDate) {
@@ -171,6 +225,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			});
 		}
 	}, [editValues]);
+
 	useEffect(() => {
 		if (!ref?.current) {
 			return;
@@ -739,6 +794,10 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 						</Select>
 						{formik.values.typeFile === 'Carrousel' ? (
 							<CarrouselEdit
+								error={stateFile.error}
+								loading={stateFile.loading}
+								retry={fileUploaded}
+								notPointEvents={loading}
 								addItem={file => {
 									formik.setFieldValue('logo', file);
 								}}
@@ -754,6 +813,9 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							/>
 						) : (
 							<Image
+								error={stateFile.error}
+								loading={stateFile.loading}
+								retry={fileUploaded}
 								type={formik.values.typeFile}
 								value={
 									formik.values.typeFile === 'Imagem'
@@ -782,12 +844,6 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			</Content>
 		</Container>
 	);
-};
-
-EditPost.propTypes = {
-	saveClient: PropTypes.func.isRequired,
-	deletePost: PropTypes.func.isRequired,
-	editValues: PropTypes.object.isRequired,
 };
 
 export default EditPost;

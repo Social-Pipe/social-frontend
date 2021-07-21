@@ -1,10 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { AiOutlineLoading } from 'react-icons/ai';
 
 import Container from './styles';
 
-function ImageContainer({ handleChange, value, type, ...rest }) {
+function ImageContainer({
+	handleChange,
+	value,
+	type,
+	loading,
+	error,
+	retry,
+	...rest
+}) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState({
 		file: '',
 		name: '',
@@ -41,19 +50,31 @@ function ImageContainer({ handleChange, value, type, ...rest }) {
 	}, [value]);
 
 	return (
-		<Container active={selectedFileUrl.file} {...getRootProps()} {...rest}>
-			<input {...getInputProps()} />
-			<div>
-				{selectedFileUrl.file &&
-					(type === 'Imagem' ? (
-						<img src={selectedFileUrl.file} alt="imagem" />
-					) : (
-						<video autoPlay>
-							<source src={selectedFileUrl.file} />
-						</video>
-					))}
-				<p>{selectedFileUrl.name || `Selecionar ${type}`}</p>
+		<Container error={error} active={selectedFileUrl.file} {...rest}>
+			<div {...getRootProps()}>
+				<input {...getInputProps()} />
+				<div>
+					{selectedFileUrl.file &&
+						(type === 'Imagem' ? (
+							<img src={selectedFileUrl.file} alt="imagem" />
+						) : (
+							<video autoPlay>
+								<source src={selectedFileUrl.file} />
+							</video>
+						))}
+					<p>{selectedFileUrl.name || `Selecionar ${type}`}</p>
+					{loading && (
+						<span>
+							<AiOutlineLoading size={24} color="#292729" />
+						</span>
+					)}
+				</div>
 			</div>
+			{error && (
+				<button type="button" onClick={retry}>
+					Tentar de novo
+				</button>
+			)}
 		</Container>
 	);
 }
@@ -62,10 +83,16 @@ ImageContainer.propTypes = {
 	handleChange: PropTypes.func.isRequired,
 	value: PropTypes.any,
 	type: PropTypes.string.isRequired,
+	retry: PropTypes.func,
+	error: PropTypes.bool,
+	loading: PropTypes.bool,
 };
 
 ImageContainer.defaultProps = {
 	value: '',
+	error: false,
+	loading: false,
+	retry: () => {},
 };
 
 export default ImageContainer;

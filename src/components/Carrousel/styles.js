@@ -1,4 +1,13 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+const rotate = keyframes`
+	from{
+		transform:rotateZ(0)
+	}
+	to{
+		transform:rotateZ(360deg)
+	}
+`;
 
 export default styled.div`
 	flex: 2 !important;
@@ -12,9 +21,37 @@ export default styled.div`
 	}
 
 	.carrousel-container {
+		position: relative;
 		width: 100%;
 		margin-left: 1.5rem;
 		height: 7.5rem;
+		pointer-events: ${({ loading }) => (loading ? 'none' : 'all')};
+		> span,
+		> button {
+			align-self: flex-end;
+			position: absolute;
+
+			bottom: -2rem;
+			display: block;
+			right: 1rem;
+		}
+
+		> span svg {
+			animation: ${rotate} 2s infinite;
+		}
+
+		> button {
+			cursor: pointer;
+			color: #fe6969;
+			/* background: none; */
+			z-index: 2;
+			border: none;
+			font-weight: bold;
+
+			:hover {
+				opacity: 0.9;
+			}
+		}
 
 		.slider-control-centerleft {
 			left: -20px !important;
@@ -36,6 +73,8 @@ export default styled.div`
 		max-width: 4.37rem;
 		max-height: 4.37rem;
 		align-self: flex-end;
+
+		pointer-events: ${({ loading }) => (loading ? 'none' : 'all')};
 		div {
 			background: rgba(118, 169, 236, 0.15);
 			min-width: 4.37rem;

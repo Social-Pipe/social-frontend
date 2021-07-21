@@ -1,8 +1,7 @@
 import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import { useFormik } from 'formik';
-import PropTypes from 'prop-types';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import Calendar from 'react-datetime-picker';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
@@ -38,10 +37,16 @@ const NewPost = ({ savePost, clientInfo }) => {
 	const [showDate, setShowDate] = useState(false);
 	const { handleShowPopUp } = useContext(Context);
 	const [loading, setLoading] = useState(false);
+	const [stateFile, setStateFile] = useState({
+		loading: false,
+		error: false,
+	});
+	const [currentPost, setCurrentPost] = useState(null);
+
 	const formik = useFormik({
 		initialValues,
-		async onSubmit(values, { resetForm }) {
-			if (loading) {
+		async onSubmit(values) {
+			if (loading || values.logo.length === 0) {
 				return;
 			}
 			setLoading(true);
@@ -65,30 +70,8 @@ const NewPost = ({ savePost, clientInfo }) => {
 						type,
 					}
 				);
-				if (values.logo.length > 1) {
-					const files = values.logo.map(logo => {
-						const formData = new FormData();
-						formData.append('file', logo);
-						formData.append('post', response.data.id);
-						const logoResult = api.post('postfiles/', formData);
-						return logoResult;
-					});
-					await Promise.all(files);
-				} else {
-					const formData = new FormData();
-					formData.append('file', values.logo[0]);
-					formData.append('post', response.data.id);
-					await api.post('postfiles/', formData);
-				}
-				handleShowPopUp('sucess', 'Post Criado');
 
-				setLoading(false);
-				const date = new Date();
-				const dateFormat = format(date, "d 'de' MMMM 'de' yyyy à's' HH'h'mm", {
-					locale: ptBr,
-				});
-				resetForm({ ...initialValues, dateFormat, date });
-				savePost();
+				setCurrentPost(response.data.id);
 			} catch (e) {
 				setLoading(false);
 				if (e?.response?.url?.split('/')[0] === 'postfiles') {
@@ -104,6 +87,56 @@ const NewPost = ({ savePost, clientInfo }) => {
 		},
 		validationSchema: newPostSchema,
 	});
+
+	const uploadFiles = useCallback(() => {
+		async function postFiles() {
+			setStateFile(() => ({ error: false, loading: true }));
+			const filesUpload = [...formik.values.logo];
+			const newFilesUpload = [...formik.values.logo];
+			try {
+				const promises = filesUpload.map(async (logo, index) => {
+					const formData = new FormData();
+					formData.append('file', logo);
+					formData.append('post', currentPost);
+					await api.post('postfiles/', formData);
+					newFilesUpload[index] = '';
+				});
+				const results = await Promise.allSettled(promises);
+
+				results.forEach(result => {
+					if (result.status === 'rejected') throw new Error();
+				});
+
+				setLoading(false);
+				setStateFile(() => ({ error: false, loading: false }));
+
+				const date = new Date();
+				const dateFormat = format(date, "d 'de' MMMM 'de' yyyy à's' HH'h'mm", {
+					locale: ptBr,
+				});
+				formik.resetForm({ ...initialValues, dateFormat, date });
+				savePost();
+
+				setCurrentPost(null);
+				handleShowPopUp('sucess', 'Post Criado');
+			} catch (e) {
+				const filesNotUploaded = newFilesUpload.filter(file => file !== '');
+				formik.setFieldValue('logo', filesNotUploaded);
+				setStateFile(() => ({ error: true, loading: false }));
+				setLoading(false);
+				handleShowPopUp('error', 'Arquivos não enviados');
+			}
+		}
+		postFiles();
+	}, [currentPost, formik.values.logo]);
+
+	useEffect(() => {
+		if (currentPost === null) {
+			return;
+		}
+
+		uploadFiles();
+	}, [currentPost]);
 
 	useEffect(() => {
 		if (formik.values.date) {
@@ -524,17 +557,21 @@ const NewPost = ({ savePost, clientInfo }) => {
 						</Select>
 						{formik.values.typeFile === 'Carrousel' ? (
 							<Carrousel
+								loading={stateFile.loading}
+								error={stateFile.error}
+								items={formik.values.logo}
 								addItem={file => {
 									formik.setFieldValue('logo', file);
 								}}
-								deleteItem={(_, index) => {
-									const items = [...formik.values.logo];
-									items.splice(index, 1);
-									formik.setFieldValue('logo', items);
-								}}
+								deleteItem={() => {}}
+								retry={uploadFiles}
+								notPointEvents={stateFile.loading}
 							/>
 						) : (
 							<Image
+								loading={stateFile.loading}
+								error={stateFile.error}
+								retry={uploadFiles}
 								type={formik.values.typeFile}
 								value={formik.values.logo}
 								handleChange={file => {
@@ -556,11 +593,6 @@ const NewPost = ({ savePost, clientInfo }) => {
 			</Form>
 		</Container>
 	);
-};
-
-NewPost.propTypes = {
-	savePost: PropTypes.func.isRequired,
-	clientInfo: PropTypes.object,
 };
 
 NewPost.defaultProps = {

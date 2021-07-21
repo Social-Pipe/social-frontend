@@ -2,12 +2,25 @@ import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
+import {
+	AiOutlinePlus,
+	AiOutlineClose,
+	AiOutlineLoading,
+} from 'react-icons/ai';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import Container, { ImageContainer } from './styles';
 
-function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
+function CarrouselContainer({
+	addItem,
+	items,
+	deleteItem,
+	loading,
+	error,
+	retry,
+	notPointEvents,
+	...rest
+}) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState([]);
 	const [selectedFile, setSelectedFile] = useState([]);
 	const [slidesShow, setSlidesShow] = useState(4);
@@ -65,7 +78,7 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	}, [resizeCarrousel]);
 
 	useEffect(() => {
-		if (items[0]) {
+		if (items && items[0]) {
 			const itemUrls = items.map(item => {
 				if (typeof item === 'string') {
 					return item;
@@ -82,7 +95,12 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	});
 
 	return (
-		<Container existImage={selectedFileUrl.length === 0} {...rest}>
+		<Container
+			loading={loading}
+			notPointEvents={notPointEvents}
+			existImage={selectedFileUrl.length === 0}
+			{...rest}
+		>
 			{selectedFileUrl.length < 10 && (
 				<div className="add_image" {...getRootProps()}>
 					<input {...getInputProps()} />
@@ -179,6 +197,16 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 							</ImageContainer>
 						))}
 					</Carrousel>
+					{loading && (
+						<span>
+							<AiOutlineLoading size={24} color="#000" />
+						</span>
+					)}
+					{error && (
+						<button type="button" onClick={retry}>
+							Tentar de novo
+						</button>
+					)}
 				</div>
 			)}
 		</Container>
@@ -189,12 +217,20 @@ CarrouselContainer.propTypes = {
 	addItem: PropTypes.func,
 	deleteItem: PropTypes.func,
 	items: PropTypes.array,
+	retry: PropTypes.func,
+	error: PropTypes.bool,
+	loading: PropTypes.bool,
+	notPointEvents: PropTypes.bool,
 };
 
 CarrouselContainer.defaultProps = {
 	addItem() {},
 	deleteItem() {},
 	items: [],
+	error: false,
+	loading: false,
+	retry: () => {},
+	notPointEvents: false,
 };
 
 export default CarrouselContainer;
