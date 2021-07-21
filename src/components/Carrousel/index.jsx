@@ -97,6 +97,7 @@ function CarrouselContainer({
 	return (
 		<Container
 			loading={loading}
+			error={error}
 			notPointEvents={notPointEvents}
 			existImage={selectedFileUrl.length === 0}
 			{...rest}
@@ -108,7 +109,7 @@ function CarrouselContainer({
 						{selectedFileUrl.length === 0 ? (
 							<p>Selecione até 10 imagens</p>
 						) : (
-							<AiOutlinePlus size={32} color="#76A9EC" />
+							<AiOutlinePlus size={32} color={error ? '#fe6969' : '#76A9EC'} />
 						)}
 					</div>
 				</div>

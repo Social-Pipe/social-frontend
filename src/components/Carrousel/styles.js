@@ -88,6 +88,12 @@ export default styled.div`
 			border: 2px dashed ${({ active }) => (active ? '#23B123' : '#76a9ec')};
 			border-radius: 100%;
 
+			${({ error }) =>
+				error &&
+				css`
+					border-color: #fe6969;
+				`}
+
 			p {
 				color: ${({ active }) => (active ? '#23B123' : '#76a9ec')};
 				font-weight: 500;
