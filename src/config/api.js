@@ -29,7 +29,8 @@ api.interceptors.response.use(
 			token?.acessToken &&
 			(error?.response?.status === 403 || error?.response?.status === 401) &&
 			!originalRequest._retry &&
-			originalRequest.url !== 'token/refresh/'
+			originalRequest.url !== 'token/refresh/' &&
+			error?.response.status !== 500
 		) {
 			originalRequest._retry = true;
 

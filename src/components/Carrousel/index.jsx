@@ -2,12 +2,25 @@ import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
+import {
+	AiOutlinePlus,
+	AiOutlineClose,
+	AiOutlineLoading,
+} from 'react-icons/ai';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import Container, { ImageContainer } from './styles';
 
-function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
+function CarrouselContainer({
+	addItem,
+	items,
+	deleteItem,
+	loading,
+	error,
+	retry,
+	notPointEvents,
+	...rest
+}) {
 	const [selectedFileUrl, setSelectedFileUrl] = useState([]);
 	const [selectedFile, setSelectedFile] = useState([]);
 	const [slidesShow, setSlidesShow] = useState(4);
@@ -31,11 +44,13 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 			return newFilesArray;
 		});
 		const filesUrl = acceptedFiles.slice(0, 10 - selectedFileUrl.length);
-		const newFilesArray = [...selectedFileUrl, ...filesUrl];
 
-		setSelectedFile(newFilesArray);
-		addItem(newFilesArray);
+		setSelectedFile(props => [...props, ...filesUrl]);
 	}, []);
+
+	useEffect(() => {
+		addItem(selectedFile);
+	}, [selectedFile]);
 
 	const resizeCarrousel = useCallback(() => {
 		if (!carrouselRef?.current?.frame?.clientWidth) {
@@ -63,7 +78,7 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	}, [resizeCarrousel]);
 
 	useEffect(() => {
-		if (items[0]) {
+		if (items && items[0]) {
 			const itemUrls = items.map(item => {
 				if (typeof item === 'string') {
 					return item;
@@ -80,7 +95,13 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 	});
 
 	return (
-		<Container existImage={selectedFileUrl.length === 0} {...rest}>
+		<Container
+			loading={loading}
+			error={error}
+			notPointEvents={notPointEvents}
+			existImage={selectedFileUrl.length === 0}
+			{...rest}
+		>
 			{selectedFileUrl.length < 10 && (
 				<div className="add_image" {...getRootProps()}>
 					<input {...getInputProps()} />
@@ -88,7 +109,7 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 						{selectedFileUrl.length === 0 ? (
 							<p>Selecione até 10 imagens</p>
 						) : (
-							<AiOutlinePlus size={32} color="#76A9EC" />
+							<AiOutlinePlus size={32} color={error ? '#fe6969' : '#76A9EC'} />
 						)}
 					</div>
 				</div>
@@ -142,15 +163,28 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 								<button
 									type="button"
 									onClick={() => {
-										const newFilesUrl = [...selectedFileUrl];
-										const newFiles = [...selectedFile];
-										const fileDeleted = newFiles[index];
-										const fileDeletedUrl = newFilesUrl[index];
-										newFiles.splice(index, 1);
-										newFilesUrl.splice(index, 1);
-										setSelectedFile(newFiles);
+										const filesUrl = [...selectedFileUrl].splice(
+											0,
+											selectedFileUrl.length - selectedFile.length
+										);
+
+										const newFilesUrl = selectedFileUrl.filter(
+											(_, indexUrl) => indexUrl !== index
+										);
+										const filesAll = [...filesUrl, ...selectedFile];
 										setSelectedFileUrl(newFilesUrl);
-										deleteItem(fileDeleted, index, fileDeletedUrl);
+										if (typeof filesAll[index] !== 'string') {
+											const filesRest = selectedFile.filter(
+												(_, indexValue) =>
+													indexValue !== index - filesUrl.length
+											);
+											setSelectedFile(filesRest);
+										}
+										deleteItem(
+											selectedFile[index - filesUrl.length],
+											index,
+											filesAll[index]
+										);
 									}}
 								>
 									<img src={file} alt="imagem" />
@@ -164,6 +198,16 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 							</ImageContainer>
 						))}
 					</Carrousel>
+					{loading && (
+						<span>
+							<AiOutlineLoading size={24} color="#000" />
+						</span>
+					)}
+					{error && (
+						<button type="button" onClick={retry}>
+							Tentar de novo
+						</button>
+					)}
 				</div>
 			)}
 		</Container>
@@ -174,12 +218,20 @@ CarrouselContainer.propTypes = {
 	addItem: PropTypes.func,
 	deleteItem: PropTypes.func,
 	items: PropTypes.array,
+	retry: PropTypes.func,
+	error: PropTypes.bool,
+	loading: PropTypes.bool,
+	notPointEvents: PropTypes.bool,
 };
 
 CarrouselContainer.defaultProps = {
 	addItem() {},
 	deleteItem() {},
 	items: [],
+	error: false,
+	loading: false,
+	retry: () => {},
+	notPointEvents: false,
 };
 
 export default CarrouselContainer;

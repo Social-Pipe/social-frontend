@@ -98,8 +98,16 @@ const ConfigUser = () => {
 					variables
 				);
 				addUser(response.data);
-				handleShowPopUp('sucess', 'Usuário Editadas!');
-			} catch {
+				handleShowPopUp('sucess', 'Dados Atualizados!');
+			} catch (e) {
+				if (!e.response) {
+					handleShowPopUp('error', 'Verifique a sua conexão');
+					return;
+				}
+				if (e.response.status === 500) {
+					handleShowPopUp('error', 'Erro de servidor');
+					return;
+				}
 				handleShowPopUp('error', 'Tente Novamente');
 			} finally {
 				setLoading(false);
@@ -118,12 +126,22 @@ const ConfigUser = () => {
 				return;
 			}
 			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-			formik.setValues({
-				adress: data.logradouro || user.payment[0].address[0].street,
-				bairro: data.bairro || user.payment[0].address[0].neighborhood,
-				city: data.localidade || user.payment[0].address[0].city,
-				sigla: data.uf || user.payment[0].address[0].stateUf,
-			});
+			formik.setFieldValue(
+				'bairro',
+				data.bairro || user.payment[0].address[0].neighborhood
+			);
+			formik.setFieldValue(
+				'adress',
+				data.logradouro || user.payment[0].address[0].street
+			);
+			formik.setFieldValue(
+				'city',
+				data.localidade || user.payment[0].address[0].city
+			);
+			formik.setFieldValue(
+				'sigla',
+				data.uf || user.payment[0].address[0].stateUf
+			);
 		}
 		fetchData();
 	}, [formik.values.cep]);
@@ -133,7 +151,8 @@ const ConfigUser = () => {
 			return;
 		}
 		const uf = states.find(state => state.sigla === formik.values.sigla);
-		if (!uf) {
+
+		if (!uf || uf.nome === formik.values.state) {
 			return;
 		}
 
@@ -145,8 +164,11 @@ const ConfigUser = () => {
 			const { data } = await axios.get(
 				'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
 			);
-			setStates(data);
-			if (data[0] && !formik.values.state && !user.payment?.address?.stateUf) {
+			if (
+				data[0] &&
+				!formik.values.state &&
+				!user.payment[0]?.address[0]?.stateUf
+			) {
 				formik.setFieldValue('state', data[0].nome);
 				formik.setFieldValue('sigla', data[0].sigla);
 			}
@@ -166,7 +188,8 @@ const ConfigUser = () => {
 				cep = newValue;
 			});
 
-			formik.setValues({
+			await formik.setValues({
+				...formik.values,
 				adress: user.payment[0].address[0].street,
 				bairro: user.payment[0].address[0].neighborhood,
 				cep,
@@ -178,6 +201,7 @@ const ConfigUser = () => {
 				phone,
 				sigla: user.payment[0].address[0].stateUf,
 			});
+			setStates(data);
 		}
 
 		getStates();
@@ -228,21 +252,17 @@ const ConfigUser = () => {
 		}
 		fetchData();
 	}, []);
-	useEffect(() => {
-		if (!formik.values.sigla) {
-			return;
-		}
-		const uf = states.find(state => state.sigla === formik.values.sigla);
-		if (!uf) {
-			return;
-		}
+	// useEffect(() => {
+	// 	if (!formik.values.sigla) {
+	// 		return;
+	// 	}
+	// 	const uf = states.find(state => state.sigla === formik.values.sigla);
+	// 	if (!uf) {
+	// 		return;
+	// 	}
 
-		formik.setFieldValue('state', uf.nome);
-	}, [formik.values.sigla]);
-
-	useEffect(() => {
-		formik.setFieldValue('state', 'rio de janeiro');
-	}, []);
+	// 	formik.setFieldValue('state', uf.nome);
+	// }, [formik.values.sigla, states]);
 
 	return (
 		<Container>
