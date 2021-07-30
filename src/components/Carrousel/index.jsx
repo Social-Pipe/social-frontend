@@ -30,17 +30,11 @@ function CarrouselContainer({ addItem, items, deleteItem, ...rest }) {
 			}
 			return newFilesArray;
 		});
+		const filesUrl = acceptedFiles.slice(0, 10 - selectedFileUrl.length);
+		const newFilesArray = [...selectedFileUrl, ...filesUrl];
 
-		setSelectedFile(props => {
-			const filesUrl = acceptedFiles.slice(0, 10 - props.length);
-			const newFilesArray = [...props, ...filesUrl];
-			if (newFilesArray.length > 10) {
-				return props;
-			}
-
-			addItem(newFilesArray);
-			return newFilesArray;
-		});
+		setSelectedFile(newFilesArray);
+		addItem(newFilesArray);
 	}, []);
 
 	const resizeCarrousel = useCallback(() => {

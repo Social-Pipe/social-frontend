@@ -32,6 +32,7 @@ const Row = ({
 			{type === 'GALLERY' && (
 				<Carrousel
 					autoplay
+					withoutControls
 					defaultControlsConfig={{
 						nextButtonStyle: { display: 'none' },
 						prevButtonStyle: { display: 'none' },

@@ -1,6 +1,7 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
 import pagarme from 'pagarme';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
 import InfoClient from './InfoClient';
 import InfosForm from './InfosForm';
@@ -47,6 +48,7 @@ const Register = () => {
 
 	const formik = useFormik({
 		initialValues,
+		validateOnBlur: true,
 		validationSchema: registerSchema,
 		onSubmit: async values => {
 			if (loading) {
@@ -121,18 +123,45 @@ const Register = () => {
 		},
 	});
 
+	useEffect(() => {
+		if (!formik.values.cep) {
+			return;
+		}
+		async function fetchData() {
+			const cep = formik.values.cep.match(/\d+/g).join('');
+			if (cep.length < 8) {
+				return;
+			}
+			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+			if (data?.erro) {
+				return;
+			}
+			formik.setValues({
+				...formik.values,
+				adress: data.logradouro,
+				district: data.bairro,
+				city: data.localidade,
+				sigla: data.uf,
+			});
+		}
+		fetchData();
+	}, [formik.values.cep]);
+
 	async function verifyValues(ArrayFieldsNames, pageValue) {
 		let notTouched = false;
 
-		if (!formik.values.checkbox) {
-			return;
-		}
-
 		ArrayFieldsNames.forEach(field => {
-			if (!formik.touched[field] && formik.errors[field]) {
+			formik.setFieldTouched(field, true);
+			if (
+				(!formik.touched[field] && !formik.values[field]) ||
+				formik.errors[field]
+			) {
 				notTouched = true;
 			}
 		});
+		if (!formik.values.checkbox) {
+			return;
+		}
 
 		if (!notTouched) {
 			setPage(pageValue);
@@ -192,7 +221,7 @@ const Register = () => {
 										'password',
 										'companyName',
 										'passwordAccess',
-										'file',
+										'logo',
 									],
 									2
 								);

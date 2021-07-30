@@ -210,6 +210,11 @@ export const FormContainer = styled.div`
 			font-size: 1rem;
 			font-weight: 600;
 		}
+		span {
+			font-size: 0.75rem;
+			color: #fe6969;
+			margin-top: 0.5rem;
+		}
 
 		input,
 		.card {
@@ -224,6 +229,10 @@ export const FormContainer = styled.div`
 			color: #5d5d5d;
 			font-weight: 500;
 			box-shadow: 0px 15px 40px rgba(183, 183, 183, 0.1);
+
+			&.error {
+				border: 1px solid #fe6969;
+			}
 		}
 		> input {
 			padding-left: 1.5rem;
@@ -252,6 +261,13 @@ export const FormContainer = styled.div`
 		&.checkbox {
 			flex-direction: row;
 			align-items: center;
+
+			a {
+				color: #5d5d5d;
+				font-size: 1rem;
+				font-weight: 700;
+				text-decoration: none;
+			}
 			input[type='radio'] {
 				max-width: 1rem;
 				max-height: 1rem;
@@ -271,6 +287,7 @@ export const FormContainer = styled.div`
 				display: block;
 				pointer-events: none;
 				z-index: 2;
+				margin: 0;
 				background: #fff;
 
 				::before {

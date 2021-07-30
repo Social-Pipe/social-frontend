@@ -110,6 +110,10 @@ export default styled.div`
 					font-size: 1rem;
 					margin: 0;
 				}
+
+				&.error {
+					border: 1px solid #fe6969;
+				}
 			}
 			select {
 				cursor: pointer;

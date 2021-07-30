@@ -10,7 +10,7 @@ const success = () => (
 		<h1>Sucesso!</h1>
 		<p>
 			Seu cadastro foi finalizado e seu pagamento foi aprovado com sucesso. A
-			partir de agora você tem acesso ao Social Pipe! Seja bem-vindo(a),
+			partir de agora você tem acesso ao Post Baker! Seja bem-vindo(a),
 			aproveite!
 		</p>
 		<ContainerButtons className="container_buttons">

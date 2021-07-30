@@ -43,14 +43,13 @@ const ForgetPassword = ({ onPressButtonAfter }) => {
 		<Container>
 			<h1>Esqueci minha senha</h1>
 			<p>
-				Preencha o campo abaixo com o seu email cadastrado aqui na Social Pipe
+				Preencha o campo abaixo com o seu email cadastrado aqui no Post Baker
 				para recuperar a sua senha.
 			</p>
 			<form onSubmit={formik.handleSubmit}>
 				<fieldset>
 					<label htmlFor="email">Email</label>
 					<input
-						placeholder="usuário@teste.com"
 						type="text"
 						id="email"
 						name="email"

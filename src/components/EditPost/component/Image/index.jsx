@@ -11,7 +11,6 @@ function Image({ handleChange, value, type, ...rest }) {
 	});
 	const onDrop = useCallback(acceptedFiles => {
 		const file = acceptedFiles[0];
-		console.log(selectedFileUrl);
 
 		if (!file) {
 			return;
@@ -79,8 +78,12 @@ function Image({ handleChange, value, type, ...rest }) {
 
 Image.propTypes = {
 	handleChange: PropTypes.func.isRequired,
-	value: PropTypes.string.isRequired,
+	value: PropTypes.string,
 	type: PropTypes.string.isRequired,
+};
+
+Image.defaultProps = {
+	value: '',
 };
 
 export default Image;

@@ -10,14 +10,16 @@ const InfosForm = ({ onPressButton, formik }) => (
 	<Container>
 		<h1>Insira as informações para o seu cadastro</h1>
 		<p>
-			Preencha o campo abaixo com o seu email cadastrado aqui na Social Pipe
-			para recuperar a sua senha.
+			Preencha o campo abaixo com o seu email cadastrado aqui no Post Baker para
+			recuperar a sua senha.
 		</p>
 		<FormContainer>
 			<fieldset>
 				<label htmlFor="name">Nome</label>
 				<input
-					placeholder="Usuário Teste"
+					className={
+						!!formik.errors?.name && formik.touched.name ? 'error' : ''
+					}
 					type="text"
 					id="name"
 					name="name"
@@ -26,11 +28,16 @@ const InfosForm = ({ onPressButton, formik }) => (
 					value={formik.values.name}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.name && formik.touched.name && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="email">Email</label>
 				<input
-					placeholder="usuário@teste.com"
+					className={
+						!!formik.errors?.email && formik.touched.email ? 'error' : ''
+					}
 					type="email"
 					id="email"
 					name="email"
@@ -38,12 +45,17 @@ const InfosForm = ({ onPressButton, formik }) => (
 					value={formik.values.email}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.email && formik.touched.email && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="phone">Celular</label>
 				<input
+					className={
+						!!formik.errors?.phone && formik.touched.phone ? 'error' : ''
+					}
 					type="tel"
-					placeholder="(21) 00000-0000"
 					id="phone"
 					name="phone"
 					autoComplete="tel-national"
@@ -55,10 +67,16 @@ const InfosForm = ({ onPressButton, formik }) => (
 						)
 					}
 				/>
+				{!!formik.errors?.phone && formik.touched.phone && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset>
 				<label htmlFor="password">Senha</label>
 				<input
+					className={
+						!!formik.errors?.password && formik.touched.password ? 'error' : ''
+					}
 					type="password"
 					id="password"
 					placeholder="**********"
@@ -68,6 +86,9 @@ const InfosForm = ({ onPressButton, formik }) => (
 					value={formik.values.password}
 					onChange={formik.handleChange}
 				/>
+				{!!formik.errors?.password && formik.touched.password && (
+					<span>Campo Obrigatório</span>
+				)}
 			</fieldset>
 			<fieldset className="checkbox">
 				<input
@@ -79,7 +100,10 @@ const InfosForm = ({ onPressButton, formik }) => (
 				/>
 				<span />
 				<label>
-					Ao se cadastrar, declaro ter lido e aceito os termos de uso
+					Ao se cadastrar, declaro ter lido e aceito os{' '}
+					<a href="https://postbaker.com.br/politica-privacidade">
+						termos de uso
+					</a>
 				</label>
 			</fieldset>
 			<ContainerButtons className="container_buttons">

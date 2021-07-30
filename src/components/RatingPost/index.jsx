@@ -14,13 +14,7 @@ import api from '../../config/api';
 import { Context } from '../../services/context';
 import Comment from '../Comment';
 
-const RatingPost = ({
-	closeModal,
-	values = { comments: [] },
-	user,
-	clientToken,
-	updatePosts,
-}) => {
+const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 	const [comment, setComment] = useState('');
 	const { handleShowPopUp } = useContext(Context);
 	const [post, setPost] = useState({});
@@ -224,15 +218,16 @@ const RatingPost = ({
 RatingPost.propTypes = {
 	closeModal: PropTypes.func.isRequired,
 	values: PropTypes.object,
-	user: PropTypes.object.isRequired,
-	clientToken: PropTypes.object.isRequired,
-	updatePosts: PropTypes.object.isRequired,
+	user: PropTypes.bool,
+	clientToken: PropTypes.string.isRequired,
+	updatePosts: PropTypes.func.isRequired,
 };
 
 RatingPost.defaultProps = {
 	values: {
 		comments: [],
 	},
+	user: false,
 };
 
 export default RatingPost;

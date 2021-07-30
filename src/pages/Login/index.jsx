@@ -41,7 +41,10 @@ const Login = () => {
 				);
 				history.replace('/dashboard');
 			} catch (e) {
-				handleShowPopUp('error', 'Erro no login');
+				handleShowPopUp(
+					'error',
+					'Usuário ou senha estão incorretos. Caso tenha esquecido acesse "Esqueci minha senha"'
+				);
 			} finally {
 				setLoading(false);
 			}
@@ -50,9 +53,7 @@ const Login = () => {
 
 	return (
 		<Container>
-			<div className="container_register">
-				<Link to="/login/cadastrar">PÁGINA DE CADASTRO</Link>
-			</div>
+			<div className="container_register" />
 			<div className="content">
 				<div className="container_form">
 					<h1>Faça o login na sua conta</h1>
@@ -60,7 +61,6 @@ const Login = () => {
 						<fieldset>
 							<label htmlFor="email">Email</label>
 							<input
-								placeholder="usuário@teste.coms"
 								type="email"
 								id="email"
 								name="email"
@@ -71,7 +71,6 @@ const Login = () => {
 						<fieldset>
 							<label htmlFor="password">Senha</label>
 							<input
-								placeholder="***********"
 								type="password"
 								id="password"
 								autoComplete="current-password"
