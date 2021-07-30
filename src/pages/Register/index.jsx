@@ -54,8 +54,10 @@ const Register = () => {
 			if (loading) {
 				return;
 			}
+			setLoading(true);
+			let cardId = '';
+
 			try {
-				setLoading(true);
 				const cardValues = {
 					card_number: values.cardNumber.match(/\d+/g).join(''),
 					card_holder_name: values.cardName,
@@ -65,8 +67,13 @@ const Register = () => {
 				const client = await pagarme.client.connect({
 					api_key: process.env.REACT_APP_KEY_PAGARME,
 				});
-				const cardId = await client.cards.create(cardValues);
-
+				cardId = await client.cards.create(cardValues);
+			} catch {
+				handleShowPopUp('error', 'Verifique os dados do cartão');
+				setLoading(false);
+				return;
+			}
+			try {
 				const request = {
 					email: values.email,
 					password: values.password,
@@ -95,6 +102,13 @@ const Register = () => {
 				}
 
 				await api.post('users/', request);
+			} catch {
+				handleShowPopUp('error', 'Erro no cadastro');
+				setLoading(false);
+				return;
+			}
+
+			try {
 				const responseLogin = await api.post('token/', {
 					email: values.email,
 					password: values.password,
@@ -114,10 +128,10 @@ const Register = () => {
 				formClient.append('facebook', values.facebook);
 				formClient.append('linkedin', values.linkedin);
 				await api.post('clients/', formClient);
+				setLoading(false);
 				setPage(3);
 			} catch {
-				handleShowPopUp('error', 'Erro no cadastro');
-			} finally {
+				handleShowPopUp('error', 'Erro em adicionar o cliente');
 				setLoading(false);
 			}
 		},
