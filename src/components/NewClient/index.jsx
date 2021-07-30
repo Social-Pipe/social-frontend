@@ -199,7 +199,7 @@ const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 				{!editClient.edit && (
 					<footer>
 						<p>
-							Será adicionado o valor de <strong>R$ 9,90</strong> na sua
+							Será adicionado o valor de <strong>R$ 6,90</strong> na sua
 							assinatura atual. Deseja prosseguir?
 						</p>
 						<Button
