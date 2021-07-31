@@ -9,6 +9,7 @@ export default styled.div`
 	max-width: 73.37rem;
 	position: relative;
 	max-height: 57.69rem;
+	justify-content: center;
 
 	.slider-list,
 	.slider-list .slider-slide {
@@ -27,6 +28,7 @@ export default styled.div`
 		flex: 1;
 		overflow: hidden;
 		background-color: #fff;
+		max-height: 43rem;
 	}
 
 	.content_text {
