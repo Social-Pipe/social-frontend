@@ -68,7 +68,7 @@ const Register = () => {
 					api_key: process.env.REACT_APP_KEY_PAGARME,
 				});
 				cardId = await client.cards.create(cardValues);
-			} catch {
+			} catch (e) {
 				handleShowPopUp('error', 'Verifique os dados do cartão');
 				setLoading(false);
 				return;
@@ -102,8 +102,8 @@ const Register = () => {
 				}
 
 				await api.post('users/', request);
-			} catch {
-				handleShowPopUp('error', 'Erro no cadastro');
+			} catch (e) {
+				handleShowPopUp('error', `Erro no cadastro:${e.response.data.detail}`);
 				setLoading(false);
 				return;
 			}
@@ -130,7 +130,7 @@ const Register = () => {
 				await api.post('clients/', formClient);
 				setLoading(false);
 				setPage(3);
-			} catch {
+			} catch (e) {
 				handleShowPopUp('error', 'Erro em adicionar o cliente');
 				setLoading(false);
 			}

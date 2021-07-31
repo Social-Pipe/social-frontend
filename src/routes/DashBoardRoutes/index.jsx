@@ -103,6 +103,7 @@ const DashBoardRoutes = () => {
 										}}
 										erroClient={() => {
 											handleShowModalPayment(true);
+											handleShowModal(props => ({ ...props, show: false }));
 										}}
 										saveClient={() => {
 											fetchMoreClients();
