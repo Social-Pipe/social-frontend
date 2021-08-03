@@ -131,7 +131,10 @@ const Register = () => {
 				setLoading(false);
 				setPage(3);
 			} catch (e) {
-				handleShowPopUp('error', 'Erro em adicionar o cliente');
+				handleShowPopUp(
+					'error',
+					`Erro em adicionar o cliente:${e?.response?.data?.detail}`
+				);
 				setLoading(false);
 			}
 		},
