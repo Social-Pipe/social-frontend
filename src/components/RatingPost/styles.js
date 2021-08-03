@@ -5,41 +5,35 @@ export default styled.div`
 	flex-direction: column;
 	width: 100%;
 	position: relative;
-
+	height: 100%;
 	max-width: 73.37rem;
 	position: relative;
+	max-height: 57.69rem;
+	justify-content: center;
 
 	.slider-list,
 	.slider-list .slider-slide {
 		height: 100% !important;
 	}
+	.slider {
+		button {
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+	}
 	.rating {
 		display: flex;
-		max-height: 43.5rem;
 		width: 100%;
-		overflow: auto;
+		flex: 1;
+		overflow: hidden;
 		background-color: #fff;
-
-		> div {
-			flex: 1;
-			overflow: auto;
-			display: flex;
-			flex-direction: column;
-			padding: 2.5rem 3rem;
-
-			&.image {
-				min-height: 20rem;
-				flex: 3;
-				padding: 0;
-				overflow: hidden;
-			}
-		}
+		max-height: 43rem;
 	}
 
 	.content_text {
 		color: #fff;
 		font-size: 1.12rem;
-		flex: 1;
 		font-weight: 600;
 		margin-top: 1.5rem;
 		word-break: break-all;
@@ -158,14 +152,11 @@ export default styled.div`
 		margin: 2rem;
 		margin-top: 3rem;
 		height: 90vh;
-		.image {
-			flex: 2;
-			max-height: 15rem;
-		}
 
 		.rating {
 			flex-direction: column;
-			> {
+			> div {
+				flex: 1;
 				padding: 1rem;
 			}
 		}
@@ -181,5 +172,83 @@ export default styled.div`
 				margin-bottom: 1rem;
 			}
 		}
+	}
+`;
+
+export const ImageContainer = styled.div.attrs(({ width, height }) => {
+	if (window.innerWidth <= 900) {
+		return {
+			style: {
+				width: `${width}px`,
+				minHeight: `${width * 0.3}px`,
+				maxWidth: `${width}px`,
+				maxHeight: `${width * 0.5}px`,
+			},
+		};
+	}
+	if (window.innerHeight > window.innerWidth) {
+		return {
+			style: {
+				width: `${height * 0.5}px`,
+				minHeight: `${height}px`,
+				maxWidth: `${height * 0.5}px`,
+				maxHeight: `${height}px`,
+			},
+		};
+	}
+
+	return {
+		style: {
+			width: `${height}px`,
+			minHeight: `${height}px`,
+			maxWidth: `${height}px`,
+			maxHeight: `${height}px`,
+		},
+	};
+})`
+	padding: 0 !important;
+	flex: 1;
+	img,
+	video {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	/* @media (max-width: 900px) {
+		min-width: ${({ width }) => `${width}px`};
+		min-height: ${({ width }) => `${width}px`};
+	} */
+`;
+
+export const Content = styled.div.attrs(({ width }) => {
+	if (window.innerWidth <= 900) {
+		return {
+			style: {
+				width: '100%',
+			},
+		};
+	}
+
+	return {
+		style: {
+			minWidth: `${width}px`,
+		},
+	};
+})`
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	padding: 2.5rem 3rem;
+
+	&.image {
+		min-height: 20rem;
+		flex: 3;
+		padding: 0;
+		overflow: hidden;
+	}
+	@media (max-width: 900px) {
+		flex: 1;
+		padding: 1rem;
 	}
 `;

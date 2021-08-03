@@ -40,10 +40,16 @@ const DeleteItem = ({ handleDeleteItem, handleNotDeleteItem, item }) => {
 							}
 
 							if (e.response.status === 500) {
-								handleShowPopUp('error', 'Erro de servidor');
+								handleShowPopUp(
+									'error',
+									`Erro de servidor ${e?.response?.data?.detail}`
+								);
 								return;
 							}
-							handleShowPopUp('error', 'Tente Novamente');
+							handleShowPopUp(
+								'error',
+								`Tente Novamente ${e?.response?.data?.detail}`
+							);
 						}
 					}}
 				>

@@ -1,17 +1,54 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+
+const rotate = keyframes`
+	from{
+		transform:rotateZ(0)
+	}
+	to{
+		transform:rotateZ(360deg)
+	}
+`;
 
 export default styled.div`
 	flex: 3 !important;
 	height: 3rem !important;
 	cursor: pointer;
+	position: relative;
 
 	img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 	}
+	span,
+	button {
+		transform: translateY(-50%);
+		align-self: flex-end;
+		position: absolute;
 
-	div {
+		top: 50%;
+		display: block;
+		right: 1rem;
+	}
+
+	button {
+		cursor: pointer;
+		color: #fe6969;
+		bottom: -1.5rem;
+		background: none;
+		transform: none;
+		height: fit-content;
+		top: auto;
+		z-index: 2;
+		border: none;
+		font-weight: bold;
+
+		:hover {
+			opacity: 0.9;
+		}
+	}
+
+	> div > div {
 		background: rgba(118, 169, 236, 0.15);
 		width: 100%;
 		display: flex;
@@ -20,6 +57,9 @@ export default styled.div`
 		height: 3rem;
 		border: 2px dashed ${({ active }) => (active ? '#23B123' : '#76a9ec')};
 		border-radius: 0.5rem;
+		span svg {
+			animation: ${rotate} 2s infinite;
+		}
 		img,
 		video {
 			width: 2rem;
@@ -38,5 +78,14 @@ export default styled.div`
 			-webkit-line-clamp: 1;
 			-webkit-box-orient: vertical;
 		}
+		${({ error }) =>
+			error &&
+			css`
+				border-color: #fe6969;
+
+				p {
+					color: #fe6969 !important;
+				}
+			`}
 	}
 `;
