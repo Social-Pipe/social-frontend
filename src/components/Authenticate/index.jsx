@@ -24,9 +24,24 @@ const Authenticate = ({ handleButton, hash }) => {
 			});
 			setLoading(false);
 			handleButton(response.data);
-		} catch {
+		} catch (e) {
 			setLoading(false);
-			handleShowPopUp('error', 'Erro, Tente Novamente');
+			if (!e.response) {
+				handleShowPopUp('error', 'Erro de Conexão');
+				return;
+			}
+
+			if (e.response.status >= 500) {
+				handleShowPopUp(
+					'error',
+					`Erro de Servidor:${e?.response?.data?.detail}`
+				);
+				return;
+			}
+			handleShowPopUp(
+				'error',
+				`Erro, Tente Novamente: ${e?.response?.data?.detail}`
+			);
 		}
 	}
 

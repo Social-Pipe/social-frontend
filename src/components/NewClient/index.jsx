@@ -52,13 +52,16 @@ const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 				resetForm();
 				saveClient();
 			} catch (e) {
-				if (!e.status) {
+				erroClient(e);
+				if (!e.response) {
 					handleShowPopUp('error', 'Erro de Conexão');
 					setLoading(false);
 					return;
 				}
-				erroClient(e);
-				handleShowPopUp('error', 'Erro ao cadastrar cliente');
+				handleShowPopUp(
+					'error',
+					`Erro ao cadastrar cliente:${e?.response?.data?.detail}`
+				);
 			}
 			setLoading(false);
 		},
