@@ -56,6 +56,15 @@ const Register = () => {
 			}
 			setLoading(true);
 			let cardId = '';
+			let apiKey = '';
+			try {
+				const response = await api.get('pagarme/api_key/');
+				apiKey = response.data.apiKey;
+			} catch {
+				handleShowPopUp('error', 'erro, tente novamente');
+				setLoading(false);
+				return;
+			}
 
 			try {
 				const cardValues = {
@@ -65,7 +74,7 @@ const Register = () => {
 					card_cvv: values.cardCode,
 				};
 				const client = await pagarme.client.connect({
-					api_key: process.env.REACT_APP_KEY_PAGARME,
+					api_key: apiKey,
 				});
 				cardId = await client.cards.create(cardValues);
 			} catch (e) {
