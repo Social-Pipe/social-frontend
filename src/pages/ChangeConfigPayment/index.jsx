@@ -36,9 +36,18 @@ const ChangeConfigPayment = () => {
 				card_expiration_date: values.vality.match(/\d+/g).join(''),
 				card_cvv: values.codeCard,
 			};
+			let apiKey = '';
+			try {
+				const response = await api.get('pagarme/api_key/');
+				apiKey = response.data.apiKey;
+			} catch {
+				handleShowPopUp('error', 'erro, tente novamente');
+				setLoading(false);
+				return;
+			}
 			try {
 				const client = await pagarme.client.connect({
-					api_key: process.env.REACT_APP_KEY_PAGARME,
+					api_key: apiKey,
 				});
 				const cardId = await client.cards.create(cardValues);
 
