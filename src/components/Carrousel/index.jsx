@@ -1,6 +1,12 @@
 import Carrousel from 'nuka-carousel';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+	useContext,
+} from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
 	AiOutlinePlus,
@@ -10,6 +16,8 @@ import {
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import Container, { ImageContainer } from './styles';
+
+import { Context } from '../../services/context';
 
 function CarrouselContainer({
 	addItem,
@@ -26,6 +34,7 @@ function CarrouselContainer({
 	const [slidesShow, setSlidesShow] = useState(4);
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const carrouselRef = useRef(null);
+	const { handleShowPopUp } = useContext(Context);
 	const onDrop = useCallback(acceptedFiles => {
 		const file = acceptedFiles[0];
 
@@ -89,10 +98,24 @@ function CarrouselContainer({
 		}
 	}, [items]);
 
-	const { getRootProps, getInputProps } = useDropzone({
+	const { getRootProps, getInputProps, fileRejections } = useDropzone({
 		onDrop,
 		accept: 'image/*',
+		maxSize: 1024 * 1024 * 2.5,
 	});
+
+	useEffect(() => {
+		if (fileRejections.length > 0) {
+			fileRejections[0].errors.forEach(fileError => {
+				if (fileError.code === 'file-too-large') {
+					handleShowPopUp(
+						'error',
+						'Tamanho máximo permitido de upload: 2,5mb, favor compactar a imagem antes de realizar o upload'
+					);
+				}
+			});
+		}
+	}, [fileRejections]);
 
 	return (
 		<Container

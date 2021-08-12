@@ -59,7 +59,6 @@ const ChangeConfigPayment = () => {
 				}
 
 				const content = jwtDecode(tokenStorage?.acessToken);
-				console.log(user);
 				await api.patch(`users/${content.user_id}/`, {
 					...user,
 					payment: [

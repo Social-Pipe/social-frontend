@@ -167,6 +167,10 @@ export default styled.div`
 							color: #5d5d5d;
 							font-weight: 500;
 							box-shadow: 0px 15px 40px rgba(183, 183, 183, 0.1);
+
+							&.error {
+								border: 1px solid #fe6969;
+							}
 						}
 					}
 				}

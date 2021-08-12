@@ -27,6 +27,7 @@ const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 	const { handleShowPopUp, showModal } = useContext(Context);
 	const formik = useFormik({
 		initialValues,
+		validateOnBlur: true,
 		onSubmit: async (values, { resetForm }) => {
 			if (values.logo === null && !editClient?.client?.logo) {
 				return;
@@ -147,6 +148,10 @@ const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 								type="text"
 								id="name"
 								name="name"
+								onBlur={formik.handleBlur}
+								className={
+									!!formik.errors?.name && formik.touched.name ? 'error' : ''
+								}
 								onChange={formik.handleChange}
 								value={formik.values.name}
 							/>
@@ -154,9 +159,15 @@ const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 						<fieldset>
 							<label htmlFor="password">Senha de acesso do cliente</label>
 							<input
+								onBlur={formik.handleBlur}
 								type="password"
 								id="password"
 								name="password"
+								className={
+									!!formik.errors?.password && formik.touched.password
+										? 'error'
+										: ''
+								}
 								autoComplete="new-password"
 								onChange={formik.handleChange}
 								value={formik.values.password}
