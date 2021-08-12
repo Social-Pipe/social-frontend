@@ -87,6 +87,13 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 					caption: values.description,
 					type,
 				});
+				if (values.logo[0]?.file) {
+					setLoading(false);
+					setStateFile(() => ({ error: false, loading: false }));
+
+					handleShowPopUp('sucess', 'Post Criado');
+					return;
+				}
 				// eslint-disable-next-line no-use-before-define
 				fileUploaded();
 			} catch (e) {
@@ -97,67 +104,76 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 		validationSchema: newPostSchema,
 	});
 
+	const deleteFiles = async () => {
+		let imagesDeleteIdFiles = [...imagesDeleteId];
+		let newimagesDeleteIdFiles = [...imagesDeleteId];
+		try {
+			let deletePosts = [];
+			if (
+				formik.values.typeFile === 'Carrousel' &&
+				imagesDeleteIdFiles.length > 0
+			) {
+				deletePosts = imagesDeleteIdFiles.map(async (id, index) => {
+					const logoResult = await api.delete(`postfiles/${id}/`);
+					newimagesDeleteIdFiles[index] = '';
+					return logoResult;
+				});
+			}
+			if (
+				(formik.values.typeFile === 'Video' ||
+					formik.values.typeFile === 'Imagem') &&
+				!formik.values.logo[0]?.file
+			) {
+				imagesDeleteIdFiles = [...formik.values.currentLogo];
+				newimagesDeleteIdFiles = [...formik.values.currentLogo];
+				deletePosts = imagesDeleteIdFiles.map(async (file, index) => {
+					const logoResult = await api.delete(`postfiles/${file.id}/`);
+
+					newimagesDeleteIdFiles[index] = '';
+					return logoResult;
+				});
+			}
+			if (deletePosts.length > 0) {
+				const results = await Promise.allSettled(deletePosts);
+				results.forEach((result, index) => {
+					if (result?.reason?.response?.status === 404) {
+						newimagesDeleteIdFiles[index] = '';
+					}
+				});
+				results.forEach(result => {
+					if (result.status === 'rejected') throw new Error();
+				});
+				setImagesDeleteId([]);
+			}
+		} catch (e) {
+			const filesNotDelete = newimagesDeleteIdFiles.filter(file => file !== '');
+			setImagesDeleteId(filesNotDelete);
+			if (
+				(formik.values.typeFile === 'Video' ||
+					formik.values.typeFile === 'Imagem') &&
+				!formik.values.logo[0]?.file
+			) {
+				formik.setFieldValue('currentLogo', filesNotDelete);
+			}
+			if (filesNotDelete.length > 0) {
+				throw new Error(e);
+			}
+		}
+	};
+
 	const fileUploaded = useCallback(() => {
 		async function postFiles() {
 			setStateFile(() => ({ error: false, loading: true }));
-
-			let imagesDeleteIdFiles = [...imagesDeleteId];
-			let newimagesDeleteIdFiles = [...imagesDeleteId];
 			try {
-				let deletePosts = [];
-				if (
-					formik.values.typeFile === 'Carrousel' &&
-					imagesDeleteIdFiles.length > 0
-				) {
-					deletePosts = imagesDeleteIdFiles.map(async (id, index) => {
-						const logoResult = await api.delete(`postfiles/${id}/`);
-						newimagesDeleteIdFiles[index] = '';
-						return logoResult;
-					});
-				}
-				if (
-					(formik.values.typeFile === 'Video' ||
-						formik.values.typeFile === 'Imagem') &&
-					!formik.values.logo[0]?.file
-				) {
-					imagesDeleteIdFiles = [...formik.values.currentLogo];
-					newimagesDeleteIdFiles = [...formik.values.currentLogo];
-					deletePosts = imagesDeleteIdFiles.map(async (file, index) => {
-						const logoResult = await api.delete(`postfiles/${file.id}/`);
-						newimagesDeleteIdFiles[index] = '';
-						return logoResult;
-					});
-				}
-				if (deletePosts.length > 0) {
-					const results = await Promise.allSettled(deletePosts);
-					results.forEach(result => {
-						if (result.status === 'rejected') throw new Error();
-					});
-					setImagesDeleteId([]);
-				}
+				await deleteFiles();
 			} catch {
-				const filesNotDelete = newimagesDeleteIdFiles.filter(
-					file => file !== ''
-				);
-				if (
-					formik.values.typeFile === 'Carrousel' &&
-					imagesDeleteIdFiles.length > 0
-				) {
-					setImagesDeleteId(filesNotDelete);
-				}
-				if (
-					(formik.values.typeFile === 'Video' ||
-						formik.values.typeFile === 'Imagem') &&
-					!formik.values.logo[0]?.file
-				) {
-					formik.setFieldValue('currentLogo', filesNotDelete);
-				}
 				setStateFile(() => ({ error: true, loading: false }));
 
 				setLoading(false);
-				handleShowPopUp('error', 'Arquivos não enviados');
+				handleShowPopUp('error', 'Arquivos não Deletados');
 				return;
 			}
+
 			const filesUpload = [...formik.values.logo];
 			const newFilesUpload = [...formik.values.logo];
 			try {
