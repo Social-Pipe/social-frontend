@@ -28,6 +28,9 @@ const NewClient = ({ saveClient, editClient, handleClose, erroClient }) => {
 	const formik = useFormik({
 		initialValues,
 		onSubmit: async (values, { resetForm }) => {
+			if (values.logo === null && !editClient?.client?.logo) {
+				return;
+			}
 			if (loading) {
 				return;
 			}

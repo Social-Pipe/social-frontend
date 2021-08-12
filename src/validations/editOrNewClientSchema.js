@@ -15,5 +15,12 @@ export default Yup.object().shape({
 	instagram: Yup.boolean().required(),
 	facebook: Yup.boolean().required(),
 	linkedin: Yup.boolean().required(),
-	logo: Yup.mixed(),
+	logo: Yup.mixed().when(
+		('edit',
+		{
+			is: false,
+			then: Yup.mixed().required(),
+			otherwise: Yup.mixed(),
+		})
+	),
 });
