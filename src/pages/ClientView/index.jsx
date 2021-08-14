@@ -212,7 +212,7 @@ const ClientView = () => {
 								}}
 							>
 								{postMap.type === 'VIDEO' && (
-									<video autoPlay>
+									<video autoPlay controls>
 										<source
 											src={
 												postMap && postMap?.files[0] && postMap?.files[0]?.file

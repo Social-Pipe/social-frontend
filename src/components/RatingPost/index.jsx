@@ -174,7 +174,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 					width={sizeOfcarrousel.width}
 				>
 					{post?.type === 'VIDEO' && (
-						<video autoPlay>
+						<video autoPlay controls>
 							<source
 								src={post?.files && post?.files[0] && post?.files[0].file}
 							/>

@@ -67,7 +67,7 @@ function Image({ handleChange, value, type, loading, error, retry, ...rest }) {
 						(type === 'Imagem' ? (
 							<img src={selectedFileUrl.file} alt="imagem" />
 						) : (
-							<video autoPlay>
+							<video autoPlay controls>
 								<source src={selectedFileUrl.file} />
 							</video>
 						))}

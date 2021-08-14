@@ -22,7 +22,7 @@ const Row = ({
 	<Container hdResponsive={hdResponsive}>
 		<button type="button" onClick={openPost}>
 			{type === 'VIDEO' && (
-				<video autoPlay>
+				<video autoPlay controls>
 					<source src={image && image[0] && image[0].file} />
 				</video>
 			)}
