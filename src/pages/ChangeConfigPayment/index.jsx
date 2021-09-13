@@ -152,6 +152,7 @@ const ChangeConfigPayment = () => {
 									onChange={e => {
 										const valueNumber = e.target.value.match(/\d+/g)?.join('');
 										if (!valueNumber || valueNumber?.length > 3) {
+											formik.setFieldValue('codeCard', '');
 											return;
 										}
 										formik.setFieldValue('codeCard', valueNumber);

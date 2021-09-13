@@ -23,8 +23,8 @@ export default Yup.object().shape({
 	companyName: Yup.string().required(),
 	cardNumber: Yup.string()
 		.matches(/\d{4}\s\d{4}\s\d{4}\s\d{4}/g)
-		.required()
-		.test('is-card', 'cartão não é válido', value => validateNumber(value)),
+		.test('is-card', 'cartão não é válido', value => validateNumber(value))
+		.required(),
 	cardCode: Yup.string().max(3).min(3).required(),
 	cpf: Yup.string()
 		.matches(/^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})/g)
