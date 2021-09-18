@@ -93,7 +93,7 @@ const DashBoardRoutes = () => {
 										}}
 										erroClient={e => {
 											if (e.response?.status === 500) {
-												history.replace(`${route.path}/erro-pagarme`);
+												history.push(`${route.path}/erro-pagarme`);
 											}
 											handleShowModal(props => ({ ...props, show: false }));
 										}}
