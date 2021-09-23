@@ -12,6 +12,7 @@ import Container, { FieldSet, Info, Form, Payment } from './styles';
 
 import Button from '../../components/Button';
 import api from '../../config/api';
+import useCep from '../../hooks/useCep';
 import { Context } from '../../services/context';
 import maskCep from '../../utils/maskCep';
 import maskCpf from '../../utils/maskCpf';
@@ -116,35 +117,17 @@ const ConfigUser = () => {
 		validationSchema: configUserSchema,
 	});
 
+	const [cepValues, errorCep] = useCep(formik.values.cep);
+
 	useEffect(() => {
-		if (!formik.values.cep) {
-			return;
-		}
-		async function fetchData() {
-			const cep = formik.values.cep.match(/\d+/g).join('');
-			if (cep.length < 8) {
-				return;
-			}
-			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-			formik.setFieldValue(
-				'bairro',
-				data.bairro || user.payment[0].address[0].neighborhood
-			);
-			formik.setFieldValue(
-				'adress',
-				data.logradouro || user.payment[0].address[0].street
-			);
-			formik.setFieldValue(
-				'city',
-				data.localidade || user.payment[0].address[0].city
-			);
-			formik.setFieldValue(
-				'sigla',
-				data.uf || user.payment[0].address[0].stateUf
-			);
-		}
-		fetchData();
-	}, [formik.values.cep]);
+		formik.setValues({
+			...formik.values,
+			adress: cepValues.logradouro || user.payment[0].address[0].street,
+			bairro: cepValues.neighborhood || user.payment[0].address[0].neighborhood,
+			city: cepValues.city || user.payment[0].address[0].city,
+			sigla: cepValues.state || user.payment[0].address[0].stateUf,
+		});
+	}, [cepValues]);
 
 	useEffect(() => {
 		if (!formik.values.sigla) {
@@ -252,17 +235,6 @@ const ConfigUser = () => {
 		}
 		fetchData();
 	}, []);
-	// useEffect(() => {
-	// 	if (!formik.values.sigla) {
-	// 		return;
-	// 	}
-	// 	const uf = states.find(state => state.sigla === formik.values.sigla);
-	// 	if (!uf) {
-	// 		return;
-	// 	}
-
-	// 	formik.setFieldValue('state', uf.nome);
-	// }, [formik.values.sigla, states]);
 
 	return (
 		<Container>
@@ -469,6 +441,7 @@ const ConfigUser = () => {
 							type="button"
 							secondary
 							loading={loading}
+							disabled={errorCep}
 							onClick={() => {
 								if (loading) {
 									return;

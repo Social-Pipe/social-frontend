@@ -14,7 +14,7 @@ import maskCpf from '../../../utils/maskCpf';
 import maskDate from '../../../utils/maskDate';
 import { ContainerButtons, FormContainer } from '../styles';
 
-const PaymentForm = ({ formik, loading }) => {
+const PaymentForm = ({ formik, loading, cepError }) => {
 	const [states, setStates] = useState([]);
 
 	useEffect(() => {
@@ -77,12 +77,14 @@ const PaymentForm = ({ formik, loading }) => {
 								)
 							}
 							className={
-								!!formik.errors?.cep && formik.touched.cep ? 'error' : ''
+								(!!formik.errors?.cep && formik.touched.cep) || cepError
+									? 'error'
+									: ''
 							}
 							autoComplete="postal-code"
 							value={formik.values.cep}
 						/>
-						{!!formik.errors?.cep && formik.touched.cep && (
+						{((!!formik.errors?.cep && formik.touched.cep) || cepError) && (
 							<span>Campo Obrigatório</span>
 						)}
 					</fieldset>
@@ -332,6 +334,7 @@ const PaymentForm = ({ formik, loading }) => {
 									onChange={e => {
 										const valueNumber = e.target.value.match(/\d+/g)?.join('');
 										if (!valueNumber || valueNumber?.length > 3) {
+											formik.setFieldValue('cardCode', '');
 											return;
 										}
 										formik.setFieldValue('cardCode', valueNumber);
@@ -346,7 +349,12 @@ const PaymentForm = ({ formik, loading }) => {
 						</fieldset>
 					</div>
 					<ContainerButtons className="container_buttons">
-						<Button type="onSubmit" className="button" loading={loading}>
+						<Button
+							type="onSubmit"
+							className="button"
+							loading={loading}
+							disabled={cepError}
+						>
 							Finalizar cadastro
 						</Button>
 						<div className="container_forget" />

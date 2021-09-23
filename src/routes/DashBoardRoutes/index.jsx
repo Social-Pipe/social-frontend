@@ -7,7 +7,6 @@ import ContainerDashBoard, { ContainerProduct } from './styles';
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
 import NewClient from '../../components/NewClient';
-import NotPaymentAccept from '../../components/NotPaymentAccept';
 import api from '../../config/api';
 import Modal from '../../Container/Modal';
 import ChangeConfigPayment from '../../pages/ChangeConfigPayment';
@@ -15,23 +14,20 @@ import ClientConfig from '../../pages/ClientConfig';
 import ConfigUser from '../../pages/ConfigUser';
 import DashBoard from '../../pages/DashBoard';
 import DesactiveAccount from '../../pages/DesactiveAccount';
+import PageBlock from '../../pages/PageBlock';
 import { Context } from '../../services/context';
 
 const DashBoardRoutes = () => {
 	const route = useRouteMatch();
-	const {
-		showModal,
-		handleShowModal,
-		addUser,
-		fetchMoreClients,
-		showModalPayment,
-		handleShowModalPayment,
-	} = useContext(Context);
+	const { showModal, handleShowModal, addUser, fetchMoreClients } = useContext(
+		Context
+	);
 	const [loading, setLoading] = useState(true);
 	const history = useHistory();
 
 	useEffect(() => {
 		setLoading(true);
+
 		async function fetchData() {
 			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
 			if (!tokenStorage?.acessToken) {
@@ -76,20 +72,14 @@ const DashBoardRoutes = () => {
 							path={`${route.path}/desativarConta`}
 							component={DesactiveAccount}
 						/>
+						<Route
+							exact
+							path={`${route.path}/erro-pagarme`}
+							component={PageBlock}
+						/>
 
 						<Route path={`${route.path}`}>
 							<ContainerProduct>
-								<Modal
-									showModal={showModalPayment}
-									handleOutClick={() => handleShowModalPayment(true)}
-								>
-									<NotPaymentAccept
-										handleButton={() => {
-											history.replace('/dashboard/pagamentoConfiguracao');
-											handleShowModalPayment(false);
-										}}
-									/>
-								</Modal>
 								<Modal
 									showModal={showModal.show}
 									handleOutClick={() =>
@@ -101,8 +91,10 @@ const DashBoardRoutes = () => {
 											edit: showModal.edit,
 											client: showModal?.client,
 										}}
-										erroClient={() => {
-											handleShowModalPayment(true);
+										erroClient={e => {
+											if (e.response?.status === 500) {
+												history.push(`${route.path}/erro-pagarme`);
+											}
 											handleShowModal(props => ({ ...props, show: false }));
 										}}
 										saveClient={() => {

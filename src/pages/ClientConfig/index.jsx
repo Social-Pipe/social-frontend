@@ -47,6 +47,14 @@ const ClientConfig = () => {
 			const newClient = clients.find(
 				clientI => clientI.id === Number(params.id)
 			);
+
+			const statusPaid = await api.get(
+				`pagarme/client_subscription/${newClient.id}`
+			);
+			if (statusPaid?.data?.currentTransaction?.status !== 'paid') {
+				history.replace('/dashboard/erro-pagarme');
+				return;
+			}
 			setClient(newClient);
 
 			try {

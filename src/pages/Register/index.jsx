@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import pagarme from 'pagarme';
 import { useContext, useState, useEffect } from 'react';
@@ -10,6 +9,7 @@ import Container, { ProgressBar } from './styles';
 import Success from './Success';
 
 import api from '../../config/api';
+import useCep from '../../hooks/useCep';
 import { Context } from '../../services/context';
 import registerSchema from '../../validations/registerSchema';
 
@@ -149,29 +149,17 @@ const Register = () => {
 		},
 	});
 
+	const [cepValues, errorCep] = useCep(formik.values.cep);
+
 	useEffect(() => {
-		if (!formik.values.cep) {
-			return;
-		}
-		async function fetchData() {
-			const cep = formik.values.cep.match(/\d+/g).join('');
-			if (cep.length < 8) {
-				return;
-			}
-			const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-			if (data?.erro) {
-				return;
-			}
-			formik.setValues({
-				...formik.values,
-				adress: data.logradouro,
-				district: data.bairro,
-				city: data.localidade,
-				sigla: data.uf,
-			});
-		}
-		fetchData();
-	}, [formik.values.cep]);
+		formik.setValues({
+			...formik.values,
+			adress: cepValues.logradouro,
+			district: cepValues.neighborhood,
+			city: cepValues.city,
+			sigla: cepValues.state,
+		});
+	}, [cepValues]);
 
 	async function verifyValues(ArrayFieldsNames, pageValue) {
 		let notTouched = false;
@@ -283,6 +271,7 @@ const Register = () => {
 							onPressButtonFinished={() => {
 								formik.handleSubmit();
 							}}
+							cepError={errorCep}
 							loading={loading}
 						/>
 					)}

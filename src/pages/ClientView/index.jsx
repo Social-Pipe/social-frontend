@@ -1,9 +1,10 @@
 import { format, parseISO } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
+import jwtDecode from 'jwt-decode';
 import Carrousel from 'nuka-carousel';
 import { useState, useEffect, useCallback } from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Container, { Feed, Button } from './styles';
 
@@ -28,15 +29,24 @@ const ClientView = () => {
 	const [facebook, setFacebook] = useState(false);
 	const params = useParams();
 	const [user, setUser] = useState({});
+	const history = useHistory();
 
 	const fetchPosts = useCallback(() => {
 		async function fetchData() {
 			try {
+				const content = jwtDecode(token);
 				const response = await api.get(`clients/${params.id}/posts/`, {
 					headers: {
 						'X-Client': `Bearer ${token}`,
 					},
 				});
+				const statusPaid = await api.get(
+					`pagarme/client_subscription/${content.sub}`
+				);
+				if (statusPaid?.data?.currentTransaction?.status !== 'paid') {
+					history.push('dashboard/erro-pagarme');
+					return;
+				}
 				const userResponse = await api.get(`clients/${params.id}/`);
 				const userWithLogo = {
 					...userResponse.data,
@@ -86,7 +96,7 @@ const ClientView = () => {
 			} catch {}
 		}
 		fetchData();
-	}, []);
+	}, [token]);
 
 	useEffect(() => {
 		if (instagram || linkedin || facebook) {
