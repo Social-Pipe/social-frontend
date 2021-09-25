@@ -14,10 +14,11 @@ const PageBlock = () => {
 		<Container>
 			<div>
 				<IoCloseCircleOutline size={48} color="#E35050" />
-				{user?.email ? (
+				{!user?.email ? (
 					<>
 						<p>
-							Sua forma de pagamento não foi aceita, então pausamos a sua conta.
+							Sua forma de pagamento não foi aceita. Por favor clique no botão
+							abaixo para tentar novamente.
 						</p>
 
 						<Button onClick={() => history.replace('configuracao')}>
@@ -26,8 +27,8 @@ const PageBlock = () => {
 					</>
 				) : (
 					<p>
-						Ocorreu um erro na conta, favor entrar em contato com o designer
-						responsável
+						Ocorreu um erro na conta. Por favor, entre em contato com o seu
+						social media.
 					</p>
 				)}
 			</div>
