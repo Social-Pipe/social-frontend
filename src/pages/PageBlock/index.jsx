@@ -14,7 +14,7 @@ const PageBlock = () => {
 		<Container>
 			<div>
 				<IoCloseCircleOutline size={48} color="#E35050" />
-				{!user?.email ? (
+				{user?.email ? (
 					<>
 						<p>
 							Sua forma de pagamento não foi aceita. Por favor clique no botão

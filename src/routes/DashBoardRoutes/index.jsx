@@ -26,16 +26,16 @@ const DashBoardRoutes = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		if (history.location.pathname === '/dashboard/erro-pagarme') {
-			setLoading(false);
-			return;
-		}
 		setLoading(true);
 
 		async function fetchData() {
 			const tokenStorage = JSON.parse(window.localStorage.getItem('token'));
 			if (!tokenStorage?.acessToken) {
 				setLoading(false);
+
+				if (history.location.pathname === '/dashboard/erro-pagarme') {
+					return;
+				}
 				history.replace('/login');
 				return;
 			}
