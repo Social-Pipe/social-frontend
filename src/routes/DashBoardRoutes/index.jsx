@@ -26,6 +26,10 @@ const DashBoardRoutes = () => {
 	const history = useHistory();
 
 	useEffect(() => {
+		if (history.location.pathname === '/dashboard/erro-pagarme') {
+			setLoading(false);
+			return;
+		}
 		setLoading(true);
 
 		async function fetchData() {

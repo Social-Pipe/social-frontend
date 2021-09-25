@@ -44,9 +44,16 @@ const ClientConfig = () => {
 
 	const fetchPosts = useCallback(() => {
 		async function fetchData() {
+			if (clients.length <= 0) {
+				return;
+			}
 			const newClient = clients.find(
 				clientI => clientI.id === Number(params.id)
 			);
+			if (!newClient?.id) {
+				history.goBack();
+				return;
+			}
 
 			const statusPaid = await api.get(
 				`pagarme/client_subscription/${newClient.id}`
