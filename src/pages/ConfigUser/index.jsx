@@ -94,10 +94,12 @@ const ConfigUser = () => {
 				variables.password = values.password;
 			}
 			try {
+				console.log('Editando usuário');
 				const response = await api.patch(
 					`users/${content.user_id}/`,
 					variables
 				);
+				console.log(response);
 				addUser(response.data);
 				handleShowPopUp('sucess', 'Dados Atualizados!');
 			} catch (e) {

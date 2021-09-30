@@ -58,7 +58,10 @@ const ClientConfig = () => {
 			const statusPaid = await api.get(
 				`pagarme/client_subscription/${newClient.id}`
 			);
-			if (statusPaid?.data?.currentTransaction?.status !== 'paid') {
+			if (
+				statusPaid?.data?.status !== 'paid' &&
+				statusPaid?.data?.status !== 'trialing'
+			) {
 				history.replace('/dashboard/erro-pagarme');
 				return;
 			}

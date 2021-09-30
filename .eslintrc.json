@@ -14,7 +14,7 @@
 	"plugins": ["react", "prettier"],
 	"rules": {
 		"react/forbid-prop-types": "off",
-		"prettier/prettier": ["error", { "endOfLine": "auto" }],
+		"prettier/prettier": ["warn", { "endOfLine": "auto" }],
 		"react/react-in-jsx-scope": "off",
 		"no-tabs": "off",
 		"react/prop-types": "off",
