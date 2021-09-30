@@ -10,6 +10,7 @@ export default styled.div`
 	height: 100vh;
 
 	> div {
+		width: 100%;
 		max-width: 43.75rem;
 		display: flex;
 		flex-direction: column;
@@ -32,8 +33,10 @@ export default styled.div`
 	}
 
 	@media (max-width: 800px) {
-		max-width: 35.75rem;
-		padding: 3rem;
+		> div {
+			max-width: 35.75rem;
+			padding: 3rem;
+		}
 
 		p {
 			font-size: 1.4rem;
@@ -41,8 +44,10 @@ export default styled.div`
 		}
 	}
 	@media (max-width: 500px) {
-		max-width: 35.75rem;
-		padding: 1rem;
+		> div {
+			max-width: 35.75rem;
+			padding: 1rem;
+		}
 
 		p {
 			font-size: 1rem;
