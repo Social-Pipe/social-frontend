@@ -79,7 +79,7 @@ function ImageContainer({
 						(type === 'Imagem' ? (
 							<img src={selectedFileUrl.file} alt="imagem" />
 						) : (
-							<video autoPlay controls>
+							<video controls>
 								<source src={selectedFileUrl.file} />
 							</video>
 						))}

@@ -319,7 +319,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 			>
 				{formik.values.type === 'VIDEO' &&
 					(!formik.values.logoFormat ? (
-						<video autoPlay controls>
+						<video controls>
 							<source
 								src={
 									formik.values.currentLogo &&
@@ -329,7 +329,7 @@ const EditPost = ({ saveClient, deletePost, editValues }) => {
 							/>
 						</video>
 					) : (
-						<video autoPlay controls>
+						<video controls>
 							<source
 								src={formik.values.logoFormat && formik.values.logoFormat[0]}
 							/>
