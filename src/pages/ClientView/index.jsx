@@ -32,6 +32,9 @@ const ClientView = () => {
 	const history = useHistory();
 
 	const fetchPosts = useCallback(() => {
+		if (!token) {
+			return;
+		}
 		async function fetchData() {
 			try {
 				const content = jwtDecode(token);
@@ -50,7 +53,11 @@ const ClientView = () => {
 					history.push('dashboard/erro-pagarme');
 					return;
 				}
-				const userResponse = await api.get(`clients/${params.id}/`);
+				const userResponse = await api.get(`clients/${params.id}/`, {
+					headers: {
+						'X-Client': `Bearer ${token}`,
+					},
+				});
 				const userWithLogo = {
 					...userResponse.data,
 					logo: `${process.env.REACT_APP_DJANGO_MEDIA_URL}/${userResponse.data.logo}`,
@@ -67,7 +74,7 @@ const ClientView = () => {
 						...commentMap,
 						dataFormat: format(
 							parseISO(commentMap.createdAt),
-							"eeeeee, 'de' MMMM 'às' HH:mm",
+							"d eeeeee, 'de' MMMM 'às' HH:mm",
 							{
 								locale: ptBr,
 							}
@@ -85,7 +92,7 @@ const ClientView = () => {
 						comments: newComment,
 						dataFormat: format(
 							parseISO(postMap.postingDate),
-							"eeeeee, 'de' MMMM 'às' HH:mm",
+							"d eeeeee, 'de' MMMM 'às' HH:mm",
 							{
 								locale: ptBr,
 							}
@@ -96,7 +103,9 @@ const ClientView = () => {
 					postFilter => postFilter.publish
 				);
 				setPosts(postsFilters);
-			} catch {}
+			} catch (e) {
+				console.log(e);
+			}
 		}
 		fetchData();
 	}, [token]);
@@ -122,10 +131,8 @@ const ClientView = () => {
 	}, [posts, instagram, facebook, linkedin]);
 
 	useEffect(() => {
-		if (token) {
-			fetchPosts();
-		}
-	}, [token, fetchPosts]);
+		fetchPosts();
+	}, [fetchPosts]);
 
 	return (
 		<Container>
@@ -215,6 +222,7 @@ const ClientView = () => {
 					<Feed>
 						{postsFilter.map(postMap => (
 							<Button
+								key={postMap.id}
 								status={postMap.status}
 								type="button"
 								onClick={() => {

@@ -88,7 +88,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 				...commentMap,
 				dataFormat: format(
 					parseISO(commentMap.createdAt),
-					"eeeeee, 'de' MMMM 'às' HH:mm",
+					"d eeeeee, 'de' MMMM 'às' HH:mm",
 					{
 						locale: ptBr,
 					}
@@ -104,7 +104,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 				files,
 				dataFormat: format(
 					parseISO(data.postingDate),
-					"eeeeee, 'de' MMMM 'às' HH:mm",
+					"d eeeeee, 'de' MMMM 'às' HH:mm",
 					{
 						locale: ptBr,
 					}

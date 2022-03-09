@@ -40,6 +40,7 @@ const ClientConfig = () => {
 		handleShowModal,
 		clients,
 		fetchMoreClients,
+		user,
 	} = useContext(Context);
 
 	const fetchPosts = useCallback(() => {
@@ -134,7 +135,7 @@ const ClientConfig = () => {
 				handleOutClick={() => setShowModalRating({ show: false, value: {} })}
 			>
 				<RatingPost
-					user
+					user={user}
 					values={showModalRating.value}
 					clientToken=""
 					closeModal={() => setShowModalRating({ show: false, value: {} })}

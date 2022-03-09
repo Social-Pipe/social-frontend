@@ -13,6 +13,7 @@ const Authenticate = ({ handleButton, hash }) => {
 	const { handleShowPopUp } = useContext(Context);
 
 	async function autentic() {
+		console.log('test', loading);
 		if (loading) {
 			return;
 		}
@@ -23,6 +24,7 @@ const Authenticate = ({ handleButton, hash }) => {
 				password,
 			});
 			setLoading(false);
+			console.log('response', response);
 			handleButton(response.data);
 		} catch (e) {
 			setLoading(false);
