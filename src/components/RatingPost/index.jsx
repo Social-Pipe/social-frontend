@@ -282,7 +282,12 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 					<div className="content_container">
 						{post.comments &&
 							post.comments.map(oldComment => (
-								<Comment key={oldComment.id} comment={oldComment} />
+								<Comment
+									key={oldComment.id}
+									comment={oldComment}
+									user={post.client.user.name}
+									client={post.client.name}
+								/>
 							))}
 					</div>
 
