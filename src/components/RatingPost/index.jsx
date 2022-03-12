@@ -47,7 +47,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 			);
 			const newComment = {
 				...commentResponse.data,
-				dataFormat: format(new Date(), "eeeeee, 'de' MMMM 'às' HH:mm", {
+				dataFormat: format(new Date(), "d eeeeee, 'de' MMMM 'às' HH:mm", {
 					locale: ptBr,
 				}),
 			};
@@ -282,12 +282,7 @@ const RatingPost = ({ closeModal, values, user, clientToken, updatePosts }) => {
 					<div className="content_container">
 						{post.comments &&
 							post.comments.map(oldComment => (
-								<Comment
-									key={oldComment.id}
-									comment={oldComment}
-									user={post.client.user.name}
-									client={post.client.name}
-								/>
+								<Comment key={oldComment.id} comment={oldComment} f />
 							))}
 					</div>
 
